@@ -100,9 +100,10 @@ Server = http://unicache.lan:8080/pacman/cachyos/$arch_v3/$repo
 Server = http://unicache.lan:8080/pacman/archlinux/$repo/os/$arch
 ```
 
-The CachyOS layout was taken from the public mirror structure and has not yet
-been run with a real CachyOS client. If a path is wrong, pacman falls back to
-the next mirror; check Live Traffic in the dashboard for `NOTFOUND` entries.
+The repository databases for `x86_64` and `x86_64_v3` were fetched through
+the cache with these URLs. A complete `pacman -Syu` from a CachyOS client has
+not been run yet; if a path is wrong, pacman falls back to the next mirror.
+Check Live Traffic in the dashboard for `NOTFOUND` entries.
 
 ## Checking that it works
 

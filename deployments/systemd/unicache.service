@@ -22,6 +22,7 @@ StateDirectoryMode=0750
 LogsDirectory=unicache
 LogsDirectoryMode=0750
 ConfigurationDirectory=unicache
+ConfigurationDirectoryMode=0750
 
 # Hardening. All of these work in an unprivileged Proxmox LXC container.
 NoNewPrivileges=yes

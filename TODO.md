@@ -31,6 +31,14 @@ Honest record of what was actually executed for v0.1 and what was not.
   invalid configuration stops the upgrade before the restart; uninstall keeps
   data, `--purge` removes everything.
 - `unicache check-config` against `configs/config.example.yaml`.
+- **Proxmox LXC, native install** (Proxmox VE 9.2, unprivileged Debian 13.6
+  container, **no nesting**, 2 cores / 1 GB, cache on a separate `mp0`
+  volume): `install.sh` from the release tarball; the hardened systemd unit
+  starts unchanged (`systemd-analyze security`: 3.3 "OK"); service comes back
+  after a container reboot and the cache is still there; about 13 MB RSS when
+  idle. Fetched through it from another machine in the LAN: Debian
+  `InRelease`, Arch `core.db`, and the CachyOS databases under `x86_64/` and
+  `x86_64_v3/` (confirms the CachyOS URL layout in docs/CLIENTS.md).
 
 ## Not verified yet
 
@@ -39,9 +47,12 @@ Honest record of what was actually executed for v0.1 and what was not.
   not start the stack there. The image and its runtime options were tested
   with `docker run --network host` instead (see above); the Compose file's
   port publishing and bridge networking are untested.
-- **The systemd unit under a real systemd**, including its sandboxing
-  options, on Debian/Ubuntu and inside a Proxmox LXC.
-- **Proxmox LXC** (native and Docker-in-LXC): not tested at all.
+- The systemd unit on Ubuntu and on bare-metal Debian (only tested in the
+  Proxmox LXC above).
+- **Docker inside a Proxmox LXC**, and bind-mounting a host directory into
+  the container (UID mapping section of the guide).
+- A full `pacman -Syu` from a real CachyOS client (only database downloads
+  were checked for CachyOS).
 - Dashboard pages not opened in the browser check: Repositories, Downloads,
   Statistics, Policies, Settings, and the setup wizard. They build and lint,
   and their API endpoints are covered by the backend tests.
@@ -64,3 +75,6 @@ Honest record of what was actually executed for v0.1 and what was not.
   object first.
 - Temp files of running downloads are not counted against `max_size`.
 - Client access control is by IP address only.
+- A request that arrives in the few milliseconds between the end of a
+  download and its publication (fsync) is reported as `COALESCED` rather
+  than `HIT`. It is served correctly and without an upstream transfer.

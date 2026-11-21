@@ -7,7 +7,7 @@ configuration format and the same data layout.
 |---|---|
 | [Docker Compose](#docker-compose) | image built and run with the Compose hardening options; `docker compose up` itself could not be run on the development machine |
 | [Native with systemd](#native-installation-debian-ubuntu) | install, upgrade and uninstall scripts run in a clean Debian 13 container; the unit was not run under a real systemd |
-| [Proxmox LXC](#proxmox-lxc) | **not tested yet.** Written from the Proxmox documentation and the requirements of UniCache |
+| [Proxmox LXC](#proxmox-lxc) | native install tested on Proxmox VE 9.2 in an unprivileged Debian 13 container without nesting; Docker-in-LXC and host bind mounts not tested |
 
 Details: [TODO.md](TODO.md).
 
@@ -178,9 +178,11 @@ not been tested.
 
 ## Proxmox LXC
 
-> Not tested for v0.1. The steps follow from how UniCache works (one
-> unprivileged process, one TCP port, one data directory) and from the Proxmox
-> documentation. Please report what you find.
+> The native installation below was tested on Proxmox VE 9.2 with an
+> unprivileged Debian 13.6 container, **without nesting**, and the cache on a
+> separate `mp0` volume: the hardened systemd unit started unchanged and
+> survived a container reboot. The Docker-in-LXC and host bind mount variants
+> are written from documentation and were not tested.
 
 **Recommended: native installation inside an unprivileged Debian 13
 container.** UniCache needs no special kernel features, capabilities or
@@ -202,7 +204,8 @@ container is possible but adds a layer with nothing gained.
 Example on the Proxmox host (adapt storage names, ID and addresses):
 
 ```sh
-pct create 120 local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst \
+pveam update && pveam download local debian-13-standard_13.6-1_amd64.tar.zst
+pct create 120 local:vztmpl/debian-13-standard_13.6-1_amd64.tar.zst \
   --hostname unicache --unprivileged 1 --cores 2 --memory 1024 --swap 512 \
   --rootfs local-lvm:4 --mp0 local-lvm:200,mp=/var/lib/unicache \
   --net0 name=eth0,bridge=vmbr0,ip=192.168.1.20/24,gw=192.168.1.1 \
@@ -246,8 +249,11 @@ with "permission denied" on `/var/lib/unicache`.
 ### systemd hardening in LXC
 
 The unit's sandboxing options (`ProtectSystem`, `PrivateTmp`, …) rely on mount
-namespaces. In an unprivileged container without nesting some of them can fail
-with an error such as `Failed to set up mount namespacing`. If the service
+namespaces. On Proxmox VE 9.2 they worked in an unprivileged container without
+nesting (Proxmox prints "Systemd 257 detected. You may need to enable
+nesting" when creating the container; UniCache did not need it). On other
+versions some of them can fail with an error such as
+`Failed to set up mount namespacing`. If the service
 does not start for that reason, either enable nesting for the container
 (`pct set 120 --features nesting=1`) or relax the unit:
 
