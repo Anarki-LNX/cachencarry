@@ -85,21 +85,21 @@ and verified and what has not. Nothing here is advertised that does not exist.
 
 ### In a Proxmox container or on any Debian or Ubuntu machine
 
-Build the release package on a machine with Go 1.27 and Node.js 20 or newer:
-
-```sh
-git clone https://github.com/Anarki-LNX/cachencarry.git
-cd cachencarry
-make dist
-```
-
-Copy `dist/cachencarry-<version>-linux-amd64.tar.gz` to the target and run:
+Download the package for your machine from the
+[latest release](https://github.com/Anarki-LNX/cachencarry/releases/latest)
+(`amd64` for normal PCs and servers, `arm64` for a Raspberry Pi and similar)
+and install it:
 
 ```sh
 tar xzf cachencarry-*-linux-amd64.tar.gz
 cd cachencarry-*-linux-amd64
 sudo ./scripts/install.sh
 ```
+
+The package contains one static binary, the systemd service, an example
+configuration and the install script. Nothing else is needed on the target.
+To build it yourself instead, run `make dist` on a machine with Go 1.27 and
+Node.js 20 or newer.
 
 Open `http://<address>:8080` and create your account. The setup asks for a
 one-time token that proves you have access to the server:
