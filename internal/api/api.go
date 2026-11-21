@@ -375,7 +375,7 @@ func (a *API) system(w http.ResponseWriter, r *http.Request) {
 	}
 	if uerr == nil && usage.MinFree > 0 {
 		checks = append(checks, map[string]any{"name": "free_space", "ok": usage.DiskFree >= usage.MinFree,
-			"detail": fmt.Sprintf("%d bytes free, minimum %d", usage.DiskFree, usage.MinFree)})
+			"detail": fmt.Sprintf("%.1f GiB free, minimum %.1f GiB", float64(usage.DiskFree)/(1<<30), float64(usage.MinFree)/(1<<30))})
 	}
 	writeJSON(w, http.StatusOK, map[string]any{
 		"version":        a.d.Version,

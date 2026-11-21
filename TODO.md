@@ -13,24 +13,40 @@ Honest record of what was actually executed for v0.1 and what was not.
   served 100 % from the cache; upstream bytes equalled saved bytes exactly.
 - Real `pacman` (Arch Linux container, `SigLevel = Required`): database sync
   and package download; second client served from the cache.
-- `docker build` of the image succeeds (15.5 MB image).
+- Dashboard: `npm run lint` and `npm run build` pass. Checked in a browser
+  against the live backend with real traffic: login, Dashboard, Cache
+  Modules, Live Traffic (including a live update), Clients, Storage, System
+  Health, enabling a module (a CSRF-protected write), light and dark theme,
+  phone-width layout. Numbers matched the requests that were sent.
+- Container: `docker build` succeeds (about 15 MB). The image was run with
+  the same hardening as in `docker-compose.yml` (read-only root filesystem,
+  all capabilities dropped, `no-new-privileges`, UID 65532, named volume):
+  healthy after a few seconds, cache MISS then HIT, cache still there after a
+  container restart, `setup-token` and `version` subcommands work.
+- `make dist`: static amd64 and arm64 tarballs with checksums.
+- `scripts/install.sh` / `uninstall.sh` from the release tarball in a clean
+  Debian 13 container (with a stub in place of `systemctl`): user, directories
+  and permissions created; the service starts as the `unicache` user and
+  passes its health check; a second run keeps an edited configuration; an
+  invalid configuration stops the upgrade before the restart; uninstall keeps
+  data, `--purge` removes everything.
 - `unicache check-config` against `configs/config.example.yaml`.
 
 ## Not verified yet
 
-- **Docker Compose run.** The image builds, but `docker compose up` could not
-  be executed on the development machine (its Docker daemon cannot create
-  bridge networks: "operation not supported", IPv4 forwarding disabled). The
-  container start, health check, read-only root filesystem and volume
-  permissions are therefore untested.
-- **Web dashboard.** Built by a separate work step; its final lint/build
-  result and its behaviour against the live backend were not reviewed before
-  this record was written. Treat it as unreviewed.
-- **Native install script** (`scripts/install.sh`, systemd unit): only
-  syntax-checked, never run on a clean Debian/Ubuntu system.
+- **`docker compose up` itself.** The development machine's Docker daemon
+  cannot create bridge networks ("operation not supported"), so Compose could
+  not start the stack there. The image and its runtime options were tested
+  with `docker run --network host` instead (see above); the Compose file's
+  port publishing and bridge networking are untested.
+- **The systemd unit under a real systemd**, including its sandboxing
+  options, on Debian/Ubuntu and inside a Proxmox LXC.
 - **Proxmox LXC** (native and Docker-in-LXC): not tested at all.
+- Dashboard pages not opened in the browser check: Repositories, Downloads,
+  Statistics, Policies, Settings, and the setup wizard. They build and lint,
+  and their API endpoints are covered by the backend tests.
 - CachyOS, Ubuntu, Manjaro, Linux Mint clients; TLS listener; reverse proxy
-  setups; `make dist`; the GitHub Actions workflow.
+  setups; the GitHub Actions workflow.
 - Performance and memory under load on small hardware.
 
 ## Not implemented

@@ -5,9 +5,11 @@ configuration format and the same data layout.
 
 | Method | Verified for v0.1 |
 |---|---|
-| [Docker Compose](#docker-compose) | see [TODO.md](TODO.md) for exactly what was run |
-| [Native with systemd](#native-installation-debian-ubuntu) | scripts are syntax-checked; the full install was not run on a clean Debian system yet |
-| [Proxmox LXC](#proxmox-lxc) | **not tested yet.** Written from the Proxmox documentation and the systemd/Docker requirements of UniCache |
+| [Docker Compose](#docker-compose) | image built and run with the Compose hardening options; `docker compose up` itself could not be run on the development machine |
+| [Native with systemd](#native-installation-debian-ubuntu) | install, upgrade and uninstall scripts run in a clean Debian 13 container; the unit was not run under a real systemd |
+| [Proxmox LXC](#proxmox-lxc) | **not tested yet.** Written from the Proxmox documentation and the requirements of UniCache |
+
+Details: [TODO.md](TODO.md).
 
 ## Requirements
 
