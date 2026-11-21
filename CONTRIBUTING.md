@@ -17,7 +17,7 @@ make lint                 # gofmt, go vet, frontend lint
 ```
 
 `make run` prints where the setup token is; or start with
-`UNICACHE_SECURITY_ADMIN_PASSWORD=some-long-password`.
+`CACHENCARRY_SECURITY_ADMIN_PASSWORD=some-long-password`.
 
 ## Rules
 
@@ -54,7 +54,7 @@ See [ADAPTERS.md](ADAPTERS.md#writing-an-adapter).
 
 ## Reporting bugs
 
-Include the UniCache version (`unicache version`), how it is deployed, the
+Include the Cache & Carry version (`cachencarry version`), how it is deployed, the
 client and its version, the relevant lines from Live Traffic or the log
 (`logging.level: debug` shows every request), and what you expected.
 Security issues: see [SECURITY.md](SECURITY.md).

@@ -1,4 +1,4 @@
-// Package tests contains end-to-end tests that run a complete UniCache
+// Package tests contains end-to-end tests that run a complete Cache & Carry
 // instance against local mock upstream repositories. No Internet access is
 // needed.
 package tests
@@ -23,10 +23,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Anarki-LNX/unicache/internal/app"
-	"github.com/Anarki-LNX/unicache/internal/config"
-	"github.com/Anarki-LNX/unicache/internal/stats"
-	"github.com/Anarki-LNX/unicache/internal/testutil"
+	"github.com/Anarki-LNX/cachencarry/internal/app"
+	"github.com/Anarki-LNX/cachencarry/internal/config"
+	"github.com/Anarki-LNX/cachencarry/internal/stats"
+	"github.com/Anarki-LNX/cachencarry/internal/testutil"
 )
 
 // upstream is a mock mirror that counts requests per path.
@@ -116,7 +116,7 @@ type instance struct {
 
 func (i *instance) url(p string) string { return i.srv.URL + p }
 
-// start runs a UniCache instance whose apt/debian and pacman/arch
+// start runs a Cache & Carry instance whose apt/debian and pacman/arch
 // repositories point at the given mock upstreams.
 func start(t *testing.T, mut func(*config.Config), ups ...*upstream) *instance {
 	t.Helper()

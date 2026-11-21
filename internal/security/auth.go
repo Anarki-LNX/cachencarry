@@ -16,7 +16,7 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/Anarki-LNX/unicache/internal/database"
+	"github.com/Anarki-LNX/cachencarry/internal/database"
 )
 
 // ErrInvalidCredentials is returned for a wrong user name or password.
@@ -50,7 +50,7 @@ func NewAuth(db *database.DB, sessionTTL time.Duration) *Auth {
 	if sessionTTL <= 0 {
 		sessionTTL = 12 * time.Hour
 	}
-	dummy, _ := bcrypt.GenerateFromPassword([]byte("unicache-timing-equaliser"), bcrypt.DefaultCost)
+	dummy, _ := bcrypt.GenerateFromPassword([]byte("cachencarry-timing-equaliser"), bcrypt.DefaultCost)
 	return &Auth{db: db, ttl: sessionTTL, dummyHash: dummy}
 }
 

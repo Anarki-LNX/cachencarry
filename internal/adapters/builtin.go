@@ -11,7 +11,7 @@ import (
 
 // APT serves Debian-style repositories (Debian, Ubuntu, Linux Mint, …).
 //
-// UniCache never modifies repository files. InRelease/Release signatures are
+// Cache & Carry never modifies repository files. InRelease/Release signatures are
 // passed through byte for byte, so apt keeps verifying them exactly as it
 // would against the original mirror.
 type APT struct{}

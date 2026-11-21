@@ -45,7 +45,7 @@ func put(t *testing.T, s *Store, data []byte) (string, bool) {
 
 func TestWriteReadAndHash(t *testing.T) {
 	s := open(t)
-	data := []byte("hello unicache")
+	data := []byte("hello cachencarry")
 	h, existed := put(t, s, data)
 	if existed {
 		t.Fatal("new blob reported as existing")

@@ -198,8 +198,8 @@ export function Settings() {
               {s.runtime && <RuntimeSettingsForm view={s.runtime} onSaved={settings.reload} />}
               <Notice tone="info">
                 {rich("settings.readOnlyNotice", {
-                  file: <code className="font-mono text-xs">/etc/unicache/config.yaml</code>,
-                  env: <code className="font-mono text-xs">UNICACHE_*</code>,
+                  file: <code className="font-mono text-xs">/etc/cachencarry/config.yaml</code>,
+                  env: <code className="font-mono text-xs">CACHENCARRY_*</code>,
                 })}
               </Notice>
               <Config s={s} />

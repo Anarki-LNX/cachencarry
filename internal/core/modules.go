@@ -1,4 +1,4 @@
-// Package core wires the UniCache components together.
+// Package core wires the Cache & Carry components together.
 package core
 
 import (
@@ -11,9 +11,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Anarki-LNX/unicache/internal/adapters"
-	"github.com/Anarki-LNX/unicache/internal/config"
-	"github.com/Anarki-LNX/unicache/internal/database"
+	"github.com/Anarki-LNX/cachencarry/internal/adapters"
+	"github.com/Anarki-LNX/cachencarry/internal/config"
+	"github.com/Anarki-LNX/cachencarry/internal/database"
 )
 
 // Repo is one configured upstream repository of a module.

@@ -11,10 +11,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Anarki-LNX/unicache/internal/core"
-	"github.com/Anarki-LNX/unicache/internal/proxy"
-	"github.com/Anarki-LNX/unicache/internal/stats"
-	"github.com/Anarki-LNX/unicache/internal/storage"
+	"github.com/Anarki-LNX/cachencarry/internal/core"
+	"github.com/Anarki-LNX/cachencarry/internal/proxy"
+	"github.com/Anarki-LNX/cachencarry/internal/stats"
+	"github.com/Anarki-LNX/cachencarry/internal/storage"
 )
 
 const policySettingKey = "policy"

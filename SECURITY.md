@@ -9,7 +9,7 @@ before publishing details.
 
 ## Threat model
 
-UniCache is built for a **private LAN**. It protects against:
+Cache & Carry is built for a **private LAN**. It protects against:
 
 - clients outside the configured networks using the cache or the dashboard;
 - being abused as an open proxy or for server-side request forgery (SSRF);
@@ -22,11 +22,11 @@ UniCache is built for a **private LAN**. It protects against:
 
 It does **not** protect against a malicious upstream serving bad packages.
 That is the job of the package manager's signature verification, which
-UniCache leaves completely intact: it never modifies repository metadata or
+Cache & Carry leaves completely intact: it never modifies repository metadata or
 packages and never asks clients to disable verification. "Downloaded
 successfully" is never treated as "safe".
 
-Traffic between clients and UniCache is plain HTTP by default, like most
+Traffic between clients and Cache & Carry is plain HTTP by default, like most
 distribution mirrors. Package integrity does not depend on transport security
 (signed indexes), but an observer in the LAN can see which packages are
 fetched. Enable TLS (`server.tls_cert` / `tls_key`) or put a TLS reverse proxy
@@ -59,7 +59,7 @@ Redirects are limited to five, to `http`/`https`, and never from `https` to
 `..` segments, no backslashes or control characters, limited length. Segments
 are re-escaped for the upstream. The query string is dropped.
 
-**Credential isolation.** UniCache v0.1 has no concept of private upstream
+**Credential isolation.** Cache & Carry v0.1 has no concept of private upstream
 repositories. Client `Authorization` and `Cookie` headers are never forwarded.
 The generic adapter refuses requests that carry them and does not store
 responses that are `private`, `no-store`, set cookies or vary on request

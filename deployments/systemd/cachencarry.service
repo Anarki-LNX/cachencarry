@@ -1,27 +1,27 @@
 [Unit]
-Description=UniCache - universal LAN cache
-Documentation=https://github.com/Anarki-LNX/unicache
+Description=Cache & Carry LAN package cache
+Documentation=https://github.com/Anarki-LNX/cachencarry
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
-User=unicache
-Group=unicache
-ExecStart=/usr/local/bin/unicache serve -config /etc/unicache/config.yaml
-# Optional overrides, e.g. UNICACHE_SECURITY_ADMIN_PASSWORD for first start.
-EnvironmentFile=-/etc/unicache/unicache.env
+User=cachencarry
+Group=cachencarry
+ExecStart=/usr/local/bin/cachencarry serve -config /etc/cachencarry/config.yaml
+# Optional overrides, e.g. CACHENCARRY_SECURITY_ADMIN_PASSWORD for first start.
+EnvironmentFile=-/etc/cachencarry/cachencarry.env
 Restart=on-failure
 RestartSec=3
 TimeoutStopSec=40
 LimitNOFILE=65536
 
 # Directories (created and owned by systemd)
-StateDirectory=unicache
+StateDirectory=cachencarry
 StateDirectoryMode=0750
-LogsDirectory=unicache
+LogsDirectory=cachencarry
 LogsDirectoryMode=0750
-ConfigurationDirectory=unicache
+ConfigurationDirectory=cachencarry
 ConfigurationDirectoryMode=0750
 
 # Hardening. All of these work in an unprivileged Proxmox LXC container.
@@ -43,8 +43,8 @@ SystemCallArchitectures=native
 CapabilityBoundingSet=
 AmbientCapabilities=
 UMask=0027
-# If storage.path is outside /var/lib/unicache, allow it with a drop-in:
-#   systemctl edit unicache
+# If storage.path is outside /var/lib/cachencarry, allow it with a drop-in:
+#   systemctl edit cachencarry
 #   [Service]
 #   ReadWritePaths=/mnt/cache
 

@@ -8,7 +8,7 @@ official source it is marked **unverified** instead of guessed.
 
 | Project | Scope | Pacman | APT | OCI | Content-addressed dedup | Runtime dependencies | Dashboard |
 |---|---|---|---|---|---|---|---|
-| **UniCache** (v0.1) | LAN pull-through cache | yes | yes | planned | yes (SHA-256, across adapters) | none (single binary, SQLite embedded) | yes |
+| **Cache & Carry** (v0.1) | LAN pull-through cache | yes | yes | planned | yes (SHA-256, across adapters) | none (single binary, SQLite embedded) | yes |
 | Sonatype Nexus CE | artifact repository manager | no | yes | yes | unverified | JVM; PostgreSQL recommended | yes |
 | Pulp | repository management and sync | no | yes | yes | yes (SHA-256 artifacts) | PostgreSQL + API, content and worker services | unverified |
 | Harbor | OCI registry | no | no | yes | n/a (registry blobs) | PostgreSQL, Redis, several containers | yes |
@@ -122,7 +122,7 @@ None of the surveyed tools lists Pacman together with APT and OCI.
   ([prerequisites](https://learn.microsoft.com/en-us/windows/deployment/do/mcc-ent-prerequisites)).
   It is not available to Home/Pro homelab users.
 
-## What this means for UniCache
+## What this means for Cache & Carry
 
 **Build ourselves** (clear advantage from one core):
 - The storage engine, download manager, statistics and dashboard.
@@ -136,7 +136,7 @@ None of the surveyed tools lists Pacman together with APT and OCI.
 
 **Integrate instead of rebuild:**
 - **Games:** LanCache. Its DNS + nginx design solves a different problem
-  (unmodifiable clients, proprietary CDNs). UniCache should deploy and
+  (unmodifiable clients, proprietary CDNs). Cache & Carry should deploy and
   configure it, read its logs for statistics and show its disk usage. Its
   cache cannot share the content-addressed store (slice-keyed nginx cache);
   the unified part is management and monitoring, and the documentation must

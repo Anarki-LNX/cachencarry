@@ -47,7 +47,7 @@ has been run against the real client.
 
 ## v0.5: integrations
 
-- [ ] LanCache: deploy and configure it from UniCache, parse its access logs
+- [ ] LanCache: deploy and configure it from Cache & Carry, parse its access logs
       into the statistics, show its disk usage. Its nginx slice cache stays
       separate from the content-addressed store; unified means management and
       monitoring.

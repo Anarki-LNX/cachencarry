@@ -16,8 +16,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Anarki-LNX/unicache/internal/database"
-	"github.com/Anarki-LNX/unicache/internal/events"
+	"github.com/Anarki-LNX/cachencarry/internal/database"
+	"github.com/Anarki-LNX/cachencarry/internal/events"
 )
 
 // Result classifies how a request was answered.

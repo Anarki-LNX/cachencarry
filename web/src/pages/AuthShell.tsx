@@ -19,18 +19,19 @@ export function AuthShell({ title, subtitle, children, wide }: { title: string; 
         </IconButton>
       </div>
       <main className={`w-full ${wide ? "max-w-lg" : "max-w-sm"}`}>
-        <div className="mb-6 flex items-center justify-center gap-2.5">
+        <div className="mb-2 flex items-center justify-center gap-2.5">
           <span className="grid size-10 place-items-center rounded-xl bg-ok/10 text-ok" aria-hidden>
             <Database className="size-5" />
           </span>
-          <span className="text-xl font-semibold tracking-tight">UniCache</span>
+          <span className="text-xl font-semibold tracking-tight">Cache & Carry</span>
         </div>
+        <p className="mb-6 text-center text-sm text-muted">{t("auth.slogan")}</p>
         <div className="rounded-xl border border-line bg-panel p-5 sm:p-6">
           <h1 className="text-base font-semibold">{title}</h1>
           {subtitle && <p className="mt-1 text-sm text-muted">{subtitle}</p>}
           <div className="mt-5">{children}</div>
         </div>
-        {version && <p className="num mt-4 text-center text-xs text-dim">UniCache {version}</p>}
+        {version && <p className="num mt-4 text-center text-xs text-dim">Cache & Carry {version}</p>}
       </main>
     </div>
   );

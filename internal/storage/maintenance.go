@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/Anarki-LNX/unicache/internal/storage/cas"
+	"github.com/Anarki-LNX/cachencarry/internal/storage/cas"
 )
 
 // GCReport summarises one garbage collection run.

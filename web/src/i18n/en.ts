@@ -61,7 +61,7 @@ export const en = {
   "format.days": { one: "{n} d", other: "{n} d" },
 
   // API errors raised by the client itself
-  "error.unreachable": "Cannot reach the UniCache server",
+  "error.unreachable": "Cannot reach the Cache & Carry server",
   "error.requestFailed": "Request failed ({status})",
 
   // Navigation and page titles
@@ -92,9 +92,9 @@ export const en = {
   "layout.darkMode": "Switch to dark mode",
   "layout.signOut": "Sign out {user}",
 
-  "app.connecting": "Connecting to UniCache…",
+  "app.connecting": "Connecting to Cache & Carry…",
   "app.unreachableTitle": "Server unreachable",
-  "app.unreachableText": "The UniCache server did not answer.",
+  "app.unreachableText": "The Cache & Carry server did not answer.",
   "app.tryAgain": "Try again",
   "app.notFound": "Page not found",
   "app.backToDashboard": "Back to the dashboard",
@@ -102,6 +102,7 @@ export const en = {
   // Login and first-run setup
   "auth.signIn": "Sign in",
   "auth.signInSubtitle": "Manage your LAN cache.",
+  "auth.slogan": "Your network's package warehouse: download once, carry out as often as you like.",
   "auth.username": "Username",
   "auth.password": "Password",
   "auth.confirmPassword": "Confirm password",
@@ -415,14 +416,14 @@ export const en = {
   "stats.barCovers": "One bar covers {duration}.",
 
   // Policies
-  "policies.description": "How long cached answers are trusted before UniCache checks upstream again. Changes apply immediately.",
+  "policies.description": "How long cached answers are trusted before Cache & Carry checks upstream again. Changes apply immediately.",
   "policies.max30Days": "At most 30 days.",
   "policies.max1Hour": "At most 1 hour.",
   "policies.saved": "Policies saved",
   "policies.freshness": "Freshness",
   "policies.notice": "Packages and other versioned files are immutable: once cached they are never revalidated. These settings only affect repository indexes and other metadata that change upstream.",
   "policies.metadataTtl": "Metadata TTL",
-  "policies.metadataTtlHint": "How long repository indexes (package lists, release files, databases) are reused before UniCache asks upstream whether they changed. Shorter means fresher updates, longer means fewer upstream requests. 0 revalidates on every request.",
+  "policies.metadataTtlHint": "How long repository indexes (package lists, release files, databases) are reused before Cache & Carry asks upstream whether they changed. Shorter means fresher updates, longer means fewer upstream requests. 0 revalidates on every request.",
   "policies.negativeTtl": "Negative TTL",
   "policies.negativeTtlHint": "How long a “not found” answer from upstream is remembered, so clients probing for files that do not exist do not hit upstream every time. 0 disables it. At most 1 hour.",
   "policies.serveStaleSwitch": "Serve stale metadata when upstream fails",
@@ -473,7 +474,7 @@ export const en = {
   "settings.ip": "IP",
   "settings.action": "Action",
   "settings.detail": "Detail",
-  "settings.readOnlyNotice": "The settings below decide who can reach UniCache and what it may connect to. They are read-only here on purpose: a mistake could lock you out, and changing them should require access to the server. Edit {file} or set {env} environment variables, then restart UniCache.",
+  "settings.readOnlyNotice": "The settings below decide who can reach Cache & Carry and what it may connect to. They are read-only here on purpose: a mistake could lock you out, and changing them should require access to the server. Edit {file} or set {env} environment variables, then restart Cache & Carry.",
   "settings.appearance": "Appearance",
   "settings.theme": "Theme",
   "settings.themeDark": "Dark",
@@ -509,7 +510,7 @@ export const en = {
   "runtime.reset": "Reset to configuration file",
 
   // System health
-  "health.description": "Self-checks and runtime figures of the UniCache process.",
+  "health.description": "Self-checks and runtime figures of the Cache & Carry process.",
   "health.healthy": "Healthy",
   "health.failing": "{count} failing",
   "health.passing": "{ok} of {total} checks passing",

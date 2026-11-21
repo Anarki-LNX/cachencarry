@@ -5,8 +5,8 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/Anarki-LNX/unicache/internal/download"
-	"github.com/Anarki-LNX/unicache/internal/stats"
+	"github.com/Anarki-LNX/cachencarry/internal/download"
+	"github.com/Anarki-LNX/cachencarry/internal/stats"
 )
 
 // countingWriter measures what is really sent to a client: the status code

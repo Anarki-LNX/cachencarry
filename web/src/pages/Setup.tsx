@@ -59,9 +59,9 @@ export function Setup() {
             </Field>
             <div className="space-y-2 text-xs text-muted">
               <p>{t("setup.readToken")}</p>
-              <CodeBlock text="su -s /bin/sh unicache -c '/usr/local/bin/unicache setup-token'" copyLabel={t("setup.copyCommand")} />
+              <CodeBlock text="su -s /bin/sh cachencarry -c '/usr/local/bin/cachencarry setup-token'" copyLabel={t("setup.copyCommand")} />
               <p>{t("setup.withCompose")}</p>
-              <CodeBlock text="docker compose exec unicache unicache setup-token" copyLabel={t("setup.copyCommand")} />
+              <CodeBlock text="docker compose exec cachencarry cachencarry setup-token" copyLabel={t("setup.copyCommand")} />
             </div>
           </div>
         )}

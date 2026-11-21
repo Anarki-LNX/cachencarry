@@ -108,7 +108,7 @@ function Brand({ expanded }: { expanded: boolean }) {
       <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-ok/10 text-ok" aria-hidden>
         <Database className="size-[18px]" />
       </span>
-      {expanded && <span className="text-[15px] font-semibold tracking-tight">UniCache</span>}
+      {expanded && <span className="text-[15px] font-semibold tracking-tight">Cache & Carry</span>}
     </div>
   );
 }
@@ -117,7 +117,7 @@ export function Layout({ children }: { children: ReactNode }) {
   const { user, version, logout } = useAuth();
   const { theme, toggle } = useTheme();
   const { t } = useT();
-  const [expanded, setExpanded] = useState(() => loadFlag("unicache.sidebar", true));
+  const [expanded, setExpanded] = useState(() => loadFlag("cachencarry.sidebar", true));
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
@@ -132,7 +132,7 @@ export function Layout({ children }: { children: ReactNode }) {
   const current = NAV.find((n) => (n.to === "/" ? location.pathname === "/" : location.pathname.startsWith(n.to)));
   const title = current ? t(current.label) : null;
   useEffect(() => {
-    document.title = title ? `${title} · UniCache` : "UniCache";
+    document.title = title ? `${title} · Cache & Carry` : "Cache & Carry";
   }, [title]);
 
   return (
@@ -151,7 +151,7 @@ export function Layout({ children }: { children: ReactNode }) {
             label={expanded ? t("layout.collapseSidebar") : t("layout.expandSidebar")}
             aria-expanded={expanded}
             onClick={() => {
-              saveFlag("unicache.sidebar", !expanded);
+              saveFlag("cachencarry.sidebar", !expanded);
               setExpanded(!expanded);
             }}
           >
@@ -181,7 +181,7 @@ export function Layout({ children }: { children: ReactNode }) {
           <IconButton label={t("layout.openNavigation")} className="md:hidden" aria-expanded={mobileOpen} onClick={() => setMobileOpen(true)}>
             <Menu className="size-5" aria-hidden />
           </IconButton>
-          <span className="truncate text-sm font-medium text-muted md:hidden">{title ?? "UniCache"}</span>
+          <span className="truncate text-sm font-medium text-muted md:hidden">{title ?? "Cache & Carry"}</span>
           <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
             <LiveIndicator />
             <LanguageSwitch />

@@ -1,11 +1,11 @@
 # Architecture
 
-UniCache is a modular monolith: one Go process, one SQLite database, one
+Cache & Carry is a modular monolith: one Go process, one SQLite database, one
 storage directory. There are no microservices and no external dependencies at
 runtime.
 
 ```
-                        ┌────────────────────────── unicache ──────────────────────────┐
+                        ┌────────────────────────── cachencarry ──────────────────────────┐
  client ── HTTP ──────▶ │ router ─┬─ /api/…  ─▶ api (sessions, CSRF, audit, SSE)        │
                         │         ├─ /<module>/<repo>/<path> ─▶ proxy                   │
                         │         └─ everything else ─▶ embedded web UI                 │
@@ -22,7 +22,7 @@ runtime.
 
 | Package | Responsibility |
 |---|---|
-| `cmd/unicache` | CLI: `serve`, `check-config`, `healthcheck`, `reset-password`, `backup`, `setup-token` |
+| `cmd/cachencarry` | CLI: `serve`, `check-config`, `healthcheck`, `reset-password`, `backup`, `setup-token` |
 | `internal/app` | Wires everything together, HTTP server, background jobs, shutdown |
 | `internal/config` | YAML configuration, environment overrides, validation, schema version |
 | `internal/database` | SQLite (WAL), embedded migrations, backup, integrity check |
@@ -44,7 +44,7 @@ downloads, statistics and security are implemented once, in the core.
 ## Storage engine
 
 ```
-/var/lib/unicache/
+/var/lib/cachencarry/
   blobs/ab/cd/abcd…ef     completed objects, named by SHA-256
   temp/dl-123456          downloads in progress
   metadata.db             SQLite (entries, blobs, repositories, users, statistics)
@@ -181,7 +181,7 @@ lifetime totals) and survive restarts.
 
 ## Configuration layers
 
-1. Built-in defaults, 2. the YAML file, 3. `UNICACHE_*` environment
+1. Built-in defaults, 2. the YAML file, 3. `CACHENCARRY_*` environment
 variables. On top of that, two groups live in the database and are changed in
 the web interface: modules/repositories/policies, and the *operational
 settings* (cache size, free-space rule, rate limits, download concurrency,
@@ -192,7 +192,7 @@ are swapped atomically. Settings that define the security boundary (listen
 address, TLS, client and admin networks, private upstreams, data directory)
 are intentionally file-only.
 
-## Extending UniCache
+## Extending Cache & Carry
 
 A path-based adapter is one small type (see [ADAPTERS.md](ADAPTERS.md)).
 Protocols that are not "GET a path below a base URL" (OCI with its token

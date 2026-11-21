@@ -1,4 +1,4 @@
-# UniCache - Docker Compose deployment
+# Cache & Carry - Docker Compose deployment
 #
 #   1. cp .env.example .env   and adjust (data directory, admin password)
 #   2. docker compose up -d
@@ -9,33 +9,33 @@
 # network, no extra capabilities are needed.
 
 services:
-  unicache:
-    image: ghcr.io/anarki-lnx/unicache:${UNICACHE_VERSION:-latest}
+  cachencarry:
+    image: ghcr.io/anarki-lnx/cachencarry:${CACHENCARRY_VERSION:-latest}
     build:
       context: .
       args:
-        VERSION: ${UNICACHE_VERSION:-dev}
-    container_name: unicache
+        VERSION: ${CACHENCARRY_VERSION:-dev}
+    container_name: cachencarry
     restart: unless-stopped
     ports:
-      - "${UNICACHE_PORT:-8080}:8080"
+      - "${CACHENCARRY_PORT:-8080}:8080"
     environment:
       # Creates the first administrator on the very first start. Leave it
       # empty to use the setup wizard with the one-time token instead:
-      #   docker compose exec unicache unicache setup-token
-      UNICACHE_SECURITY_ADMIN_PASSWORD: ${UNICACHE_ADMIN_PASSWORD:-}
-      UNICACHE_STORAGE_MAX_SIZE: ${UNICACHE_MAX_SIZE:-0}
-      UNICACHE_STORAGE_MIN_FREE_SPACE: ${UNICACHE_MIN_FREE_SPACE:-10%}
-      UNICACHE_LOGGING_LEVEL: ${UNICACHE_LOG_LEVEL:-info}
+      #   docker compose exec cachencarry cachencarry setup-token
+      CACHENCARRY_SECURITY_ADMIN_PASSWORD: ${CACHENCARRY_ADMIN_PASSWORD:-}
+      CACHENCARRY_STORAGE_MAX_SIZE: ${CACHENCARRY_MAX_SIZE:-0}
+      CACHENCARRY_STORAGE_MIN_FREE_SPACE: ${CACHENCARRY_MIN_FREE_SPACE:-10%}
+      CACHENCARRY_LOGGING_LEVEL: ${CACHENCARRY_LOG_LEVEL:-info}
       TZ: ${TZ:-UTC}
     volumes:
       # Cache data and metadata database. A named volume by default; set
-      # UNICACHE_DATA_DIR in .env to an absolute path for a bind mount
+      # CACHENCARRY_DATA_DIR in .env to an absolute path for a bind mount
       # (the directory must be writable for UID/GID 65532, or change
       # `user:` below).
-      - ${UNICACHE_DATA_DIR:-unicache-data}:/var/lib/unicache
+      - ${CACHENCARRY_DATA_DIR:-cachencarry-data}:/var/lib/cachencarry
       # Optional configuration file: ./configs/config.yaml
-      - ./configs:/etc/unicache:ro
+      - ./configs:/etc/cachencarry:ro
     # user: "1000:1000"
     read_only: true
     tmpfs:
@@ -48,9 +48,9 @@ services:
     deploy:
       resources:
         limits:
-          memory: ${UNICACHE_MEMORY_LIMIT:-1g}
+          memory: ${CACHENCARRY_MEMORY_LIMIT:-1g}
     healthcheck:
-      test: ["CMD", "/usr/local/bin/unicache", "healthcheck"]
+      test: ["CMD", "/usr/local/bin/cachencarry", "healthcheck"]
       interval: 30s
       timeout: 5s
       start_period: 20s
@@ -62,4 +62,4 @@ services:
         max-file: "3"
 
 volumes:
-  unicache-data:
+  cachencarry-data:

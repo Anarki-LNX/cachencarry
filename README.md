@@ -1,15 +1,15 @@
-# UniCache
+# Cache & Carry
 
 **The universal cache for homelabs, self-hosting and small networks.**
 
-UniCache is a single, small server that keeps the packages your machines
+Cache & Carry is a single, small server that keeps the packages your machines
 download, so the second computer in your network gets them from the LAN
 instead of the Internet. One binary, one storage directory, one dashboard.
 
 ```
  Debian server ─┐                       ┌─ deb.debian.org
  Ubuntu laptop ─┤   ┌──────────────┐    ├─ archive.ubuntu.com
- Arch desktop  ─┼──▶│   UniCache   │───▶├─ geo.mirror.pkgbuild.com
+ Arch desktop  ─┼──▶│   Cache & Carry   │───▶├─ geo.mirror.pkgbuild.com
  CachyOS PC    ─┘   │ one cache    │    └─ mirror.cachyos.org
                     │ one dashboard│
                     └──────────────┘
@@ -41,7 +41,7 @@ instead of the Internet. One binary, one storage directory, one dashboard.
 - **Not an enterprise artifact repository.** No hosted or private
   repositories, no publishing, no fine-grained RBAC. Use Nexus, Artifactory or
   Pulp for that.
-- **Not a transparent or forward proxy.** UniCache never intercepts TLS and
+- **Not a transparent or forward proxy.** Cache & Carry never intercepts TLS and
   only talks to upstreams an administrator configured. Clients are pointed at
   it explicitly (one line in `sources.list` or `mirrorlist`).
 - **Not a trust anchor.** Repository signatures pass through byte for byte.
@@ -54,9 +54,9 @@ apt-cacher-ng, pacoloco, Nexus, Pulp, Harbor, LanCache and others.
 ## Quick start (Docker Compose)
 
 ```sh
-git clone https://github.com/Anarki-LNX/unicache.git
-cd unicache
-cp .env.example .env          # set UNICACHE_ADMIN_PASSWORD (min. 10 characters)
+git clone https://github.com/Anarki-LNX/cachencarry.git
+cd cachencarry
+cp .env.example .env          # set CACHENCARRY_ADMIN_PASSWORD (min. 10 characters)
 docker compose up -d --build
 ```
 
@@ -86,11 +86,11 @@ examples (Ubuntu, CachyOS, security repositories) are in
 # building needs Go >= 1.27 and Node.js >= 20
 make build
 sudo ./scripts/install.sh
-su -s /bin/sh unicache -c '/usr/local/bin/unicache setup-token'     # enter this in the web setup wizard
+su -s /bin/sh cachencarry -c '/usr/local/bin/cachencarry setup-token'     # enter this in the web setup wizard
 ```
 
-Configuration lives in `/etc/unicache/config.yaml`, data in
-`/var/lib/unicache`. Full instructions, upgrades, backups and the Proxmox LXC
+Configuration lives in `/etc/cachencarry/config.yaml`, data in
+`/var/lib/cachencarry`. Full instructions, upgrades, backups and the Proxmox LXC
 guide are in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## How it works, in one paragraph
@@ -116,7 +116,7 @@ Details are in [ARCHITECTURE.md](ARCHITECTURE.md).
 | [docs/API.md](docs/API.md) | REST API reference |
 | [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Common problems |
 | [ROADMAP.md](ROADMAP.md), [TODO.md](TODO.md) | What comes next, what is unfinished or unverified |
-| [COMPETITIVE_ANALYSIS.md](COMPETITIVE_ANALYSIS.md) | Related projects and where UniCache fits |
+| [COMPETITIVE_ANALYSIS.md](COMPETITIVE_ANALYSIS.md) | Related projects and where Cache & Carry fits |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Development setup and rules |
 
 ## Building and testing
@@ -124,7 +124,7 @@ Details are in [ARCHITECTURE.md](ARCHITECTURE.md).
 ```sh
 make test     # unit + end-to-end tests against local mock mirrors (no Internet)
 make race     # the same with the race detector
-make build    # frontend + single static binary in bin/unicache
+make build    # frontend + single static binary in bin/cachencarry
 make docker   # container image
 ```
 

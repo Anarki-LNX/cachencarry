@@ -26,11 +26,11 @@ Honest record of what was actually executed for v0.1 and what was not.
 - `make dist`: static amd64 and arm64 tarballs with checksums.
 - `scripts/install.sh` / `uninstall.sh` from the release tarball in a clean
   Debian 13 container (with a stub in place of `systemctl`): user, directories
-  and permissions created; the service starts as the `unicache` user and
+  and permissions created; the service starts as the `cachencarry` user and
   passes its health check; a second run keeps an edited configuration; an
   invalid configuration stops the upgrade before the restart; uninstall keeps
   data, `--purge` removes everything.
-- `unicache check-config` against `configs/config.example.yaml`.
+- `cachencarry check-config` against `configs/config.example.yaml`.
 - **Proxmox LXC, native install** (Proxmox VE 9.2, unprivileged Debian 13.6
   container, **no nesting**, 2 cores / 1 GB, cache on a separate `mp0`
   volume): `install.sh` from the release tarball; the hardened systemd unit

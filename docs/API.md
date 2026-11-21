@@ -7,7 +7,7 @@ Base path `/api/v1`. JSON in and out. Errors are `{"error": "message"}` with a
 
 - Only addresses in `security.admin_allowed` reach the API
   (`/api/v1/health` is open for health checks).
-- `POST /login` sets the session cookie `unicache_session` (HttpOnly,
+- `POST /login` sets the session cookie `cachencarry_session` (HttpOnly,
   SameSite=Strict) and returns a CSRF token.
 - Every `POST`, `PUT` and `DELETE` (except `/login` and `/setup`) must send
   that token in the header `X-CSRF-Token`.
@@ -17,7 +17,7 @@ Base path `/api/v1`. JSON in and out. Errors are `{"error": "message"}` with a
   600 API requests per minute. Exceeding them returns 429.
 
 ```sh
-B=http://unicache.lan:8080/api/v1
+B=http://cachencarry.lan:8080/api/v1
 CSRF=$(curl -s -c jar -H 'Content-Type: application/json' \
   -d '{"username":"admin","password":"…"}' $B/login | jq -r .csrf)
 curl -s -b jar $B/stats | jq .totals

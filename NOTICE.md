@@ -1,6 +1,6 @@
 # Third-party software
 
-UniCache is licensed under the Apache License 2.0. It builds on the following
+Cache & Carry is licensed under the Apache License 2.0. It builds on the following
 free software. Thank you to their authors.
 
 ## Go modules (linked into the binary)
@@ -34,6 +34,6 @@ certificates and tzdata).
 
 ## Design and protocol references
 
-UniCache contains no code from these projects, but their behaviour and
+Cache & Carry contains no code from these projects, but their behaviour and
 documentation informed the design: apt-cacher-ng, pacoloco, the Debian
 repository format, the Arch Linux mirror layout, RFC 9110 and RFC 9111.

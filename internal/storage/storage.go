@@ -1,4 +1,4 @@
-// Package storage is the shared storage engine of UniCache.
+// Package storage is the shared storage engine of Cache & Carry.
 //
 // It combines the content addressable blob store (package cas) with the
 // metadata database and is the only API protocol adapters and the proxy use
@@ -29,8 +29,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Anarki-LNX/unicache/internal/database"
-	"github.com/Anarki-LNX/unicache/internal/storage/cas"
+	"github.com/Anarki-LNX/cachencarry/internal/database"
+	"github.com/Anarki-LNX/cachencarry/internal/storage/cas"
 )
 
 // ErrNotFound is returned when no cache entry exists for a key.

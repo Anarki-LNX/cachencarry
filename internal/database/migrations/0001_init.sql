@@ -1,4 +1,4 @@
--- UniCache schema v1.
+-- Cache & Carry schema v1.
 -- Timestamps are Unix seconds unless a column name ends in _ms.
 
 CREATE TABLE blobs (

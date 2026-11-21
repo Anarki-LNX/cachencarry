@@ -1,8 +1,8 @@
-// Package config loads, validates and exposes the UniCache configuration.
+// Package config loads, validates and exposes the Cache & Carry configuration.
 //
 // Configuration comes from a single YAML file. Every scalar setting can be
-// overridden through an environment variable named UNICACHE_<SECTION>_<KEY>
-// (for example UNICACHE_SERVER_PORT=9090). Docker and native installations use
+// overridden through an environment variable named CACHENCARRY_<SECTION>_<KEY>
+// (for example CACHENCARRY_SERVER_PORT=9090). Docker and native installations use
 // exactly the same format.
 package config
 
@@ -114,7 +114,7 @@ type Security struct {
 	SessionTTL            Duration `yaml:"session_ttl"`
 	// AdminUser / AdminPassword bootstrap the first administrator. The
 	// password is only read on first start and should be supplied through
-	// UNICACHE_SECURITY_ADMIN_PASSWORD rather than the file.
+	// CACHENCARRY_SECURITY_ADMIN_PASSWORD rather than the file.
 	AdminUser     string `yaml:"admin_user"`
 	AdminPassword string `yaml:"admin_password"`
 	// SecureCookies forces the Secure attribute on session cookies. It is
@@ -173,7 +173,7 @@ func Default() *Config {
 			ShutdownTimeout: Duration(20 * time.Second),
 		},
 		Storage: Storage{
-			Path:            "/var/lib/unicache",
+			Path:            "/var/lib/cachencarry",
 			MaxSize:         0,
 			MinFreeSpace:    "10%",
 			GCInterval:      Duration(10 * time.Minute),
@@ -194,7 +194,7 @@ func Default() *Config {
 			Retries:        3,
 			RetryBackoff:   Duration(500 * time.Millisecond),
 			Resume:         true,
-			UserAgent:      "UniCache/0.1 (+https://github.com/Anarki-LNX/unicache)",
+			UserAgent:      "cachencarry/0.2 (+https://github.com/Anarki-LNX/cachencarry)",
 		},
 		Security: Security{
 			AllowedClients: []string{

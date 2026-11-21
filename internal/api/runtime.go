@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Anarki-LNX/unicache/internal/config"
+	"github.com/Anarki-LNX/cachencarry/internal/config"
 )
 
 // RuntimeSettings are the operational settings that can be changed in the

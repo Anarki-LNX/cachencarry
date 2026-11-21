@@ -1,10 +1,10 @@
 #!/bin/sh
-# UniCache native installer for Debian, Ubuntu and other systemd distributions.
+# Cache & Carry native installer for Debian, Ubuntu and other systemd distributions.
 #
-#   sudo ./scripts/install.sh [path/to/unicache-binary]
+#   sudo ./scripts/install.sh [path/to/cachencarry-binary]
 #
 # Installs or upgrades the binary and the systemd unit. An existing
-# configuration in /etc/unicache and the data in /var/lib/unicache are never
+# configuration in /etc/cachencarry and the data in /var/lib/cachencarry are never
 # touched. Run again with a newer binary to upgrade.
 set -eu
 
@@ -16,67 +16,67 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 command -v systemctl >/dev/null 2>&1 || { echo "error: systemd is required" >&2; exit 1; }
 
 if [ -z "$BIN_SRC" ]; then
-    for c in "$HERE/bin/unicache" "$HERE/unicache"; do
+    for c in "$HERE/bin/cachencarry" "$HERE/cachencarry"; do
         [ -x "$c" ] && BIN_SRC="$c" && break
     done
 fi
 [ -n "$BIN_SRC" ] && [ -x "$BIN_SRC" ] || {
-    echo "error: unicache binary not found. Build it with 'make build' or pass its path." >&2
+    echo "error: cachencarry binary not found. Build it with 'make build' or pass its path." >&2
     exit 1
 }
 
-if ! getent group unicache >/dev/null; then
-    groupadd --system unicache
+if ! getent group cachencarry >/dev/null; then
+    groupadd --system cachencarry
 fi
-if ! getent passwd unicache >/dev/null; then
-    useradd --system --gid unicache --home-dir /var/lib/unicache --no-create-home \
-        --shell /usr/sbin/nologin --comment "UniCache" unicache
+if ! getent passwd cachencarry >/dev/null; then
+    useradd --system --gid cachencarry --home-dir /var/lib/cachencarry --no-create-home \
+        --shell /usr/sbin/nologin --comment "Cache & Carry" cachencarry
 fi
 
-install -d -m 0750 -o unicache -g unicache /var/lib/unicache /var/log/unicache
-install -d -m 0750 -o root -g unicache /etc/unicache
+install -d -m 0750 -o cachencarry -g cachencarry /var/lib/cachencarry /var/log/cachencarry
+install -d -m 0750 -o root -g cachencarry /etc/cachencarry
 
 UPGRADE=no
-[ -x "$PREFIX/bin/unicache" ] && UPGRADE=yes
+[ -x "$PREFIX/bin/cachencarry" ] && UPGRADE=yes
 # Install to a temporary name and rename: the running service keeps its old
 # binary until it is restarted, and a failed copy never leaves a half file.
-install -m 0755 "$BIN_SRC" "$PREFIX/bin/unicache.new"
-mv -f "$PREFIX/bin/unicache.new" "$PREFIX/bin/unicache"
+install -m 0755 "$BIN_SRC" "$PREFIX/bin/cachencarry.new"
+mv -f "$PREFIX/bin/cachencarry.new" "$PREFIX/bin/cachencarry"
 
-if [ ! -e /etc/unicache/config.yaml ]; then
-    install -m 0640 -o root -g unicache "$HERE/configs/config.example.yaml" /etc/unicache/config.yaml
-    echo "installed default configuration: /etc/unicache/config.yaml"
+if [ ! -e /etc/cachencarry/config.yaml ]; then
+    install -m 0640 -o root -g cachencarry "$HERE/configs/config.example.yaml" /etc/cachencarry/config.yaml
+    echo "installed default configuration: /etc/cachencarry/config.yaml"
 else
-    echo "keeping existing configuration:  /etc/unicache/config.yaml"
+    echo "keeping existing configuration:  /etc/cachencarry/config.yaml"
 fi
 # Always refresh the reference copy so new options are easy to discover.
-install -m 0640 -o root -g unicache "$HERE/configs/config.example.yaml" /etc/unicache/config.example.yaml
+install -m 0640 -o root -g cachencarry "$HERE/configs/config.example.yaml" /etc/cachencarry/config.example.yaml
 
-"$PREFIX/bin/unicache" check-config -config /etc/unicache/config.yaml >/dev/null || {
-    echo "error: /etc/unicache/config.yaml is not valid for this version (see message above)." >&2
-    echo "       The service was not restarted. Fix the file and run: systemctl restart unicache" >&2
+"$PREFIX/bin/cachencarry" check-config -config /etc/cachencarry/config.yaml >/dev/null || {
+    echo "error: /etc/cachencarry/config.yaml is not valid for this version (see message above)." >&2
+    echo "       The service was not restarted. Fix the file and run: systemctl restart cachencarry" >&2
     exit 1
 }
 
-sed "s#/usr/local/bin/unicache#$PREFIX/bin/unicache#" "$HERE/deployments/systemd/unicache.service" \
-    > /etc/systemd/system/unicache.service
-chmod 0644 /etc/systemd/system/unicache.service
+sed "s#/usr/local/bin/cachencarry#$PREFIX/bin/cachencarry#" "$HERE/deployments/systemd/cachencarry.service" \
+    > /etc/systemd/system/cachencarry.service
+chmod 0644 /etc/systemd/system/cachencarry.service
 systemctl daemon-reload
-systemctl enable unicache >/dev/null 2>&1
+systemctl enable cachencarry >/dev/null 2>&1
 
 if [ "$UPGRADE" = yes ]; then
-    systemctl restart unicache
-    echo "UniCache upgraded to: $("$PREFIX/bin/unicache" version)"
+    systemctl restart cachencarry
+    echo "Cache & Carry upgraded to: $("$PREFIX/bin/cachencarry" version)"
 else
-    systemctl start unicache
-    echo "UniCache installed:   $("$PREFIX/bin/unicache" version)"
+    systemctl start cachencarry
+    echo "Cache & Carry installed:   $("$PREFIX/bin/cachencarry" version)"
 fi
 
-PORT="$(sed -n 's/^[[:space:]]*port:[[:space:]]*\([0-9][0-9]*\).*/\1/p' /etc/unicache/config.yaml | head -n 1)"
+PORT="$(sed -n 's/^[[:space:]]*port:[[:space:]]*\([0-9][0-9]*\).*/\1/p' /etc/cachencarry/config.yaml | head -n 1)"
 echo
 echo "  Web interface:  http://$(hostname -I 2>/dev/null | awk '{print $1}'):${PORT:-8080}/"
-if [ -e /var/lib/unicache/setup-token ] || [ "$UPGRADE" = no ]; then
+if [ -e /var/lib/cachencarry/setup-token ] || [ "$UPGRADE" = no ]; then
     echo "  First login:    open the web interface and enter the setup token shown by"
-    echo "                    su -s /bin/sh unicache -c '$PREFIX/bin/unicache setup-token'"
+    echo "                    su -s /bin/sh cachencarry -c '$PREFIX/bin/cachencarry setup-token'"
 fi
-echo "  Status / logs:  systemctl status unicache    journalctl -u unicache -f"
+echo "  Status / logs:  systemctl status cachencarry    journalctl -u cachencarry -f"

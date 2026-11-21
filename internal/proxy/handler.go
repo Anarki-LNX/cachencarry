@@ -17,12 +17,12 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Anarki-LNX/unicache/internal/adapters"
-	"github.com/Anarki-LNX/unicache/internal/core"
-	"github.com/Anarki-LNX/unicache/internal/download"
-	"github.com/Anarki-LNX/unicache/internal/security"
-	"github.com/Anarki-LNX/unicache/internal/stats"
-	"github.com/Anarki-LNX/unicache/internal/storage"
+	"github.com/Anarki-LNX/cachencarry/internal/adapters"
+	"github.com/Anarki-LNX/cachencarry/internal/core"
+	"github.com/Anarki-LNX/cachencarry/internal/download"
+	"github.com/Anarki-LNX/cachencarry/internal/security"
+	"github.com/Anarki-LNX/cachencarry/internal/stats"
+	"github.com/Anarki-LNX/cachencarry/internal/storage"
 )
 
 // Options configure the proxy handler.

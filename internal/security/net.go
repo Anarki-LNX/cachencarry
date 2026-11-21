@@ -1,4 +1,4 @@
-// Package security centralises the security-critical logic of UniCache:
+// Package security centralises the security-critical logic of Cache & Carry:
 // client access control, SSRF protection for upstream connections, password
 // hashing, sessions and rate limiting.
 package security
@@ -77,7 +77,7 @@ func ClientIP(r *http.Request, trusted *ACL) netip.Addr {
 }
 
 // ErrForbiddenUpstream is returned when an upstream resolves to an address
-// UniCache refuses to connect to.
+// Cache & Carry refuses to connect to.
 var ErrForbiddenUpstream = errors.New("upstream address is not allowed (private, loopback or link-local); set security.allow_private_upstreams to permit LAN mirrors")
 
 var cgnat = netip.MustParsePrefix("100.64.0.0/10")

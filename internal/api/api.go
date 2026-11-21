@@ -15,19 +15,19 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Anarki-LNX/unicache/internal/config"
-	"github.com/Anarki-LNX/unicache/internal/core"
-	"github.com/Anarki-LNX/unicache/internal/database"
-	"github.com/Anarki-LNX/unicache/internal/download"
-	"github.com/Anarki-LNX/unicache/internal/events"
-	"github.com/Anarki-LNX/unicache/internal/proxy"
-	"github.com/Anarki-LNX/unicache/internal/security"
-	"github.com/Anarki-LNX/unicache/internal/stats"
-	"github.com/Anarki-LNX/unicache/internal/storage"
+	"github.com/Anarki-LNX/cachencarry/internal/config"
+	"github.com/Anarki-LNX/cachencarry/internal/core"
+	"github.com/Anarki-LNX/cachencarry/internal/database"
+	"github.com/Anarki-LNX/cachencarry/internal/download"
+	"github.com/Anarki-LNX/cachencarry/internal/events"
+	"github.com/Anarki-LNX/cachencarry/internal/proxy"
+	"github.com/Anarki-LNX/cachencarry/internal/security"
+	"github.com/Anarki-LNX/cachencarry/internal/stats"
+	"github.com/Anarki-LNX/cachencarry/internal/storage"
 )
 
 const (
-	sessionCookie = "unicache_session"
+	sessionCookie = "cachencarry_session"
 	maxBodyBytes  = 64 << 10
 )
 

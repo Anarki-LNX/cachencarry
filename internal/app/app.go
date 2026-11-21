@@ -1,4 +1,4 @@
-// Package app assembles the UniCache server from its components.
+// Package app assembles the Cache & Carry server from its components.
 package app
 
 import (
@@ -17,17 +17,17 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Anarki-LNX/unicache/internal/adapters"
-	"github.com/Anarki-LNX/unicache/internal/api"
-	"github.com/Anarki-LNX/unicache/internal/config"
-	"github.com/Anarki-LNX/unicache/internal/core"
-	"github.com/Anarki-LNX/unicache/internal/database"
-	"github.com/Anarki-LNX/unicache/internal/download"
-	"github.com/Anarki-LNX/unicache/internal/events"
-	"github.com/Anarki-LNX/unicache/internal/proxy"
-	"github.com/Anarki-LNX/unicache/internal/security"
-	"github.com/Anarki-LNX/unicache/internal/stats"
-	"github.com/Anarki-LNX/unicache/internal/storage"
+	"github.com/Anarki-LNX/cachencarry/internal/adapters"
+	"github.com/Anarki-LNX/cachencarry/internal/api"
+	"github.com/Anarki-LNX/cachencarry/internal/config"
+	"github.com/Anarki-LNX/cachencarry/internal/core"
+	"github.com/Anarki-LNX/cachencarry/internal/database"
+	"github.com/Anarki-LNX/cachencarry/internal/download"
+	"github.com/Anarki-LNX/cachencarry/internal/events"
+	"github.com/Anarki-LNX/cachencarry/internal/proxy"
+	"github.com/Anarki-LNX/cachencarry/internal/security"
+	"github.com/Anarki-LNX/cachencarry/internal/stats"
+	"github.com/Anarki-LNX/cachencarry/internal/storage"
 )
 
 // Options tune App construction (mostly for tests).
@@ -43,7 +43,7 @@ type Options struct {
 	EvictDebounce time.Duration
 }
 
-// App is a fully wired UniCache instance.
+// App is a fully wired Cache & Carry instance.
 type App struct {
 	Config  *config.Config
 	DB      *database.DB
@@ -281,9 +281,9 @@ func (a *App) router(ui fs.FS) http.Handler {
 	})
 }
 
-const noUIPage = `<!doctype html><meta charset="utf-8"><title>UniCache</title>
+const noUIPage = `<!doctype html><meta charset="utf-8"><title>Cache & Carry</title>
 <body style="font-family:system-ui;background:#0b0f17;color:#e5e7eb;padding:3rem">
-<h1>UniCache is running</h1>
+<h1>Cache & Carry is running</h1>
 <p>This binary was built without the web interface. Build with <code>make build</code>
 (or <code>go build -tags ui</code> after <code>npm run build</code> in <code>web/</code>).</p>
 <p>The cache endpoints and the API under <code>/api/v1</code> are fully functional.</p></body>`
@@ -355,7 +355,7 @@ func (a *App) Serve(ctx context.Context) error {
 			errc <- srv.Serve(ln)
 		}
 	}()
-	a.log.Info("UniCache is listening", "addr", ln.Addr().String(), "tls", cfg.Server.TLSEnabled())
+	a.log.Info("Cache & Carry is listening", "addr", ln.Addr().String(), "tls", cfg.Server.TLSEnabled())
 	select {
 	case err := <-errc:
 		return err

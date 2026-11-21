@@ -1,9 +1,9 @@
 # Adapters
 
-An adapter teaches UniCache one ecosystem. Clients reach a repository at
+An adapter teaches Cache & Carry one ecosystem. Clients reach a repository at
 
 ```
-http://<unicache>:8080/<module>/<repository>/<path as on the mirror>
+http://<cachencarry>:8080/<module>/<repository>/<path as on the mirror>
 ```
 
 | Module | Status | Tested with |

@@ -19,7 +19,7 @@ ARG VERSION=dev
 # Pure Go build (SQLite included): a static binary without libc dependency.
 RUN CGO_ENABLED=0 go build -trimpath -tags ui \
       -ldflags "-s -w -X main.version=${VERSION}" \
-      -o /out/unicache ./cmd/unicache
+      -o /out/cachencarry ./cmd/cachencarry
 # Pre-create the data directories with the runtime user's ownership; the
 # runtime image has no shell to do it.
 RUN mkdir -p /out/data /out/etc
@@ -27,14 +27,14 @@ RUN mkdir -p /out/data /out/etc
 # --- runtime --------------------------------------------------------------
 # distroless/static: CA certificates and tzdata, no shell, no package manager.
 FROM gcr.io/distroless/static-debian12:nonroot
-COPY --from=build /out/unicache /usr/local/bin/unicache
-COPY --from=build --chown=65532:65532 /out/data /var/lib/unicache
-COPY --from=build --chown=65532:65532 /out/etc /etc/unicache
-ENV UNICACHE_STORAGE_PATH=/var/lib/unicache
+COPY --from=build /out/cachencarry /usr/local/bin/cachencarry
+COPY --from=build --chown=65532:65532 /out/data /var/lib/cachencarry
+COPY --from=build --chown=65532:65532 /out/etc /etc/cachencarry
+ENV CACHENCARRY_STORAGE_PATH=/var/lib/cachencarry
 USER 65532:65532
 EXPOSE 8080
-VOLUME ["/var/lib/unicache"]
+VOLUME ["/var/lib/cachencarry"]
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
-  CMD ["/usr/local/bin/unicache", "healthcheck"]
-ENTRYPOINT ["/usr/local/bin/unicache"]
+  CMD ["/usr/local/bin/cachencarry", "healthcheck"]
+ENTRYPOINT ["/usr/local/bin/cachencarry"]
 CMD ["serve"]

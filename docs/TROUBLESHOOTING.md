@@ -2,7 +2,7 @@
 
 First stop: the **Live Traffic** page. Every request is listed with its
 result. For more detail set `logging.level: debug` (or
-`UNICACHE_LOGGING_LEVEL=debug`) and restart.
+`CACHENCARRY_LOGGING_LEVEL=debug`) and restart.
 
 | Result | Meaning |
 |---|---|
@@ -27,7 +27,7 @@ Same for `security.admin_allowed`.
 
 ## Everything is a 502 "upstream fetch failed"
 
-- The UniCache host cannot reach the mirror: check DNS and outgoing HTTPS
+- The Cache & Carry host cannot reach the mirror: check DNS and outgoing HTTPS
   from the host or container (`curl -I https://deb.debian.org/debian/`).
 - The message mentions "upstream address is not allowed": the mirror resolves
   to a private address. For a mirror in your own network set
@@ -43,7 +43,7 @@ the Repositories page.
 ## apt: "Hash Sum mismatch" or "File has unexpected size"
 
 The index changed upstream between two files of one update. Debian and Ubuntu
-avoid this with by-hash indexes, which UniCache treats as immutable. For
+avoid this with by-hash indexes, which Cache & Carry treats as immutable. For
 repositories without by-hash, lower the metadata TTL for the `apt` module
 (Policies page) or run `apt update` again after the TTL.
 
@@ -52,7 +52,7 @@ repositories without by-hash, lower the metadata TTL for the `apt` module
 Check `X-Cache`:
 
 ```sh
-curl -sI http://unicache.lan:8080/apt/debian/dists/trixie/InRelease | grep -i x-cache
+curl -sI http://cachencarry.lan:8080/apt/debian/dists/trixie/InRelease | grep -i x-cache
 ```
 
 If it is always `MISS`: the object is probably being evicted (Storage page:
@@ -73,19 +73,19 @@ paths for the same mirror.
 ## The service does not start
 
 ```sh
-journalctl -u unicache -n 50        # native
+journalctl -u cachencarry -n 50        # native
 docker compose logs --tail 50       # Docker
-unicache check-config               # validates the configuration
+cachencarry check-config               # validates the configuration
 ```
 
-- `permission denied` on `/var/lib/unicache`: wrong owner. Native:
-  `chown -R unicache:unicache /var/lib/unicache`. Docker bind mount:
+- `permission denied` on `/var/lib/cachencarry`: wrong owner. Native:
+  `chown -R cachencarry:cachencarry /var/lib/cachencarry`. Docker bind mount:
   `chown -R 65532:65532 <dir>`. Proxmox LXC bind mount: see the UID mapping
   section in [DEPLOYMENT.md](../DEPLOYMENT.md#bind-mounting-a-host-directory-instead).
 - `Failed to set up mount namespacing` in an LXC container: see
   [systemd hardening in LXC](../DEPLOYMENT.md#systemd-hardening-in-lxc).
 - `database schema version … is newer than this release`: the data directory
-  was used by a newer UniCache. Upgrade the binary.
+  was used by a newer Cache & Carry. Upgrade the binary.
 - `database integrity check failed`: restore the database from a backup, or
   move it away to start with an empty index
   ([Backup and restore](../DEPLOYMENT.md#backup-and-restore)).
@@ -94,7 +94,7 @@ unicache check-config               # validates the configuration
 ## Forgotten administrator password
 
 ```sh
-echo 'new-long-password' | sudo -u unicache unicache reset-password -user admin
+echo 'new-long-password' | sudo -u cachencarry cachencarry reset-password -user admin
 ```
 
 ## "Too many login attempts"

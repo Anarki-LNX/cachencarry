@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Anarki-LNX/unicache/internal/database"
-	"github.com/Anarki-LNX/unicache/internal/storage"
+	"github.com/Anarki-LNX/cachencarry/internal/database"
+	"github.com/Anarki-LNX/cachencarry/internal/storage"
 )
 
 // Logger returns a logger that discards everything.

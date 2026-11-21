@@ -1,4 +1,4 @@
-module github.com/Anarki-LNX/unicache
+module github.com/Anarki-LNX/cachencarry
 
 go 1.27.4
 

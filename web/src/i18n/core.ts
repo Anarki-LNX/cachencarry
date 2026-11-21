@@ -8,7 +8,7 @@ export type Params = Record<string, string | number>;
 
 export const LANGS: readonly Lang[] = ["en", "de"];
 
-const STORAGE_KEY = "unicache.lang";
+const STORAGE_KEY = "cachencarry.lang";
 const LOCALES: Record<Lang, string> = { en: "en-GB", de: "de-DE" };
 const dictionaries: Record<Lang, typeof en> = { en, de };
 

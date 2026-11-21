@@ -1,6 +1,6 @@
 // Package download implements the central download manager.
 //
-// Every upstream transfer in UniCache goes through Manager.Do. Requests for
+// Every upstream transfer in Cache & Carry goes through Manager.Do. Requests for
 // the same key are coalesced into one Flight: only one upstream download
 // runs, and every interested client follows the growing temporary file, so
 // nobody waits for the complete object before receiving the first byte.
@@ -20,7 +20,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Anarki-LNX/unicache/internal/storage"
+	"github.com/Anarki-LNX/cachencarry/internal/storage"
 )
 
 // ErrTooLarge is returned when an object exceeds the configured maximum size.

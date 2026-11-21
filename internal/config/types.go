@@ -99,13 +99,13 @@ func (b *ByteSize) UnmarshalYAML(n *yaml.Node) error {
 // MarshalYAML implements yaml.Marshaler.
 func (b ByteSize) MarshalYAML() (any, error) { return strconv.FormatInt(int64(b), 10), nil }
 
-// applyEnv applies UNICACHE_<SECTION>_<KEY> overrides to scalar fields of the
-// top-level sections and UNICACHE_MODULES_<NAME>_ENABLED to modules.
+// applyEnv applies CACHENCARRY_<SECTION>_<KEY> overrides to scalar fields of the
+// top-level sections and CACHENCARRY_MODULES_<NAME>_ENABLED to modules.
 func applyEnv(cfg *Config, environ []string) error {
 	env := map[string]string{}
 	for _, kv := range environ {
 		k, v, ok := strings.Cut(kv, "=")
-		if ok && strings.HasPrefix(k, "UNICACHE_") {
+		if ok && strings.HasPrefix(k, "CACHENCARRY_") {
 			env[k] = v
 		}
 	}
@@ -122,7 +122,7 @@ func applyEnv(cfg *Config, environ []string) error {
 		secName := strings.ToUpper(yamlName(rt.Field(i)))
 		st := section.Type()
 		for j := 0; j < st.NumField(); j++ {
-			key := "UNICACHE_" + secName + "_" + strings.ToUpper(yamlName(st.Field(j)))
+			key := "CACHENCARRY_" + secName + "_" + strings.ToUpper(yamlName(st.Field(j)))
 			val, ok := env[key]
 			if !ok {
 				continue
@@ -133,7 +133,7 @@ func applyEnv(cfg *Config, environ []string) error {
 		}
 	}
 	for name, m := range cfg.Modules {
-		key := "UNICACHE_MODULES_" + strings.ToUpper(name) + "_ENABLED"
+		key := "CACHENCARRY_MODULES_" + strings.ToUpper(name) + "_ENABLED"
 		if val, ok := env[key]; ok {
 			b, err := strconv.ParseBool(val)
 			if err != nil {

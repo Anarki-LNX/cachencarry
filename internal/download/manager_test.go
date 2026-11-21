@@ -18,9 +18,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Anarki-LNX/unicache/internal/download"
-	"github.com/Anarki-LNX/unicache/internal/storage"
-	"github.com/Anarki-LNX/unicache/internal/testutil"
+	"github.com/Anarki-LNX/cachencarry/internal/download"
+	"github.com/Anarki-LNX/cachencarry/internal/storage"
+	"github.com/Anarki-LNX/cachencarry/internal/testutil"
 )
 
 func randBytes(n int) []byte {

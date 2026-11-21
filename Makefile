@@ -6,13 +6,13 @@ GOFLAGS := -trimpath
 
 all: build
 
-## build: frontend + server binary with the web interface embedded (bin/unicache)
+## build: frontend + server binary with the web interface embedded (bin/cachencarry)
 build: web
-	CGO_ENABLED=0 go build $(GOFLAGS) -tags ui -ldflags "$(LDFLAGS)" -o bin/unicache ./cmd/unicache
+	CGO_ENABLED=0 go build $(GOFLAGS) -tags ui -ldflags "$(LDFLAGS)" -o bin/cachencarry ./cmd/cachencarry
 
 ## backend: server binary without the web interface (fast, no Node needed)
 backend:
-	CGO_ENABLED=0 go build $(GOFLAGS) -ldflags "$(LDFLAGS)" -o bin/unicache ./cmd/unicache
+	CGO_ENABLED=0 go build $(GOFLAGS) -ldflags "$(LDFLAGS)" -o bin/cachencarry ./cmd/cachencarry
 
 web:
 	cd web && npm ci --no-audit --no-fund && npm run build
@@ -35,22 +35,22 @@ fmt:
 	gofmt -w .
 
 docker:
-	docker build --build-arg VERSION=$(VERSION) -t unicache:$(VERSION) -t unicache:latest .
+	docker build --build-arg VERSION=$(VERSION) -t cachencarry:$(VERSION) -t cachencarry:latest .
 
 ## dist: release tarballs for linux/amd64 and linux/arm64 in dist/
 dist: web
 	@mkdir -p dist
 	@for arch in amd64 arm64; do \
-		d=dist/unicache-$(VERSION)-linux-$$arch; rm -rf $$d; mkdir -p $$d/bin $$d/configs $$d/deployments/systemd $$d/scripts; \
-		CGO_ENABLED=0 GOOS=linux GOARCH=$$arch go build $(GOFLAGS) -tags ui -ldflags "$(LDFLAGS)" -o $$d/bin/unicache ./cmd/unicache || exit 1; \
-		cp configs/config.example.yaml $$d/configs/; cp deployments/systemd/unicache.service $$d/deployments/systemd/; \
+		d=dist/cachencarry-$(VERSION)-linux-$$arch; rm -rf $$d; mkdir -p $$d/bin $$d/configs $$d/deployments/systemd $$d/scripts; \
+		CGO_ENABLED=0 GOOS=linux GOARCH=$$arch go build $(GOFLAGS) -tags ui -ldflags "$(LDFLAGS)" -o $$d/bin/cachencarry ./cmd/cachencarry || exit 1; \
+		cp configs/config.example.yaml $$d/configs/; cp deployments/systemd/cachencarry.service $$d/deployments/systemd/; \
 		cp scripts/install.sh scripts/uninstall.sh $$d/scripts/; cp LICENSE README.md $$d/; \
-		tar -C dist -czf $$d.tar.gz unicache-$(VERSION)-linux-$$arch; rm -rf $$d; echo "built $$d.tar.gz"; \
+		tar -C dist -czf $$d.tar.gz cachencarry-$(VERSION)-linux-$$arch; rm -rf $$d; echo "built $$d.tar.gz"; \
 	done
 	cd dist && sha256sum *.tar.gz > SHA256SUMS
 
 run: backend
-	UNICACHE_STORAGE_PATH=$(CURDIR)/data UNICACHE_SERVER_LISTEN=127.0.0.1 ./bin/unicache serve
+	CACHENCARRY_STORAGE_PATH=$(CURDIR)/data CACHENCARRY_SERVER_LISTEN=127.0.0.1 ./bin/cachencarry serve
 
 clean:
 	rm -rf bin dist web/dist

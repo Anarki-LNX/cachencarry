@@ -31,7 +31,7 @@ func TestDefaultsAreValidAndSafe(t *testing.T) {
 			t.Error("default client ACL must not allow the whole Internet")
 		}
 	}
-	if c.Database.Path != "/var/lib/unicache/metadata.db" {
+	if c.Database.Path != "/var/lib/cachencarry/metadata.db" {
 		t.Errorf("database path = %q", c.Database.Path)
 	}
 }
@@ -54,12 +54,12 @@ modules:
       - name: mymirror
         upstreams: ["https://mirror.example.org/debian"]
 `)
-	t.Setenv("UNICACHE_SERVER_PORT", "9100")
-	t.Setenv("UNICACHE_STORAGE_MAX_SIZE", "2TB")
-	t.Setenv("UNICACHE_SECURITY_ALLOWED_CLIENTS", "10.1.0.0/16, 192.168.7.0/24")
-	t.Setenv("UNICACHE_SECURITY_ALLOW_PRIVATE_UPSTREAMS", "true")
-	t.Setenv("UNICACHE_DOWNLOAD_IDLE_TIMEOUT", "2m")
-	t.Setenv("UNICACHE_MODULES_PACMAN_ENABLED", "false")
+	t.Setenv("CACHENCARRY_SERVER_PORT", "9100")
+	t.Setenv("CACHENCARRY_STORAGE_MAX_SIZE", "2TB")
+	t.Setenv("CACHENCARRY_SECURITY_ALLOWED_CLIENTS", "10.1.0.0/16, 192.168.7.0/24")
+	t.Setenv("CACHENCARRY_SECURITY_ALLOW_PRIVATE_UPSTREAMS", "true")
+	t.Setenv("CACHENCARRY_DOWNLOAD_IDLE_TIMEOUT", "2m")
+	t.Setenv("CACHENCARRY_MODULES_PACMAN_ENABLED", "false")
 	c, err := Load(p, false)
 	if err != nil {
 		t.Fatal(err)
@@ -129,8 +129,8 @@ func TestInvalidConfigurationsAreRejected(t *testing.T) {
 			t.Errorf("%s: configuration was accepted", name)
 		}
 	}
-	t.Setenv("UNICACHE_SERVER_PORT", "eighty")
-	if _, err := Load("", true); err == nil || !strings.Contains(err.Error(), "UNICACHE_SERVER_PORT") {
+	t.Setenv("CACHENCARRY_SERVER_PORT", "eighty")
+	if _, err := Load("", true); err == nil || !strings.Contains(err.Error(), "CACHENCARRY_SERVER_PORT") {
 		t.Errorf("bad env override: err = %v", err)
 	}
 }

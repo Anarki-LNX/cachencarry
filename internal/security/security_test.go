@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Anarki-LNX/unicache/internal/database"
+	"github.com/Anarki-LNX/cachencarry/internal/database"
 )
 
 func TestPublicAddr(t *testing.T) {

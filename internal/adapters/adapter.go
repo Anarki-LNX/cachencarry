@@ -64,7 +64,7 @@ type Adapter interface {
 	Classify(path string) Class
 	// ClientConfig returns a ready-to-paste client configuration snippet
 	// for a repository reachable at baseURL (e.g.
-	// http://unicache.lan:8080/apt/debian).
+	// http://cachencarry.lan:8080/apt/debian).
 	ClientConfig(baseURL, repo string) string
 }
 
@@ -97,7 +97,7 @@ func NewRegistry(list ...Adapter) *Registry {
 	return r
 }
 
-// Builtin returns the registry of adapters shipped with UniCache.
+// Builtin returns the registry of adapters shipped with Cache & Carry.
 func Builtin() *Registry {
 	return NewRegistry(APT{}, Pacman{}, Generic{})
 }

@@ -1,4 +1,4 @@
-// Command unicache is the UniCache server.
+// Command cachencarry is the Cache & Carry server.
 package main
 
 import (
@@ -19,36 +19,36 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/Anarki-LNX/unicache/internal/app"
-	"github.com/Anarki-LNX/unicache/internal/config"
-	"github.com/Anarki-LNX/unicache/internal/database"
-	"github.com/Anarki-LNX/unicache/internal/security"
-	"github.com/Anarki-LNX/unicache/web"
+	"github.com/Anarki-LNX/cachencarry/internal/app"
+	"github.com/Anarki-LNX/cachencarry/internal/config"
+	"github.com/Anarki-LNX/cachencarry/internal/database"
+	"github.com/Anarki-LNX/cachencarry/internal/security"
+	"github.com/Anarki-LNX/cachencarry/web"
 )
 
 // version is set at build time with -ldflags "-X main.version=…".
 var version = "dev"
 
-const usage = `UniCache - the universal cache for homelabs, self-hosting and small networks
+const usage = `Cache & Carry - the universal cache for homelabs, self-hosting and small networks
 
 Usage:
-  unicache [serve] [-config FILE]     run the server (default)
-  unicache check-config [-config FILE]  validate the configuration and exit
-  unicache healthcheck [-config FILE]   exit 0 if the local server is healthy
-  unicache reset-password [-config FILE] -user NAME
+  cachencarry [serve] [-config FILE]     run the server (default)
+  cachencarry check-config [-config FILE]  validate the configuration and exit
+  cachencarry healthcheck [-config FILE]   exit 0 if the local server is healthy
+  cachencarry reset-password [-config FILE] -user NAME
                                       set a new password (read from stdin)
-  unicache backup [-config FILE] -out FILE
+  cachencarry backup [-config FILE] -out FILE
                                       write a consistent copy of the metadata database
-  unicache setup-token [-config FILE] print the one-time token for the setup wizard
-  unicache version
+  cachencarry setup-token [-config FILE] print the one-time token for the setup wizard
+  cachencarry version
 
-The configuration file defaults to $UNICACHE_CONFIG or /etc/unicache/config.yaml.
-Every setting can be overridden with UNICACHE_<SECTION>_<KEY> variables.
+The configuration file defaults to $CACHENCARRY_CONFIG or /etc/cachencarry/config.yaml.
+Every setting can be overridden with CACHENCARRY_<SECTION>_<KEY> variables.
 `
 
 func main() {
 	if err := run(os.Args[1:]); err != nil {
-		fmt.Fprintln(os.Stderr, "unicache:", err)
+		fmt.Fprintln(os.Stderr, "cachencarry:", err)
 		os.Exit(1)
 	}
 }
@@ -60,10 +60,10 @@ func run(args []string) error {
 	}
 	fs := flag.NewFlagSet(cmd, flag.ContinueOnError)
 	fs.Usage = func() { fmt.Fprint(os.Stderr, usage) }
-	defPath := os.Getenv("UNICACHE_CONFIG")
+	defPath := os.Getenv("CACHENCARRY_CONFIG")
 	explicit := defPath != ""
 	if defPath == "" {
-		defPath = "/etc/unicache/config.yaml"
+		defPath = "/etc/cachencarry/config.yaml"
 	}
 	cfgPath := fs.String("config", defPath, "configuration file")
 	user := fs.String("user", "admin", "user name (reset-password)")
@@ -82,7 +82,7 @@ func run(args []string) error {
 
 	switch cmd {
 	case "version":
-		fmt.Println("unicache", version)
+		fmt.Println("cachencarry", version)
 		return nil
 	case "help":
 		fmt.Print(usage)
@@ -155,7 +155,7 @@ func serve(cfg *config.Config) error {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
-	log.Info("starting UniCache", "version", version, "storage", cfg.Storage.Path)
+	log.Info("starting Cache & Carry", "version", version, "storage", cfg.Storage.Path)
 	a, err := app.New(ctx, cfg, app.Options{Version: version, Logger: log, LogLevel: level, UI: web.FS()})
 	if err != nil {
 		return err

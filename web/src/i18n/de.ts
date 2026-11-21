@@ -59,7 +59,7 @@ export const de: typeof en = {
   "format.days": { one: "{n} Tag", other: "{n} Tage" },
 
   // API-Fehler, die der Client selbst erzeugt
-  "error.unreachable": "Der UniCache-Server ist nicht erreichbar",
+  "error.unreachable": "Der Cache & Carry-Server ist nicht erreichbar",
   "error.requestFailed": "Anfrage fehlgeschlagen ({status})",
 
   // Navigation und Seitentitel
@@ -90,9 +90,9 @@ export const de: typeof en = {
   "layout.darkMode": "Zum dunklen Design wechseln",
   "layout.signOut": "{user} abmelden",
 
-  "app.connecting": "Verbinde mit UniCache…",
+  "app.connecting": "Verbinde mit Cache & Carry…",
   "app.unreachableTitle": "Server nicht erreichbar",
-  "app.unreachableText": "Der UniCache-Server hat nicht geantwortet.",
+  "app.unreachableText": "Der Cache & Carry-Server hat nicht geantwortet.",
   "app.tryAgain": "Erneut versuchen",
   "app.notFound": "Seite nicht gefunden",
   "app.backToDashboard": "Zurück zum Dashboard",
@@ -100,6 +100,7 @@ export const de: typeof en = {
   // Anmeldung und Ersteinrichtung
   "auth.signIn": "Anmelden",
   "auth.signInSubtitle": "Den LAN-Cache verwalten.",
+  "auth.slogan": "Das Paketlager im eigenen Netz: einmal laden, beliebig oft abholen.",
   "auth.username": "Benutzername",
   "auth.password": "Passwort",
   "auth.confirmPassword": "Passwort bestätigen",
@@ -413,14 +414,14 @@ export const de: typeof en = {
   "stats.barCovers": "Ein Balken umfasst {duration}.",
 
   // Richtlinien
-  "policies.description": "Wie lange Antworten im Cache gelten, bevor UniCache erneut beim Upstream nachfragt. Änderungen gelten sofort.",
+  "policies.description": "Wie lange Antworten im Cache gelten, bevor Cache & Carry erneut beim Upstream nachfragt. Änderungen gelten sofort.",
   "policies.max30Days": "Höchstens 30 Tage.",
   "policies.max1Hour": "Höchstens 1 Stunde.",
   "policies.saved": "Richtlinien gespeichert",
   "policies.freshness": "Aktualität",
   "policies.notice": "Pakete und andere versionierte Dateien sind unveränderlich: Einmal im Cache, werden sie nie revalidiert. Diese Einstellungen betreffen nur Repository-Indizes und andere Metadaten, die sich beim Upstream ändern.",
   "policies.metadataTtl": "Metadaten-TTL",
-  "policies.metadataTtlHint": "Wie lange Repository-Indizes (Paketlisten, Release-Dateien, Datenbanken) wiederverwendet werden, bevor UniCache beim Upstream nachfragt, ob sie sich geändert haben. Kürzer bedeutet aktuellere Updates, länger bedeutet weniger Upstream-Anfragen. Bei 0 wird bei jeder Anfrage revalidiert.",
+  "policies.metadataTtlHint": "Wie lange Repository-Indizes (Paketlisten, Release-Dateien, Datenbanken) wiederverwendet werden, bevor Cache & Carry beim Upstream nachfragt, ob sie sich geändert haben. Kürzer bedeutet aktuellere Updates, länger bedeutet weniger Upstream-Anfragen. Bei 0 wird bei jeder Anfrage revalidiert.",
   "policies.negativeTtl": "Negative TTL",
   "policies.negativeTtlHint": "Wie lange die Antwort „nicht gefunden“ vom Upstream gemerkt wird, damit Clients, die nach nicht vorhandenen Dateien suchen, nicht jedes Mal den Upstream belasten. 0 schaltet das ab. Höchstens 1 Stunde.",
   "policies.serveStaleSwitch": "Abgelaufene Metadaten liefern, wenn der Upstream ausfällt",
@@ -471,7 +472,7 @@ export const de: typeof en = {
   "settings.ip": "IP",
   "settings.action": "Aktion",
   "settings.detail": "Detail",
-  "settings.readOnlyNotice": "Die folgenden Einstellungen legen fest, wer UniCache erreichen kann und womit es sich verbinden darf. Sie sind hier absichtlich schreibgeschützt: Ein Fehler könnte den Zugang versperren, und Änderungen sollen Zugriff auf den Server erfordern. Dazu {file} bearbeiten oder Umgebungsvariablen {env} setzen und UniCache danach neu starten.",
+  "settings.readOnlyNotice": "Die folgenden Einstellungen legen fest, wer Cache & Carry erreichen kann und womit es sich verbinden darf. Sie sind hier absichtlich schreibgeschützt: Ein Fehler könnte den Zugang versperren, und Änderungen sollen Zugriff auf den Server erfordern. Dazu {file} bearbeiten oder Umgebungsvariablen {env} setzen und Cache & Carry danach neu starten.",
   "settings.appearance": "Darstellung",
   "settings.theme": "Design",
   "settings.themeDark": "Dunkel",
@@ -507,7 +508,7 @@ export const de: typeof en = {
   "runtime.reset": "Auf Konfigurationsdatei zurücksetzen",
 
   // Systemzustand
-  "health.description": "Selbsttests und Laufzeitwerte des UniCache-Prozesses.",
+  "health.description": "Selbsttests und Laufzeitwerte des Cache & Carry-Prozesses.",
   "health.healthy": "In Ordnung",
   "health.failing": "{count} fehlgeschlagen",
   "health.passing": "{ok} von {total} Prüfungen bestanden",

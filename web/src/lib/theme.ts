@@ -1,5 +1,5 @@
 export type Theme = "dark" | "light";
-const KEY = "unicache.theme";
+const KEY = "cachencarry.theme";
 
 export function loadTheme(): Theme {
   try {
