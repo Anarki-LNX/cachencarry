@@ -102,7 +102,8 @@ export const en = {
   // Login and first-run setup
   "auth.signIn": "Sign in",
   "auth.signInSubtitle": "Manage your LAN cache.",
-  "auth.slogan": "Your network's package warehouse: download once, carry out as often as you like.",
+  "auth.slogan1": "Your network's package warehouse.",
+  "auth.slogan2": "Download once, carry out as often as you like.",
   "auth.username": "Username",
   "auth.password": "Password",
   "auth.confirmPassword": "Confirm password",

@@ -7,7 +7,6 @@ import {
   Boxes,
   ChevronsLeft,
   ChevronsRight,
-  Database,
   FolderGit2,
   HardDrive,
   HeartPulse,
@@ -22,6 +21,7 @@ import {
   User,
   X,
 } from "lucide-react";
+import { LogoMark, Wordmark } from "./Logo";
 import { useT, type Key } from "../i18n";
 import { useAuth } from "../state/auth";
 import { useLive } from "../state/live";
@@ -105,10 +105,8 @@ function Sidebar({ expanded, onNavigate }: { expanded: boolean; onNavigate?: () 
 function Brand({ expanded }: { expanded: boolean }) {
   return (
     <div className={`flex h-14 shrink-0 items-center gap-2.5 border-b border-line px-3 ${expanded ? "" : "justify-center"}`}>
-      <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-ok/10 text-ok" aria-hidden>
-        <Database className="size-[18px]" />
-      </span>
-      {expanded && <span className="text-[15px] font-semibold tracking-tight">Cache & Carry</span>}
+      <LogoMark className="size-8 shrink-0 text-ok" />
+      {expanded && <Wordmark className="text-[15px]" />}
     </div>
   );
 }

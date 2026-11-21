@@ -100,7 +100,8 @@ export const de: typeof en = {
   // Anmeldung und Ersteinrichtung
   "auth.signIn": "Anmelden",
   "auth.signInSubtitle": "Den LAN-Cache verwalten.",
-  "auth.slogan": "Das Paketlager im eigenen Netz: einmal laden, beliebig oft abholen.",
+  "auth.slogan1": "Das Paketlager im eigenen Netz.",
+  "auth.slogan2": "Einmal laden, beliebig oft abholen.",
   "auth.username": "Benutzername",
   "auth.password": "Passwort",
   "auth.confirmPassword": "Passwort bestätigen",

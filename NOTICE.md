@@ -27,6 +27,11 @@ in `web/package.json` and `web/package-lock.json`. Main runtime components:
 React and React DOM (MIT), React Router (MIT), Tailwind CSS (MIT), lucide
 icons (ISC).
 
+## Brand files
+
+The lettering in `assets/brand` consists of outlines of Adwaita Sans (SIL Open
+Font License 1.1), which is based on Inter by Rasmus Andersson.
+
 ## Container image
 
 Based on `gcr.io/distroless/static-debian12` (Apache-2.0, with Debian CA
