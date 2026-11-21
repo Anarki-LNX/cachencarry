@@ -77,6 +77,6 @@ echo
 echo "  Web interface:  http://$(hostname -I 2>/dev/null | awk '{print $1}'):${PORT:-8080}/"
 if [ -e /var/lib/unicache/setup-token ] || [ "$UPGRADE" = no ]; then
     echo "  First login:    open the web interface and enter the setup token shown by"
-    echo "                    sudo -u unicache $PREFIX/bin/unicache setup-token"
+    echo "                    su -s /bin/sh unicache -c '$PREFIX/bin/unicache setup-token'"
 fi
 echo "  Status / logs:  systemctl status unicache    journalctl -u unicache -f"

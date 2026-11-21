@@ -86,7 +86,7 @@ examples (Ubuntu, CachyOS, security repositories) are in
 # building needs Go >= 1.27 and Node.js >= 20
 make build
 sudo ./scripts/install.sh
-sudo -u unicache unicache setup-token     # enter this in the web setup wizard
+su -s /bin/sh unicache -c '/usr/local/bin/unicache setup-token'     # enter this in the web setup wizard
 ```
 
 Configuration lives in `/etc/unicache/config.yaml`, data in

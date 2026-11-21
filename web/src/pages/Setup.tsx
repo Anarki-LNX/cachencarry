@@ -53,13 +53,13 @@ export function Setup() {
         {setupTokenRequired && (
           <div className="space-y-3">
             <Field label="Setup token" hint="Proves that you have access to the server. It is stored in the file setup-token inside the data directory.">
-              {(p) => <Input {...p} value={token} onChange={(e) => setToken(e.target.value)} autoComplete="off" spellCheck={false} className="font-mono" required />}
+              {(p) => <Input {...p} value={token} onChange={(e) => { setToken(e.target.value); setError(null); }} autoComplete="off" spellCheck={false} className="font-mono" required />}
             </Field>
             <div className="space-y-2 text-xs text-muted">
               <p>Read the token on the server:</p>
-              <CodeBlock text="cat /var/lib/unicache/setup-token" copyLabel="Copy command" />
+              <CodeBlock text="su -s /bin/sh unicache -c '/usr/local/bin/unicache setup-token'" copyLabel="Copy command" />
               <p>With Docker Compose:</p>
-              <CodeBlock text="docker compose exec unicache cat /var/lib/unicache/setup-token" copyLabel="Copy command" />
+              <CodeBlock text="docker compose exec unicache unicache setup-token" copyLabel="Copy command" />
             </div>
           </div>
         )}

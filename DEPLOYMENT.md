@@ -117,7 +117,7 @@ The script:
 First login:
 
 ```sh
-sudo -u unicache unicache setup-token       # paste into the web setup wizard
+su -s /bin/sh unicache -c '/usr/local/bin/unicache setup-token'       # paste into the web setup wizard
 ```
 
 or set the password before the first start in `/etc/unicache/unicache.env`
@@ -226,7 +226,7 @@ pct enter 120
 apt update && apt install -y ca-certificates
 tar xzf unicache-*-linux-amd64.tar.gz && cd unicache-*-linux-amd64
 ./scripts/install.sh
-sudo -u unicache unicache setup-token    # or: su -s /bin/sh unicache -c 'unicache setup-token'
+su -s /bin/sh unicache -c '/usr/local/bin/unicache setup-token'    # or: su -s /bin/sh unicache -c 'unicache setup-token'
 ```
 
 ### Bind-mounting a host directory instead
