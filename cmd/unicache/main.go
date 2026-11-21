@@ -120,30 +120,33 @@ func run(args []string) error {
 	}
 }
 
-func newLogger(cfg *config.Config) (*slog.Logger, func(), error) {
-	var level slog.Level
-	if err := level.UnmarshalText([]byte(cfg.Logging.Level)); err != nil {
-		return nil, nil, err
+func newLogger(cfg *config.Config) (*slog.Logger, *slog.LevelVar, func(), error) {
+	var initial slog.Level
+	if err := initial.UnmarshalText([]byte(cfg.Logging.Level)); err != nil {
+		return nil, nil, nil, err
 	}
+	// A LevelVar so the level can be changed from the web interface.
+	level := new(slog.LevelVar)
+	level.Set(initial)
 	var w io.Writer = os.Stderr
 	closer := func() {}
 	if cfg.Logging.File != "" {
 		f, err := os.OpenFile(cfg.Logging.File, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0o640)
 		if err != nil {
-			return nil, nil, fmt.Errorf("open log file: %w", err)
+			return nil, nil, nil, fmt.Errorf("open log file: %w", err)
 		}
 		w = io.MultiWriter(os.Stderr, f)
 		closer = func() { f.Close() }
 	}
 	opts := &slog.HandlerOptions{Level: level}
 	if cfg.Logging.Format == "json" {
-		return slog.New(slog.NewJSONHandler(w, opts)), closer, nil
+		return slog.New(slog.NewJSONHandler(w, opts)), level, closer, nil
 	}
-	return slog.New(slog.NewTextHandler(w, opts)), closer, nil
+	return slog.New(slog.NewTextHandler(w, opts)), level, closer, nil
 }
 
 func serve(cfg *config.Config) error {
-	log, closeLog, err := newLogger(cfg)
+	log, level, closeLog, err := newLogger(cfg)
 	if err != nil {
 		return err
 	}
@@ -153,7 +156,7 @@ func serve(cfg *config.Config) error {
 	defer stop()
 
 	log.Info("starting UniCache", "version", version, "storage", cfg.Storage.Path)
-	a, err := app.New(ctx, cfg, app.Options{Version: version, Logger: log, UI: web.FS()})
+	a, err := app.New(ctx, cfg, app.Options{Version: version, Logger: log, LogLevel: level, UI: web.FS()})
 	if err != nil {
 		return err
 	}

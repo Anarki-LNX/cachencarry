@@ -5,24 +5,14 @@ import type { Settings as SettingsT } from "../api/types";
 import { Card, EmptyState, ErrorNote, KeyValue, Notice, PageHeader, Resource } from "../components/Card";
 import { Button, Field, Input, Segmented } from "../components/Controls";
 import { Table, Td, Th, Tr } from "../components/Table";
-import { absoluteTime, formatBytes, formatDuration, formatRate, relativeTime } from "../lib/format";
+import { absoluteTime, formatDuration, relativeTime } from "../lib/format";
 import { useApi } from "../lib/useApi";
 import { useAuth } from "../state/auth";
+import { RuntimeSettingsForm } from "./RuntimeSettings";
 import { useTheme } from "../state/theme";
 
 const MIN_PASSWORD = 10;
 
-/** Sizes arrive as byte counts or as configured strings such as "10%". */
-function size(v: number | string | null | undefined, zero = "unlimited"): string {
-  if (v === null || v === undefined || v === "") return "–";
-  if (typeof v === "string") return v;
-  return v === 0 ? zero : formatBytes(v);
-}
-function rate(v: number | string | null | undefined): string {
-  if (v === null || v === undefined || v === "") return "–";
-  if (typeof v === "string") return v;
-  return v === 0 ? "unlimited" : formatRate(v);
-}
 function list(v: string[] | null | undefined): ReactNode {
   if (!v || v.length === 0) return <span className="text-dim">none</span>;
   return (
@@ -60,8 +50,6 @@ function Config({ s }: { s: SettingsT }) {
         <KeyValue
           rows={[
             ["Path", mono(s.storage?.path ?? "")],
-            ["Maximum size", size(s.storage?.max_size)],
-            ["Minimum free space", size(s.storage?.min_free_space, "none")],
             ["Cleanup interval", formatDuration(s.storage?.gc_interval_seconds)],
             ["Integrity check interval", s.storage?.verify_interval_seconds ? formatDuration(s.storage.verify_interval_seconds) : "disabled"],
           ]}
@@ -70,12 +58,8 @@ function Config({ s }: { s: SettingsT }) {
       <Card title="Downloads">
         <KeyValue
           rows={[
-            ["Concurrent downloads", text(s.download?.max_concurrent)],
             ["Retries", text(s.download?.retries)],
             ["Resume interrupted", text(s.download?.resume)],
-            ["Maximum object size", size(s.download?.max_object_size)],
-            ["Upstream rate limit", rate(s.download?.upstream_rate_limit)],
-            ["Client rate limit", rate(s.download?.client_rate_limit)],
           ]}
         />
       </Card>
@@ -100,7 +84,6 @@ function Config({ s }: { s: SettingsT }) {
       <Card title="Logging">
         <KeyValue
           rows={[
-            ["Level", text(s.logging?.level)],
             ["Format", text(s.logging?.format)],
             ["File", s.logging?.file ? mono(s.logging.file) : "standard output"],
           ]}
@@ -204,11 +187,19 @@ export function Settings() {
     <>
       <PageHeader title="Settings" description="Effective server configuration, your account and the audit trail." />
       <div className="space-y-3">
-        <Notice tone="info">
-          The configuration below is read-only here. Change it in <code className="font-mono text-xs">/etc/unicache/config.yaml</code> or with{" "}
-          <code className="font-mono text-xs">UNICACHE_*</code> environment variables, then restart UniCache.
-        </Notice>
-        <Resource state={settings}>{(s) => <Config s={s} />}</Resource>
+        <Resource state={settings}>
+          {(s) => (
+            <div className="space-y-3">
+              {s.runtime && <RuntimeSettingsForm view={s.runtime} onSaved={settings.reload} />}
+              <Notice tone="info">
+                The settings below decide who can reach UniCache and what it may connect to. They are read-only here on purpose: a mistake could lock you
+                out, and changing them should require access to the server. Edit <code className="font-mono text-xs">/etc/unicache/config.yaml</code> or
+                set <code className="font-mono text-xs">UNICACHE_*</code> environment variables, then restart UniCache.
+              </Notice>
+              <Config s={s} />
+            </div>
+          )}
+        </Resource>
 
         <div className="grid gap-3 lg:grid-cols-2">
           <Card title={`Change password · ${user}`}>

@@ -26,6 +26,7 @@ import (
 	"log/slog"
 	"os"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/Anarki-LNX/unicache/internal/database"
@@ -105,6 +106,8 @@ type Store struct {
 	touchMu sync.Mutex
 	touches map[int64]*touch
 
+	limits atomic.Pointer[Limits]
+
 	// kick asks the maintenance loop to check the size limits soon
 	// (after new data was published) instead of waiting for the next tick.
 	kick chan struct{}
@@ -134,7 +137,27 @@ func Open(db *database.DB, opts Options) (*Store, error) {
 	if log == nil {
 		log = slog.Default()
 	}
-	return &Store{cas: c, db: db, opts: opts, log: log, touches: map[int64]*touch{}, kick: make(chan struct{}, 1)}, nil
+	s := &Store{cas: c, db: db, opts: opts, log: log, touches: map[int64]*touch{}, kick: make(chan struct{}, 1)}
+	s.limits.Store(&Limits{MaxSize: opts.MaxSize, MinFreeBytes: opts.MinFreeBytes, MinFreePct: opts.MinFreePct})
+	return s, nil
+}
+
+// Limits are the storage limits enforced by eviction. They can be changed
+// while the store is in use.
+type Limits struct {
+	MaxSize      int64   // 0 = unlimited
+	MinFreeBytes int64   // absolute minimum free space, 0 = off
+	MinFreePct   float64 // minimum free space in percent, 0 = off
+}
+
+// Limits returns the active storage limits.
+func (s *Store) Limits() Limits { return *s.limits.Load() }
+
+// SetLimits replaces the storage limits and triggers a limit check, so a
+// lowered limit is enforced right away.
+func (s *Store) SetLimits(l Limits) {
+	s.limits.Store(&l)
+	s.kickEviction()
 }
 
 func (s *Store) kickEviction() {
@@ -472,7 +495,7 @@ type Usage struct {
 
 // Usage computes the current storage accounting.
 func (s *Store) Usage(ctx context.Context) (*Usage, error) {
-	u := &Usage{MaxSize: s.opts.MaxSize}
+	u := &Usage{MaxSize: s.limits.Load().MaxSize}
 	if err := s.db.R.QueryRowContext(ctx, `SELECT COUNT(*), COALESCE(SUM(size), 0) FROM blobs`).
 		Scan(&u.BlobCount, &u.BlobBytes); err != nil {
 		return nil, err
@@ -510,9 +533,10 @@ func (s *Store) Usage(ctx context.Context) (*Usage, error) {
 }
 
 func (s *Store) minFree(diskTotal int64) int64 {
-	min := s.opts.MinFreeBytes
-	if s.opts.MinFreePct > 0 {
-		if pct := int64(float64(diskTotal) * s.opts.MinFreePct / 100); pct > min {
+	l := s.limits.Load()
+	min := l.MinFreeBytes
+	if l.MinFreePct > 0 {
+		if pct := int64(float64(diskTotal) * l.MinFreePct / 100); pct > min {
 			min = pct
 		}
 	}

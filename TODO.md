@@ -53,6 +53,12 @@ Honest record of what was actually executed for v0.1 and what was not.
 - In-place upgrade 0.1.0 to 0.1.1 with `install.sh` on that instance:
   configuration, administrator account, policies and cache kept.
 
+- **Operational settings in the web interface** (v0.1.2): end-to-end test
+  (validation, immediate eviction after lowering the cache size, object size
+  and client rate limit taking effect, persistence across restart, reset,
+  authentication and CSRF), plus a browser check of the form (save, reset
+  button, value active in storage).
+
 ## Not verified yet
 
 - **`docker compose up` itself.** The development machine's Docker daemon

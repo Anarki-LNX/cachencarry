@@ -1280,3 +1280,161 @@ func TestCachedContentCannotAttackTheDashboard(t *testing.T) {
 		t.Errorf("dashboard CSP = %q", csp)
 	}
 }
+
+type runtimeView struct {
+	Values struct {
+		MaxSize           int64  `json:"max_size"`
+		MinFreeSpace      string `json:"min_free_space"`
+		UpstreamRateLimit int64  `json:"upstream_rate_limit"`
+		ClientRateLimit   int64  `json:"client_rate_limit"`
+		MaxConcurrent     int    `json:"max_concurrent"`
+		MaxObjectSize     int64  `json:"max_object_size"`
+		LogLevel          string `json:"log_level"`
+	} `json:"values"`
+	Defaults struct {
+		MaxSize       int64 `json:"max_size"`
+		MaxConcurrent int   `json:"max_concurrent"`
+	} `json:"defaults"`
+	Overridden bool `json:"overridden"`
+}
+
+func runtimeBody(maxSize int64, minFree string, clientRate int64, maxConc int, maxObj int64, level string) string {
+	return fmt.Sprintf(`{"max_size":%d,"min_free_space":%q,"upstream_rate_limit":0,"client_rate_limit":%d,"max_concurrent":%d,"max_object_size":%d,"log_level":%q}`,
+		maxSize, minFree, clientRate, maxConc, maxObj, level)
+}
+
+// TestRuntimeSettings: operational settings can be changed through the API,
+// take effect immediately, survive a restart and can be reset.
+func TestRuntimeSettings(t *testing.T) {
+	up := newUpstream(t)
+	for i := 0; i < 5; i++ {
+		up.put(fmt.Sprintf("/pool/r%d.deb", i), randBytes(40<<20))
+	}
+	dir := t.TempDir()
+	mut := func(c *config.Config) {
+		c.Storage.Path = dir
+		c.Database.Path = filepath.Join(dir, "metadata.db")
+	}
+	uc := start(t, mut, up)
+	for i := 0; i < 5; i++ {
+		get(t, uc.url(fmt.Sprintf("/apt/debian/pool/r%d.deb", i)))
+	}
+	uc.DB.W.Exec(`UPDATE entries SET last_access = last_access - 1000 + id`)
+	c := newAPIClient(t, uc.srv.URL)
+	c.login("admin", "correct horse battery")
+
+	var st struct {
+		Runtime runtimeView `json:"runtime"`
+	}
+	if code := c.do("GET", "/api/v1/settings", nil, &st); code != 200 {
+		t.Fatal(code)
+	}
+	if st.Runtime.Overridden || st.Runtime.Values.MaxSize != 0 || st.Runtime.Values.MaxConcurrent != 16 || st.Runtime.Values.LogLevel != "info" {
+		t.Fatalf("initial runtime settings = %+v", st.Runtime)
+	}
+
+	// Invalid values are refused and change nothing.
+	for name, body := range map[string]string{
+		"negative size":    runtimeBody(-1, "0", 0, 16, 0, "info"),
+		"tiny max size":    runtimeBody(1000, "0", 0, 16, 0, "info"),
+		"bad min free":     runtimeBody(0, "150%", 0, 16, 0, "info"),
+		"zero concurrency": runtimeBody(0, "0", 0, 0, 0, "info"),
+		"huge concurrency": runtimeBody(0, "0", 0, 9999, 0, "info"),
+		"tiny rate":        runtimeBody(0, "0", 5, 16, 0, "info"),
+		"bad level":        runtimeBody(0, "0", 0, 16, 0, "loud"),
+		"unknown field":    `{"max_size":0,"min_free_space":"0","upstream_rate_limit":0,"client_rate_limit":0,"max_concurrent":16,"max_object_size":0,"log_level":"info","listen":"0.0.0.0"}`,
+		"security setting": `{"allow_private_upstreams":true}`,
+	} {
+		if code := c.do("PUT", "/api/v1/settings/runtime", body, nil); code != 400 {
+			t.Errorf("%s: status %d, want 400", name, code)
+		}
+	}
+	if l := uc.Store.Limits(); l.MaxSize != 0 {
+		t.Fatalf("rejected request changed the limits: %+v", l)
+	}
+
+	// Lowering max_size evicts right away, least recently used first.
+	var rv runtimeView
+	if code := c.do("PUT", "/api/v1/settings/runtime", runtimeBody(130<<20, "0", 0, 4, 0, "debug"), &rv); code != 200 {
+		t.Fatalf("PUT: status %d", code)
+	}
+	if !rv.Overridden || rv.Values.MaxSize != 130<<20 || rv.Values.MaxConcurrent != 4 || rv.Defaults.MaxSize != 0 || rv.Defaults.MaxConcurrent != 16 {
+		t.Fatalf("response = %+v", rv)
+	}
+	deadline := time.Now().Add(10 * time.Second)
+	for {
+		u, _ := uc.Store.Usage(context.Background())
+		if u.BlobBytes <= 130<<20 {
+			if u.BlobBytes != 120<<20 || u.MaxSize != 130<<20 {
+				t.Fatalf("after lowering the limit: %d bytes stored, max_size %d", u.BlobBytes, u.MaxSize)
+			}
+			break
+		}
+		if time.Now().After(deadline) {
+			t.Fatalf("new limit not enforced: %d bytes stored", u.BlobBytes)
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	if r, _ := get(t, uc.url("/apt/debian/pool/r4.deb")); r.Header.Get("X-Cache") != "HIT" {
+		t.Fatal("most recently used object was evicted")
+	}
+
+	// Maximum object size applies to new downloads immediately.
+	if code := c.do("PUT", "/api/v1/settings/runtime", runtimeBody(130<<20, "0", 0, 4, 1<<20, "info"), nil); code != 200 {
+		t.Fatal(code)
+	}
+	if r, _ := get(t, uc.url("/apt/debian/pool/r0.deb")); r.StatusCode != http.StatusRequestEntityTooLarge {
+		t.Fatalf("oversized object: status %d, want 413", r.StatusCode)
+	}
+
+	// Client rate limit applies to new responses: 40 MiB at 16 MiB/s with a
+	// one second burst cannot finish in well under a second.
+	if code := c.do("PUT", "/api/v1/settings/runtime", runtimeBody(130<<20, "0", 16<<20, 4, 0, "info"), nil); code != 200 {
+		t.Fatal(code)
+	}
+	begin := time.Now()
+	if r, body := get(t, uc.url("/apt/debian/pool/r4.deb")); r.StatusCode != 200 || len(body) != 40<<20 {
+		t.Fatalf("throttled download: status %d, %d bytes", r.StatusCode, len(body))
+	}
+	if d := time.Since(begin); d < time.Second {
+		t.Fatalf("40 MiB at 16 MiB/s took only %v: rate limit not applied", d)
+	}
+
+	// The settings are in the audit log and survive a restart.
+	var n int
+	uc.DB.R.QueryRow(`SELECT COUNT(*) FROM audit_log WHERE action = 'settings_updated'`).Scan(&n)
+	if n != 3 {
+		t.Fatalf("%d audit records, want 3", n)
+	}
+	uc.srv.Close()
+	if err := uc.Close(); err != nil {
+		t.Fatal(err)
+	}
+	uc2 := start(t, mut, up)
+	if l := uc2.Store.Limits(); l.MaxSize != 130<<20 {
+		t.Fatalf("limits after restart = %+v", l)
+	}
+	c2 := newAPIClient(t, uc2.srv.URL)
+	c2.login("admin", "correct horse battery")
+	c2.do("GET", "/api/v1/settings", nil, &st)
+	if !st.Runtime.Overridden || st.Runtime.Values.ClientRateLimit != 16<<20 || st.Runtime.Values.MaxConcurrent != 4 {
+		t.Fatalf("after restart = %+v", st.Runtime)
+	}
+
+	// Reset returns to the configuration file.
+	if code := c2.do("DELETE", "/api/v1/settings/runtime", nil, &rv); code != 200 || rv.Overridden || rv.Values.MaxSize != 0 || rv.Values.MaxConcurrent != 16 {
+		t.Fatalf("reset: status %d, %+v", code, rv)
+	}
+	if l := uc2.Store.Limits(); l.MaxSize != 0 {
+		t.Fatalf("limits after reset = %+v", l)
+	}
+	// Without a session or CSRF token nothing can be changed.
+	anon := newAPIClient(t, uc2.srv.URL)
+	if code := anon.do("PUT", "/api/v1/settings/runtime", runtimeBody(0, "0", 0, 1, 0, "info"), nil); code != 401 {
+		t.Fatalf("anonymous PUT: status %d", code)
+	}
+	c2.csrf = ""
+	if code := c2.do("DELETE", "/api/v1/settings/runtime", nil, nil); code != 403 {
+		t.Fatalf("DELETE without CSRF token: status %d", code)
+	}
+}

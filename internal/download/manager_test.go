@@ -621,3 +621,60 @@ func TestLateReaderOfUncachedObject(t *testing.T) {
 		t.Fatal("reader after the last client left must fail")
 	}
 }
+
+// TestConcurrencyCanBeChangedWhileRunning: raising the limit lets queued
+// downloads start at once; lowering it does not interrupt running ones.
+func TestConcurrencyCanBeChangedWhileRunning(t *testing.T) {
+	var cur, peak atomic.Int32
+	release := make(chan struct{})
+	up := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		n := cur.Add(1)
+		for {
+			p := peak.Load()
+			if n <= p || peak.CompareAndSwap(p, n) {
+				break
+			}
+		}
+		<-release
+		cur.Add(-1)
+		w.Write([]byte(r.URL.Path))
+	}))
+	defer up.Close()
+	e := newEnv(t, func(o *download.Options) { o.MaxConcurrent = 1 })
+	var flights []*download.Flight
+	for i := 0; i < 6; i++ {
+		f, _ := e.mgr.Do(e.req(fmt.Sprint("c", i), fmt.Sprint(up.URL, "/c", i)), nil)
+		flights = append(flights, f)
+	}
+	waitFor := func(want int32) {
+		t.Helper()
+		deadline := time.Now().Add(5 * time.Second)
+		for cur.Load() != want {
+			if time.Now().After(deadline) {
+				t.Fatalf("%d downloads running, want %d", cur.Load(), want)
+			}
+			time.Sleep(time.Millisecond)
+		}
+	}
+	waitFor(1)
+	time.Sleep(30 * time.Millisecond)
+	if cur.Load() != 1 {
+		t.Fatalf("limit 1 not respected: %d running", cur.Load())
+	}
+	e.mgr.SetMaxConcurrent(4)
+	waitFor(4)
+	e.mgr.SetMaxConcurrent(2) // running downloads continue
+	time.Sleep(30 * time.Millisecond)
+	if cur.Load() != 4 {
+		t.Fatalf("lowering the limit interrupted downloads: %d running", cur.Load())
+	}
+	close(release)
+	for _, f := range flights {
+		if _, err := f.Wait(ctx); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if peak.Load() != 4 {
+		t.Fatalf("peak concurrency %d, want 4", peak.Load())
+	}
+}

@@ -177,8 +177,8 @@ func (s *Store) excess(ctx context.Context) (need int64, reason string, err erro
 	if err := s.db.R.QueryRowContext(ctx, `SELECT COALESCE(SUM(size), 0) FROM blobs`).Scan(&blobBytes); err != nil {
 		return 0, "", err
 	}
-	if s.opts.MaxSize > 0 && blobBytes > s.opts.MaxSize {
-		need = blobBytes - s.opts.MaxSize
+	if max := s.limits.Load().MaxSize; max > 0 && blobBytes > max {
+		need = blobBytes - max
 		reason = "max_size"
 	}
 	if total, free, derr := diskSpace(s.opts.Root); derr == nil {

@@ -54,11 +54,16 @@ type Policy struct {
 
 // Handler serves /<module>/<repository>/<path>.
 type Handler struct {
-	o      Options
-	log    *slog.Logger
-	neg    negCache
-	policy atomic.Pointer[Policy]
+	o          Options
+	log        *slog.Logger
+	neg        negCache
+	policy     atomic.Pointer[Policy]
+	clientRate atomic.Int64
 }
+
+// SetClientRateLimit changes the per-response rate limit (bytes per second,
+// 0 = unlimited) for responses that start from now on.
+func (h *Handler) SetClientRateLimit(n int64) { h.clientRate.Store(n) }
 
 // Policy returns the active cache policy.
 func (h *Handler) Policy() Policy { return *h.policy.Load() }
@@ -73,6 +78,7 @@ func New(o Options) *Handler {
 	}
 	h := &Handler{o: o, log: o.Logger, neg: negCache{m: map[string]time.Time{}}}
 	h.SetPolicy(o.Policy)
+	h.clientRate.Store(o.ClientRateLimit)
 	return h
 }
 
@@ -119,7 +125,7 @@ func (h *Handler) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	// sandboxed, script-less context if someone opens it directly.
 	rw.Header().Set("X-Content-Type-Options", "nosniff")
 	rw.Header().Set("Content-Security-Policy", "sandbox; default-src 'none'")
-	w := newCountingWriter(rw, h.o.Stats, h.o.ClientRateLimit, r.Context())
+	w := newCountingWriter(rw, h.o.Stats, h.clientRate.Load(), r.Context())
 	client := security.ClientIP(r, h.o.Trusted)
 	rec := stats.Record{Time: start, Client: client.String(), Method: r.Method, Partial: r.Header.Get("Range") != ""}
 

@@ -462,6 +462,7 @@ func (a *API) repoDelete(w http.ResponseWriter, r *http.Request) {
 func (a *API) settings(w http.ResponseWriter, r *http.Request) {
 	c := a.d.Config
 	writeJSON(w, http.StatusOK, map[string]any{
+		"runtime": a.runtimeView(),
 		"server": map[string]any{"listen": c.Server.Listen, "port": c.Server.Port, "tls": c.Server.TLSEnabled(),
 			"trusted_proxies": c.Server.TrustedProxies},
 		"storage": map[string]any{"path": c.Storage.Path, "max_size": int64(c.Storage.MaxSize),

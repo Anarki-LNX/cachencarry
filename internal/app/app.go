@@ -36,6 +36,8 @@ type Options struct {
 	Logger  *slog.Logger
 	UI      fs.FS // built frontend; nil serves a notice page
 	NoSync  bool  // skip fsync (tests only)
+	// LogLevel, when set, lets the log level be changed at runtime.
+	LogLevel *slog.LevelVar
 	// EvictDebounce overrides how quickly new data triggers a storage
 	// limit check (tests only; default 5s).
 	EvictDebounce time.Duration
@@ -154,6 +156,11 @@ func New(ctx context.Context, cfg *config.Config, opts Options) (*App, error) {
 		Logger: log, Policy: policy, ClientRateLimit: int64(cfg.Download.ClientRateLimit),
 	})
 
+	rt, err := a.loadRuntime(ctx, opts.LogLevel)
+	if err != nil {
+		return nil, err
+	}
+
 	a.Auth = security.NewAuth(db, cfg.Security.SessionTTL.Std())
 	if err := a.bootstrapAdmin(ctx); err != nil {
 		return nil, err
@@ -161,7 +168,7 @@ func New(ctx context.Context, cfg *config.Config, opts Options) (*App, error) {
 	a.API = api.New(api.Deps{
 		Config: cfg, DB: db, Store: a.Store, DL: a.DL, Modules: a.Modules, Stats: a.Stats, Broker: broker,
 		Auth: a.Auth, Proxy: a.Proxy, Upstream: upstream, Logger: log, Version: opts.Version,
-		StartedAt: time.Now(), SetupToken: a.SetupToken, AdminACL: admins, Trusted: trusted,
+		StartedAt: time.Now(), SetupToken: a.SetupToken, Runtime: rt, AdminACL: admins, Trusted: trusted,
 	})
 	a.handler = a.router(opts.UI)
 

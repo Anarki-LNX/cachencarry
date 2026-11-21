@@ -89,7 +89,9 @@ query or fragment; at most 16.
 |---|---|---|
 | GET | `/policies` | runtime cache policy |
 | PUT | `/policies` | `{metadata_ttl_seconds, negative_ttl_seconds, serve_stale_on_error, module_ttl_seconds: {module: seconds}}`; applied immediately and persisted |
-| GET | `/settings` | effective configuration without secrets (read-only) |
+| GET | `/settings` | effective configuration without secrets; `runtime` holds the editable part as `{values, defaults, overridden}` |
+| PUT | `/settings/runtime` | `{max_size, min_free_space, upstream_rate_limit, client_rate_limit, max_concurrent, max_object_size, log_level}`; applied immediately and persisted |
+| DELETE | `/settings/runtime` | drop the saved values and return to the configuration file |
 
 The exact response shapes are defined by the handlers in
 [`internal/api`](../internal/api) and exercised by the API tests in

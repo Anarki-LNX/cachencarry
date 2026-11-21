@@ -135,6 +135,8 @@ export const api = {
   policies: () => request<T.Policies>("GET", "/policies"),
   savePolicies: (p: T.Policies) => request<T.Policies | null>("PUT", "/policies", { body: p }),
   settings: () => request<T.Settings>("GET", "/settings"),
+  saveRuntime: (r: T.RuntimeSettings) => request<T.RuntimeView>("PUT", "/settings/runtime", { body: r }),
+  resetRuntime: () => request<T.RuntimeView>("DELETE", "/settings/runtime"),
   audit: (limit = 100) => request<{ audit: T.AuditEntry[] | null }>("GET", `/audit${qs({ limit })}`),
 };
 

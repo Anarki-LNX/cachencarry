@@ -230,7 +230,25 @@ export interface Policies {
   module_ttl_seconds: Record<string, number> | null;
 }
 
+export interface RuntimeSettings {
+  max_size: number;
+  min_free_space: string;
+  upstream_rate_limit: number;
+  client_rate_limit: number;
+  max_concurrent: number;
+  max_object_size: number;
+  log_level: string;
+}
+
+/** Settings editable at runtime: active values, the configuration file's values, and whether saved values override the file. */
+export interface RuntimeView {
+  values: RuntimeSettings;
+  defaults: RuntimeSettings;
+  overridden: boolean;
+}
+
 export interface Settings {
+  runtime: RuntimeView;
   server: { listen: string; port: number; tls: unknown; trusted_proxies: string[] | null };
   storage: {
     path: string;

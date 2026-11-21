@@ -179,6 +179,19 @@ partial and aborted transfers count with what was really sent. Counters are
 kept in memory, flushed to SQLite every ten seconds (per-minute buckets and
 lifetime totals) and survive restarts.
 
+## Configuration layers
+
+1. Built-in defaults, 2. the YAML file, 3. `UNICACHE_*` environment
+variables. On top of that, two groups live in the database and are changed in
+the web interface: modules/repositories/policies, and the *operational
+settings* (cache size, free-space rule, rate limits, download concurrency,
+maximum object size, log level). Operational settings are applied to the
+running components without a restart: storage limits are an atomic value read
+by eviction, the download concurrency is a resizable semaphore, rate limiters
+are swapped atomically. Settings that define the security boundary (listen
+address, TLS, client and admin networks, private upstreams, data directory)
+are intentionally file-only.
+
 ## Extending UniCache
 
 A path-based adapter is one small type (see [ADAPTERS.md](ADAPTERS.md)).

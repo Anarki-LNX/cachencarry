@@ -7,6 +7,14 @@
 # scalar can also be set through an environment variable named
 # UNICACHE_<SECTION>_<KEY>, e.g. UNICACHE_SERVER_PORT=9090 (environment wins).
 #
+# Some operational settings can also be changed in the web interface
+# (Settings): storage.max_size, storage.min_free_space,
+# download.max_concurrent, download.max_object_size, both rate limits and
+# logging.level. Values saved there take precedence over this file until
+# "Reset to configuration file" is used. Everything that decides who can
+# reach UniCache or what it may connect to (server.*, security.*,
+# storage.path) can only be changed here.
+#
 # Modules and repositories are *seeded* from this file exactly once. After
 # that they are managed in the web interface and stored in the database, so
 # upgrades never overwrite your changes.

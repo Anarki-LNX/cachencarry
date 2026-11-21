@@ -47,6 +47,7 @@ type Deps struct {
 	Version    string
 	StartedAt  time.Time
 	SetupToken string // required for first-run setup; empty disables the check
+	Runtime    RuntimeController
 	AdminACL   *security.ACL
 	Trusted    *security.ACL
 }
@@ -116,6 +117,8 @@ func (a *API) routes() {
 	auth("GET /api/v1/policies", a.policies)
 	auth("PUT /api/v1/policies", a.policiesUpdate)
 	auth("GET /api/v1/settings", a.settings)
+	auth("PUT /api/v1/settings/runtime", a.runtimeUpdate)
+	auth("DELETE /api/v1/settings/runtime", a.runtimeReset)
 	auth("GET /api/v1/audit", a.audit)
 	auth("POST /api/v1/account/password", a.changePassword)
 	auth("GET /api/v1/events", a.events)

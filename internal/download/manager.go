@@ -77,10 +77,11 @@ type Options struct {
 
 // Manager coalesces and runs upstream downloads.
 type Manager struct {
-	opts    Options
-	log     *slog.Logger
-	sem     chan struct{}
-	limiter *Limiter
+	opts      Options
+	log       *slog.Logger
+	slots     *slots
+	limiter   atomic.Pointer[Limiter]
+	maxObject atomic.Int64
 
 	baseCtx context.Context
 	cancel  context.CancelFunc
@@ -103,15 +104,78 @@ func NewManager(opts Options) *Manager {
 		opts.Logger = slog.Default()
 	}
 	ctx, cancel := context.WithCancel(context.Background())
-	return &Manager{
+	m := &Manager{
 		opts:    opts,
 		log:     opts.Logger,
-		sem:     make(chan struct{}, opts.MaxConcurrent),
-		limiter: NewLimiter(opts.RateLimit),
+		slots:   newSlots(opts.MaxConcurrent),
 		baseCtx: ctx,
 		cancel:  cancel,
 		flights: map[string]*Flight{},
 	}
+	m.limiter.Store(NewLimiter(opts.RateLimit))
+	m.maxObject.Store(opts.MaxObjectSize)
+	return m
+}
+
+// SetMaxConcurrent changes how many upstream downloads run at once.
+// Downloads that are already running are not interrupted.
+func (m *Manager) SetMaxConcurrent(n int) {
+	if n < 1 {
+		n = 1
+	}
+	m.slots.setMax(n)
+}
+
+// SetRateLimit changes the shared upstream rate limit (bytes per second,
+// 0 = unlimited).
+func (m *Manager) SetRateLimit(bytesPerSecond int64) { m.limiter.Store(NewLimiter(bytesPerSecond)) }
+
+// SetMaxObjectSize changes the largest object that will be downloaded
+// (0 = unlimited). It also applies to downloads in progress.
+func (m *Manager) SetMaxObjectSize(n int64) { m.maxObject.Store(n) }
+
+// slots is a counting semaphore whose capacity can change while in use.
+type slots struct {
+	mu   sync.Mutex
+	cur  int
+	max  int
+	wake chan struct{} // closed and replaced whenever a slot may be free
+}
+
+func newSlots(max int) *slots { return &slots{max: max, wake: make(chan struct{})} }
+
+func (s *slots) acquire(ctx context.Context) error {
+	for {
+		s.mu.Lock()
+		if s.cur < s.max {
+			s.cur++
+			s.mu.Unlock()
+			return nil
+		}
+		wake := s.wake
+		s.mu.Unlock()
+		select {
+		case <-wake:
+		case <-ctx.Done():
+			return ctx.Err()
+		}
+	}
+}
+
+func (s *slots) release() {
+	s.mu.Lock()
+	s.cur--
+	close(s.wake)
+	s.wake = make(chan struct{})
+	s.mu.Unlock()
+}
+
+func (s *slots) setMax(n int) {
+	s.mu.Lock()
+	s.max = n
+	close(s.wake)
+	s.wake = make(chan struct{})
+	s.mu.Unlock()
 }
 
 // Close cancels all running flights and waits for them to finish.
@@ -373,18 +437,17 @@ func (m *Manager) run(ctx context.Context, f *Flight) {
 	f.setState("queued")
 	var value any
 	var err error
-	select {
-	case m.sem <- struct{}{}:
-		if f.clients.Load() <= 0 {
-			// Every client gave up while the flight was queued: do not
-			// spend bandwidth on something nobody is waiting for.
-			err = ErrCancelled
-		} else {
-			value, err = m.fetch(ctx, f)
-		}
-		<-m.sem
-	case <-ctx.Done():
+	switch {
+	case m.slots.acquire(ctx) != nil:
 		err = ErrCancelled
+	case f.clients.Load() <= 0:
+		// Every client gave up while the flight was queued: do not spend
+		// bandwidth on something nobody is waiting for.
+		m.slots.release()
+		err = ErrCancelled
+	default:
+		value, err = m.fetch(ctx, f)
+		m.slots.release()
 	}
 	if err != nil && ctx.Err() != nil {
 		err = ErrCancelled
@@ -517,7 +580,7 @@ func (m *Manager) attempt(ctx context.Context, f *Flight, url string) (value any
 		return nil, true, nil
 	}
 
-	if m.opts.MaxObjectSize > 0 && resp.ContentLength > m.opts.MaxObjectSize {
+	if max := m.maxObject.Load(); max > 0 && resp.ContentLength > max {
 		return nil, true, ErrTooLarge
 	}
 	w, err := m.opts.Store.NewWriter()
@@ -712,7 +775,7 @@ func (m *Manager) copyBody(ctx context.Context, f *Flight, w *storage.Writer, bo
 			if idle != nil {
 				idle.Reset(m.opts.IdleTimeout)
 			}
-			if m.opts.MaxObjectSize > 0 && w.Size()+int64(n) > m.opts.MaxObjectSize {
+			if max := m.maxObject.Load(); max > 0 && w.Size()+int64(n) > max {
 				return ErrTooLarge
 			}
 			if _, werr := w.Write(buf[:n]); werr != nil {
@@ -725,7 +788,7 @@ func (m *Manager) copyBody(ctx context.Context, f *Flight, w *storage.Writer, bo
 			if m.opts.OnUpstreamBytes != nil {
 				m.opts.OnUpstreamBytes(f.Module, int64(n))
 			}
-			if err := m.limiter.Wait(ctx, n); err != nil {
+			if err := m.limiter.Load().Wait(ctx, n); err != nil {
 				return err
 			}
 		}
