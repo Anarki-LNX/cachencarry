@@ -40,6 +40,11 @@ Honest record of what was actually executed for v0.1 and what was not.
   `InRelease`, Arch `core.db`, and the CachyOS databases under `x86_64/` and
   `x86_64_v3/` (confirms the CachyOS URL layout in docs/CLIENTS.md).
 
+- **Two real CachyOS clients** against the Proxmox instance: `pacman -Syyu`
+  through the cache for all CachyOS and Arch repositories (databases and
+  CachyOS database signatures), then the same package downloaded on both
+  machines: `MISS` on the first, `HIT` from cache on the second.
+
 ## Not verified yet
 
 - **`docker compose up` itself.** The development machine's Docker daemon
@@ -51,8 +56,8 @@ Honest record of what was actually executed for v0.1 and what was not.
   Proxmox LXC above).
 - **Docker inside a Proxmox LXC**, and bind-mounting a host directory into
   the container (UID mapping section of the guide).
-- A full `pacman -Syu` from a real CachyOS client (only database downloads
-  were checked for CachyOS).
+- A large package update from a real CachyOS client (see below for what
+  was checked).
 - Dashboard pages not opened in the browser check: Repositories, Downloads,
   Statistics, Policies, Settings, and the setup wizard. They build and lint,
   and their API endpoints are covered by the backend tests.

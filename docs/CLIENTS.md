@@ -100,10 +100,13 @@ Server = http://unicache.lan:8080/pacman/cachyos/$arch_v3/$repo
 Server = http://unicache.lan:8080/pacman/archlinux/$repo/os/$arch
 ```
 
-The repository databases for `x86_64` and `x86_64_v3` were fetched through
-the cache with these URLs. A complete `pacman -Syu` from a CachyOS client has
-not been run yet; if a path is wrong, pacman falls back to the next mirror.
-Check Live Traffic in the dashboard for `NOTFOUND` entries.
+These URLs were tested with real CachyOS clients (`pacman -Syyu` and package
+downloads). `NOTFOUND` for `core.db.sig`, `extra.db.sig` and
+`multilib.db.sig` is normal: Arch does not sign its databases, pacman asks
+anyway. Tools that regenerate the mirrorlists (`cachyos-rate-mirrors`) remove
+the cache line; add it again afterwards. Repositories with their own `Server`
+line in `/etc/pacman.conf` (for example `gnome-unstable`) need that line
+changed separately.
 
 ## Checking that it works
 
