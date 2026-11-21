@@ -18,15 +18,17 @@ has been run against the real client.
 
 ## v0.2: harden what exists
 
-- [ ] Verify the Proxmox LXC guide on a real host (native and Docker-in-LXC)
+- [x] Verify the Proxmox LXC guide on a real host (native install done, Docker-in-LXC still open)
 - [ ] Run install/upgrade/uninstall on clean Debian 13 and Ubuntu LTS in CI
 - [ ] Published container image (GHCR) and release tarballs with checksums
-- [ ] Test with real Ubuntu, CachyOS and Manjaro clients
+- [ ] Test with Manjaro and Linux Mint clients
 - [ ] Load test on a 2-core / 2 GB machine; document numbers
 - [ ] Prometheus `/metrics` endpoint
 - [ ] Optional prefetch of updates for packages already in the cache
 - [ ] Cache the storage accounting queries for very large caches
-- [ ] German translation of the dashboard
+- [x] German translation of the dashboard with a language switch
+- [x] Operational settings editable in the dashboard
+- [x] Tested with real CachyOS, Ubuntu, Debian 12 and Proxmox clients
 
 ## v0.3: OCI pull-through
 
