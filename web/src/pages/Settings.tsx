@@ -5,6 +5,7 @@ import type { Settings as SettingsT } from "../api/types";
 import { Card, EmptyState, ErrorNote, KeyValue, Notice, PageHeader, Resource } from "../components/Card";
 import { Button, Field, Input, Segmented } from "../components/Controls";
 import { Table, Td, Th, Tr } from "../components/Table";
+import { useT, type Translate } from "../i18n";
 import { absoluteTime, formatDuration, relativeTime } from "../lib/format";
 import { useApi } from "../lib/useApi";
 import { useAuth } from "../state/auth";
@@ -13,8 +14,8 @@ import { useTheme } from "../state/theme";
 
 const MIN_PASSWORD = 10;
 
-function list(v: string[] | null | undefined): ReactNode {
-  if (!v || v.length === 0) return <span className="text-dim">none</span>;
+function list(v: string[] | null | undefined, t: Translate): ReactNode {
+  if (!v || v.length === 0) return <span className="text-dim">{t("common.none")}</span>;
   return (
     <span className="flex flex-wrap gap-1">
       {v.map((x) => (
@@ -25,67 +26,68 @@ function list(v: string[] | null | undefined): ReactNode {
     </span>
   );
 }
-function text(v: unknown): ReactNode {
-  if (v === null || v === undefined || v === "") return <span className="text-dim">not set</span>;
-  if (typeof v === "boolean") return v ? "enabled" : "disabled";
+function text(v: unknown, t: Translate): ReactNode {
+  if (v === null || v === undefined || v === "") return <span className="text-dim">{t("common.notSet")}</span>;
+  if (typeof v === "boolean") return v ? t("settings.enabled") : t("settings.disabled");
   if (typeof v === "object") return <code className="break-all font-mono text-xs">{JSON.stringify(v)}</code>;
   return String(v);
 }
-const mono = (v: string) => (v ? <code className="break-all font-mono text-xs">{v}</code> : <span className="text-dim">not set</span>);
+const mono = (v: string, t: Translate) => (v ? <code className="break-all font-mono text-xs">{v}</code> : <span className="text-dim">{t("common.notSet")}</span>);
 
 function Config({ s }: { s: SettingsT }) {
+  const { t } = useT();
   return (
     <div className="grid gap-3 lg:grid-cols-2">
-      <Card title="Server">
+      <Card title={t("settings.server")}>
         <KeyValue
           rows={[
-            ["Listen address", mono(s.server?.listen ?? "")],
-            ["Port", text(s.server?.port)],
-            ["TLS", text(s.server?.tls)],
-            ["Trusted proxies", list(s.server?.trusted_proxies)],
+            [t("settings.listenAddress"), mono(s.server?.listen ?? "", t)],
+            [t("settings.port"), text(s.server?.port, t)],
+            [t("settings.tls"), text(s.server?.tls, t)],
+            [t("settings.trustedProxies"), list(s.server?.trusted_proxies, t)],
           ]}
         />
       </Card>
-      <Card title="Storage">
+      <Card title={t("nav.storage")}>
         <KeyValue
           rows={[
-            ["Path", mono(s.storage?.path ?? "")],
-            ["Cleanup interval", formatDuration(s.storage?.gc_interval_seconds)],
-            ["Integrity check interval", s.storage?.verify_interval_seconds ? formatDuration(s.storage.verify_interval_seconds) : "disabled"],
+            [t("common.path"), mono(s.storage?.path ?? "", t)],
+            [t("settings.cleanupInterval"), formatDuration(s.storage?.gc_interval_seconds)],
+            [t("settings.verifyInterval"), s.storage?.verify_interval_seconds ? formatDuration(s.storage.verify_interval_seconds) : t("settings.disabled")],
           ]}
         />
       </Card>
-      <Card title="Downloads">
+      <Card title={t("nav.downloads")}>
         <KeyValue
           rows={[
-            ["Retries", text(s.download?.retries)],
-            ["Resume interrupted", text(s.download?.resume)],
+            [t("settings.retries"), text(s.download?.retries, t)],
+            [t("settings.resume"), text(s.download?.resume, t)],
           ]}
         />
       </Card>
-      <Card title="Security">
+      <Card title={t("settings.security")}>
         <KeyValue
           rows={[
-            ["Allowed clients", list(s.security?.allowed_clients)],
-            ["Management access", list(s.security?.admin_allowed)],
-            ["Private upstreams", s.security?.allow_private_upstreams ? "allowed" : "blocked"],
-            ["Session lifetime", formatDuration(s.security?.session_ttl_seconds)],
+            [t("settings.allowedClients"), list(s.security?.allowed_clients, t)],
+            [t("settings.managementAccess"), list(s.security?.admin_allowed, t)],
+            [t("settings.privateUpstreams"), s.security?.allow_private_upstreams ? t("settings.allowed") : t("settings.blocked")],
+            [t("settings.sessionLifetime"), formatDuration(s.security?.session_ttl_seconds)],
           ]}
         />
       </Card>
-      <Card title="Database">
+      <Card title={t("settings.database")}>
         <KeyValue
           rows={[
-            ["Driver", text(s.database?.driver)],
-            ["Path", mono(s.database?.path ?? "")],
+            [t("settings.driver"), text(s.database?.driver, t)],
+            [t("common.path"), mono(s.database?.path ?? "", t)],
           ]}
         />
       </Card>
-      <Card title="Logging">
+      <Card title={t("settings.logging")}>
         <KeyValue
           rows={[
-            ["Format", text(s.logging?.format)],
-            ["File", s.logging?.file ? mono(s.logging.file) : "standard output"],
+            [t("settings.format"), text(s.logging?.format, t)],
+            [t("settings.file"), s.logging?.file ? mono(s.logging.file, t) : t("settings.stdout")],
           ]}
         />
       </Card>
@@ -95,6 +97,7 @@ function Config({ s }: { s: SettingsT }) {
 
 function PasswordForm() {
   const { signedOut } = useAuth();
+  const { t } = useT();
   const [current, setCurrent] = useState("");
   const [next, setNext] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -102,8 +105,8 @@ function PasswordForm() {
   const [error, setError] = useState<string | null>(null);
   const [touched, setTouched] = useState(false);
 
-  const nextErr = touched && next.length < MIN_PASSWORD ? `Use at least ${MIN_PASSWORD} characters.` : null;
-  const confirmErr = touched && confirm !== next ? "The passwords do not match." : null;
+  const nextErr = touched && next.length < MIN_PASSWORD ? t("auth.passwordTooShort", { min: MIN_PASSWORD }) : null;
+  const confirmErr = touched && confirm !== next ? t("auth.passwordMismatch") : null;
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -113,7 +116,7 @@ function PasswordForm() {
     setError(null);
     try {
       await api.changePassword(current, next);
-      signedOut("Password changed. All sessions were signed out — sign in with the new password.");
+      signedOut("auth.passwordChanged");
     } catch (err) {
       setError(errorMessage(err));
       setBusy(false);
@@ -123,18 +126,18 @@ function PasswordForm() {
   return (
     <form onSubmit={submit} className="max-w-md space-y-4" noValidate>
       {error && <ErrorNote message={error} />}
-      <Field label="Current password">
+      <Field label={t("settings.currentPassword")}>
         {(p) => <Input {...p} type="password" value={current} onChange={(e) => setCurrent(e.target.value)} autoComplete="current-password" required />}
       </Field>
-      <Field label="New password" hint={`At least ${MIN_PASSWORD} characters.`} error={nextErr}>
+      <Field label={t("settings.newPassword")} hint={t("auth.passwordHint", { min: MIN_PASSWORD })} error={nextErr}>
         {(p) => <Input {...p} type="password" value={next} onChange={(e) => setNext(e.target.value)} autoComplete="new-password" required />}
       </Field>
-      <Field label="Confirm new password" error={confirmErr}>
+      <Field label={t("settings.confirmNewPassword")} error={confirmErr}>
         {(p) => <Input {...p} type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} autoComplete="new-password" required />}
       </Field>
-      <p className="text-xs text-dim">Changing the password signs out every session, including this one.</p>
+      <p className="text-xs text-dim">{t("settings.passwordNote")}</p>
       <Button type="submit" variant="primary" busy={busy} disabled={!current || !next}>
-        Change password
+        {t("settings.changePassword")}
       </Button>
     </form>
   );
@@ -142,20 +145,21 @@ function PasswordForm() {
 
 function AuditLog() {
   const audit = useApi(() => api.audit(100), [], 30_000);
+  const { t } = useT();
   return (
     <Resource state={audit}>
       {(data) => {
         const rows = data.audit ?? [];
-        if (rows.length === 0) return <EmptyState title="No audit entries yet" />;
+        if (rows.length === 0) return <EmptyState title={t("settings.noAudit")} />;
         return (
-          <Table label="Audit log" className="max-h-[28rem] overflow-y-auto">
+          <Table label={t("settings.auditLog")} className="max-h-[28rem] overflow-y-auto">
             <thead>
               <tr>
-                <Th>Time</Th>
-                <Th>Actor</Th>
-                <Th>IP</Th>
-                <Th>Action</Th>
-                <Th>Detail</Th>
+                <Th>{t("common.time")}</Th>
+                <Th>{t("settings.actor")}</Th>
+                <Th>{t("settings.ip")}</Th>
+                <Th>{t("settings.action")}</Th>
+                <Th>{t("settings.detail")}</Th>
               </tr>
             </thead>
             <tbody>
@@ -182,19 +186,21 @@ export function Settings() {
   const settings = useApi(api.settings, []);
   const { theme, set } = useTheme();
   const { user } = useAuth();
+  const { t, rich } = useT();
 
   return (
     <>
-      <PageHeader title="Settings" description="Effective server configuration, your account and the audit trail." />
+      <PageHeader title={t("nav.settings")} description={t("settings.description")} />
       <div className="space-y-3">
         <Resource state={settings}>
           {(s) => (
             <div className="space-y-3">
               {s.runtime && <RuntimeSettingsForm view={s.runtime} onSaved={settings.reload} />}
               <Notice tone="info">
-                The settings below decide who can reach UniCache and what it may connect to. They are read-only here on purpose: a mistake could lock you
-                out, and changing them should require access to the server. Edit <code className="font-mono text-xs">/etc/unicache/config.yaml</code> or
-                set <code className="font-mono text-xs">UNICACHE_*</code> environment variables, then restart UniCache.
+                {rich("settings.readOnlyNotice", {
+                  file: <code className="font-mono text-xs">/etc/unicache/config.yaml</code>,
+                  env: <code className="font-mono text-xs">UNICACHE_*</code>,
+                })}
               </Notice>
               <Config s={s} />
             </div>
@@ -202,30 +208,30 @@ export function Settings() {
         </Resource>
 
         <div className="grid gap-3 lg:grid-cols-2">
-          <Card title={`Change password · ${user}`}>
+          <Card title={t("settings.changePasswordTitle", { user })}>
             <PasswordForm />
           </Card>
-          <Card title="Appearance">
+          <Card title={t("settings.appearance")}>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-2 text-sm">
                 {theme === "dark" ? <Moon className="size-4 text-muted" aria-hidden /> : <Sun className="size-4 text-muted" aria-hidden />}
-                Theme
+                {t("settings.theme")}
               </div>
               <Segmented
-                label="Theme"
+                label={t("settings.theme")}
                 value={theme}
                 onChange={set}
                 options={[
-                  { value: "dark", label: "Dark" },
-                  { value: "light", label: "Light" },
+                  { value: "dark", label: t("settings.themeDark") },
+                  { value: "light", label: t("settings.themeLight") },
                 ]}
               />
             </div>
-            <p className="mt-2 text-xs text-dim">Stored in this browser only.</p>
+            <p className="mt-2 text-xs text-dim">{t("settings.browserOnly")}</p>
           </Card>
         </div>
 
-        <Card title="Audit log" bodyClassName="p-0">
+        <Card title={t("settings.auditLog")} bodyClassName="p-0">
           <AuditLog />
         </Card>
       </div>

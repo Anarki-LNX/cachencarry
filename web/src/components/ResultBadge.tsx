@@ -1,3 +1,5 @@
+import { useT } from "../i18n";
+import { isKey } from "../i18n/core";
 import { Badge } from "./Card";
 
 const tones: Record<string, "ok" | "info" | "warn" | "bad" | "alt" | "neutral"> = {
@@ -11,22 +13,14 @@ const tones: Record<string, "ok" | "info" | "warn" | "bad" | "alt" | "neutral"> 
   DENIED: "bad",
 };
 
-const hints: Record<string, string> = {
-  HIT: "Served from the cache",
-  MISS: "Fetched from upstream and stored",
-  COALESCED: "Joined another client's in-flight download (counts as a hit)",
-  REVALIDATED: "Upstream confirmed the cached copy is current",
-  STALE: "Upstream unreachable, expired copy served",
-  NOTFOUND: "Upstream does not have this object",
-  ERROR: "Upstream or internal failure",
-  DENIED: "Rejected by access control or policy",
-};
-
 export const RESULTS = ["HIT", "MISS", "COALESCED", "REVALIDATED", "STALE", "NOTFOUND", "ERROR", "DENIED"] as const;
 
+/** The result code stays as the server sends it; only its explanation is translated. */
 export function ResultBadge({ result }: { result: string }) {
+  const { t } = useT();
+  const hint = `result.${result}`;
   return (
-    <Badge tone={tones[result] ?? "neutral"} title={hints[result]}>
+    <Badge tone={tones[result] ?? "neutral"} title={isKey(hint) ? t(hint) : undefined}>
       {result || "–"}
     </Badge>
   );

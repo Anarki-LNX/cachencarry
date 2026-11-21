@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
 import { Check, Copy } from "lucide-react";
+import { useT } from "../i18n";
 
 type Variant = "primary" | "secondary" | "danger" | "ghost";
 const variants: Record<Variant, string> = {
@@ -189,7 +190,8 @@ async function copyText(text: string): Promise<boolean> {
   }
 }
 
-export function CopyButton({ text, label = "Copy" }: { text: string; label?: string }) {
+export function CopyButton({ text, label }: { text: string; label?: string }) {
+  const { t } = useT();
   const [state, setState] = useState<"idle" | "ok" | "fail">("idle");
   const timer = useRef<number>();
   useEffect(() => () => window.clearTimeout(timer.current), []);
@@ -204,7 +206,7 @@ export function CopyButton({ text, label = "Copy" }: { text: string; label?: str
         timer.current = window.setTimeout(() => setState("idle"), 2000);
       }}
     >
-      <span aria-live="polite">{state === "ok" ? "Copied" : state === "fail" ? "Select and copy manually" : label}</span>
+      <span aria-live="polite">{state === "ok" ? t("common.copied") : state === "fail" ? t("common.copyManually") : (label ?? t("common.copy"))}</span>
     </Button>
   );
 }

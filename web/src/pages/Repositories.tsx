@@ -6,6 +6,8 @@ import { Card, EmptyState, ErrorNote, Notice, PageHeader, Resource } from "../co
 import { Button, Field, IconButton, Input, Select, Switch, Textarea } from "../components/Controls";
 import { ConfirmDialog, Modal } from "../components/Modal";
 import { Table, Td, Th, Tr } from "../components/Table";
+import { useT, type Translate } from "../i18n";
+import { adapterRepoHint } from "../i18n/server";
 import { absoluteTime, relativeTime } from "../lib/format";
 import { useApi } from "../lib/useApi";
 import { useToast } from "../state/toast";
@@ -20,24 +22,25 @@ function parseUpstreams(text: string): string[] {
 }
 
 /** Mirrors the server rules so mistakes are caught before the round trip. */
-function upstreamError(list: string[]): string | null {
-  if (list.length === 0) return "Enter at least one upstream URL.";
+function upstreamError(list: string[], t: Translate): string | null {
+  if (list.length === 0) return t("repos.upstreamRequired");
   for (const raw of list) {
     let u: URL;
     try {
       u = new URL(raw);
     } catch {
-      return `"${raw}" is not a valid URL.`;
+      return t("repos.invalidUrl", { url: raw });
     }
-    if (u.protocol !== "http:" && u.protocol !== "https:") return `"${raw}" must start with http:// or https://.`;
-    if (u.username || u.password) return `"${raw}" must not contain credentials.`;
-    if (u.search) return `"${raw}" must not contain a query string.`;
+    if (u.protocol !== "http:" && u.protocol !== "https:") return t("repos.badScheme", { url: raw });
+    if (u.username || u.password) return t("repos.hasCredentials", { url: raw });
+    if (u.search) return t("repos.hasQuery", { url: raw });
   }
   return null;
 }
 
 function AddForm({ modules, onCreated }: { modules: Module[]; onCreated: () => Promise<void> }) {
   const toast = useToast();
+  const { t } = useT();
   const [module, setModule] = useState(modules[0]?.info.name ?? "");
   const [name, setName] = useState("");
   const [upstreams, setUpstreams] = useState("");
@@ -47,18 +50,18 @@ function AddForm({ modules, onCreated }: { modules: Module[]; onCreated: () => P
   const info = modules.find((m) => m.info.name === module)?.info;
 
   const list = parseUpstreams(upstreams);
-  const nameErr = touched && !NAME_RE.test(name) ? "Use lowercase letters, digits, dot, underscore or dash." : null;
-  const upErr = touched ? upstreamError(list) : null;
+  const nameErr = touched && !NAME_RE.test(name) ? t("repos.nameError") : null;
+  const upErr = touched ? upstreamError(list, t) : null;
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
     setTouched(true);
-    if (!module || !NAME_RE.test(name) || upstreamError(list)) return;
+    if (!module || !NAME_RE.test(name) || upstreamError(list, t)) return;
     setBusy(true);
     setError(null);
     try {
       await api.createRepository(module, name, list);
-      toast.success(`Repository ${module}/${name} added`);
+      toast.success(t("repos.added", { repo: `${module}/${name}` }));
       setName("");
       setUpstreams("");
       setTouched(false);
@@ -74,7 +77,7 @@ function AddForm({ modules, onCreated }: { modules: Module[]; onCreated: () => P
     <form onSubmit={submit} className="space-y-4" noValidate>
       {error && <ErrorNote message={error} />}
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Module">
+        <Field label={t("common.module")}>
           {(p) => (
             <Select {...p} value={module} onChange={(e) => setModule(e.target.value)} required>
               {modules.map((m) => (
@@ -85,15 +88,15 @@ function AddForm({ modules, onCreated }: { modules: Module[]; onCreated: () => P
             </Select>
           )}
         </Field>
-        <Field label="Name" hint="Becomes part of the URL clients use, e.g. debian or archlinux." error={nameErr}>
-          {(p) => <Input {...p} value={name} onChange={(e) => setName(e.target.value.toLowerCase())} placeholder="my-repo" spellCheck={false} autoCapitalize="none" className="font-mono" required />}
+        <Field label={t("repos.name")} hint={t("repos.nameHint")} error={nameErr}>
+          {(p) => <Input {...p} value={name} onChange={(e) => setName(e.target.value.toLowerCase())} placeholder={t("repos.namePlaceholder")} spellCheck={false} autoCapitalize="none" className="font-mono" required />}
         </Field>
       </div>
-      <Field label="Upstream URLs" hint={`One per line; later lines are fallbacks.${info?.repo_hint ? ` ${info.repo_hint}` : ""}`} error={upErr}>
+      <Field label={t("repos.upstreamUrls")} hint={`${t("repos.upstreamHint")} ${adapterRepoHint(info)}`.trim()} error={upErr}>
         {(p) => <Textarea {...p} value={upstreams} onChange={(e) => setUpstreams(e.target.value)} rows={3} placeholder="https://mirror.example.org/path" spellCheck={false} required />}
       </Field>
       <Button type="submit" variant="primary" busy={busy} icon={<Plus className="size-4" aria-hidden />}>
-        Add repository
+        {t("repos.add")}
       </Button>
     </form>
   );
@@ -101,20 +104,22 @@ function AddForm({ modules, onCreated }: { modules: Module[]; onCreated: () => P
 
 function EditDialog({ repo, onClose, onSaved }: { repo: Repository; onClose: () => void; onSaved: () => Promise<void> }) {
   const toast = useToast();
+  const { t } = useT();
   const [text, setText] = useState((repo.upstreams ?? []).join("\n"));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const list = parseUpstreams(text);
+  const name = `${repo.module}/${repo.name}`;
 
   const save = async (e: FormEvent) => {
     e.preventDefault();
-    const invalid = upstreamError(list);
+    const invalid = upstreamError(list, t);
     if (invalid) return setError(invalid);
     setBusy(true);
     setError(null);
     try {
       await api.updateRepository(repo.id, { upstreams: list });
-      toast.success(`Upstreams of ${repo.module}/${repo.name} updated`);
+      toast.success(t("repos.upstreamsUpdated", { repo: name }));
       await onSaved();
       onClose();
     } catch (err) {
@@ -125,15 +130,15 @@ function EditDialog({ repo, onClose, onSaved }: { repo: Repository; onClose: () 
   };
 
   return (
-    <Modal title={`Edit upstreams · ${repo.module}/${repo.name}`} onClose={onClose}>
+    <Modal title={t("repos.editTitle", { repo: name })} onClose={onClose}>
       <form onSubmit={save} className="space-y-4" noValidate>
-        <Field label="Upstream URLs" hint="One per line; later lines are fallbacks." error={error}>
+        <Field label={t("repos.upstreamUrls")} hint={t("repos.upstreamHint")} error={error}>
           {(p) => <Textarea {...p} value={text} onChange={(e) => setText(e.target.value)} rows={5} spellCheck={false} />}
         </Field>
         <div className="flex justify-end gap-2">
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={onClose}>{t("common.cancel")}</Button>
           <Button type="submit" variant="primary" busy={busy}>
-            Save upstreams
+            {t("repos.saveUpstreams")}
           </Button>
         </div>
       </form>
@@ -143,12 +148,14 @@ function EditDialog({ repo, onClose, onSaved }: { repo: Repository; onClose: () 
 
 function RepoRow({ repo, onChanged, onEdit, onDelete }: { repo: Repository; onChanged: () => Promise<void>; onEdit: () => void; onDelete: () => void }) {
   const toast = useToast();
+  const { t } = useT();
+  const name = `${repo.module}/${repo.name}`;
   const [busy, setBusy] = useState(false);
   const toggle = async (next: boolean) => {
     setBusy(true);
     try {
       await api.updateRepository(repo.id, { enabled: next });
-      toast.success(`${repo.module}/${repo.name} ${next ? "enabled" : "disabled"}`);
+      toast.success(t(next ? "repos.enabledToast" : "repos.disabledToast", { repo: name }));
       await onChanged();
     } catch (e) {
       toast.error(e);
@@ -170,14 +177,14 @@ function RepoRow({ repo, onChanged, onEdit, onDelete }: { repo: Repository; onCh
         {relativeTime(repo.created_at)}
       </Td>
       <Td>
-        <Switch checked={repo.enabled} disabled={busy} onChange={toggle} label={`${repo.enabled ? "Disable" : "Enable"} repository ${repo.module}/${repo.name}`} />
+        <Switch checked={repo.enabled} disabled={busy} onChange={toggle} label={t(repo.enabled ? "repos.disable" : "repos.enable", { repo: name })} />
       </Td>
       <Td right>
         <span className="inline-flex gap-1">
-          <IconButton label={`Edit upstreams of ${repo.module}/${repo.name}`} onClick={onEdit}>
+          <IconButton label={t("repos.editUpstreams", { repo: name })} onClick={onEdit}>
             <Pencil className="size-4" aria-hidden />
           </IconButton>
-          <IconButton tone="danger" label={`Delete repository ${repo.module}/${repo.name}`} onClick={onDelete}>
+          <IconButton tone="danger" label={t("repos.delete", { repo: name })} onClick={onDelete}>
             <Trash2 className="size-4" aria-hidden />
           </IconButton>
         </span>
@@ -188,6 +195,7 @@ function RepoRow({ repo, onChanged, onEdit, onDelete }: { repo: Repository; onCh
 
 export function Repositories() {
   const toast = useToast();
+  const { t, rich } = useT();
   const repos = useApi(api.repositories, [], 30_000);
   const modules = useApi(api.modules, []);
   const [editing, setEditing] = useState<Repository | null>(null);
@@ -202,7 +210,7 @@ export function Repositories() {
     setDeleteBusy(true);
     try {
       const res = await api.deleteRepository(deleting.id);
-      toast.success(`Repository ${deleting.module}/${deleting.name} deleted — ${res?.entries_released ?? 0} cached objects released`);
+      toast.success(t("repos.deleted", { repo: `${deleting.module}/${deleting.name}`, count: res?.entries_released ?? 0 }));
       setDeleting(null);
       await repos.reload();
     } catch (e) {
@@ -214,7 +222,7 @@ export function Repositories() {
 
   return (
     <>
-      <PageHeader title="Repositories" description="A repository maps a name under a module to one or more upstream mirrors." />
+      <PageHeader title={t("nav.repositories")} description={t("repos.description")} />
       <div className="space-y-3">
         <Resource state={repos}>
           {(data) => {
@@ -222,7 +230,7 @@ export function Repositories() {
             if (list.length === 0) {
               return (
                 <Card>
-                  <EmptyState title="No repositories yet" hint="Add the first one below." />
+                  <EmptyState title={t("repos.empty")} hint={t("repos.emptyHint")} />
                 </Card>
               );
             }
@@ -234,14 +242,14 @@ export function Repositories() {
                   .sort(([a], [b]) => a.localeCompare(b))
                   .map(([module, rs]) => (
                     <Card key={module} title={`${titles.get(module) ?? module} · ${rs.length}`} bodyClassName="p-0">
-                      <Table label={`Repositories of ${titles.get(module) ?? module}`}>
+                      <Table label={t("repos.tableLabel", { module: titles.get(module) ?? module })}>
                         <thead>
                           <tr>
-                            <Th className="w-40">Name</Th>
-                            <Th>Upstreams</Th>
-                            <Th>Created</Th>
-                            <Th>Enabled</Th>
-                            <Th right>Actions</Th>
+                            <Th className="w-40">{t("repos.name")}</Th>
+                            <Th>{t("repos.upstreams")}</Th>
+                            <Th>{t("repos.created")}</Th>
+                            <Th>{t("repos.enabled")}</Th>
+                            <Th right>{t("common.actions")}</Th>
                           </tr>
                         </thead>
                         <tbody>
@@ -259,24 +267,27 @@ export function Repositories() {
           }}
         </Resource>
 
-        <Card title="Add repository">
+        <Card title={t("repos.add")}>
           <Resource state={modules}>
-            {() => (moduleList.length === 0 ? <EmptyState title="No modules available" /> : <AddForm modules={moduleList} onCreated={repos.reload} />)}
+            {() => (moduleList.length === 0 ? <EmptyState title={t("repos.noModules")} /> : <AddForm modules={moduleList} onCreated={repos.reload} />)}
           </Resource>
         </Card>
       </div>
 
       {editing && <EditDialog repo={editing} onClose={() => setEditing(null)} onSaved={repos.reload} />}
       {deleting && (
-        <ConfirmDialog title="Delete repository?" confirmLabel="Delete repository" busy={deleteBusy} onConfirm={confirmDelete} onClose={() => setDeleting(null)}>
+        <ConfirmDialog title={t("repos.deleteTitle")} confirmLabel={t("repos.deleteConfirm")} busy={deleteBusy} onConfirm={confirmDelete} onClose={() => setDeleting(null)}>
           <p>
-            <span className="font-mono font-medium">
-              {deleting.module}/{deleting.name}
-            </span>{" "}
-            will be removed and clients using its URL will get errors.
+            {rich("repos.deleteText", {
+              repo: (
+                <span className="font-mono font-medium">
+                  {deleting.module}/{deleting.name}
+                </span>
+              ),
+            })}
           </p>
           <div className="mt-3">
-            <Notice tone="warn">All objects cached for this repository are released and their disk space is reclaimed by the next cleanup. They must be downloaded again if you re-add it.</Notice>
+            <Notice tone="warn">{t("repos.deleteWarning")}</Notice>
           </div>
         </ConfirmDialog>
       )}

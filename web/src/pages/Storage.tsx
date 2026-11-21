@@ -8,6 +8,7 @@ import { MaintenanceReport } from "../components/MaintenanceReport";
 import { ConfirmDialog } from "../components/Modal";
 import { StorageBar } from "../components/StorageBar";
 import { Table, Td, Th, Tr } from "../components/Table";
+import { useT } from "../i18n";
 import { absoluteTime, formatBytes, formatNumber, relativeTime, shortHash } from "../lib/format";
 import { useApi } from "../lib/useApi";
 import { useToast } from "../state/toast";
@@ -15,19 +16,21 @@ import { useToast } from "../state/toast";
 const PAGE = 50;
 
 function UsageCards({ usage: u }: { usage: Usage }) {
+  const { t } = useT();
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-      <KpiCard label="On disk" value={formatBytes(u.blob_bytes)} sub={`${formatNumber(u.blob_count)} unique blobs`} />
-      <KpiCard label="Cached objects" value={formatNumber(u.entry_count)} sub={`${formatBytes(u.logical_bytes)} logical size`} />
-      <KpiCard label="Dedup savings" value={formatBytes(u.dedup_saved)} sub="Identical content stored once" />
-      <KpiCard label="Pinned" value={formatNumber(u.pinned_count)} sub="Never evicted" />
+      <KpiCard label={t("storage.onDisk")} value={formatBytes(u.blob_bytes)} sub={t("storage.uniqueBlobs", { count: u.blob_count })} />
+      <KpiCard label={t("storage.cachedObjects")} value={formatNumber(u.entry_count)} sub={t("storage.logicalSize", { bytes: formatBytes(u.logical_bytes) })} />
+      <KpiCard label={t("common.dedupSavings")} value={formatBytes(u.dedup_saved)} sub={t("storage.dedupSub")} />
+      <KpiCard label={t("storage.pinned")} value={formatNumber(u.pinned_count)} sub={t("storage.pinnedSub")} />
     </div>
   );
 }
 
 function ModuleBreakdown({ usage }: { usage: Usage }) {
+  const { t } = useT();
   const mods = [...(usage.modules ?? [])].sort((a, b) => b.logical_bytes - a.logical_bytes);
-  if (mods.length === 0) return <EmptyState title="Nothing cached yet" hint="Objects appear here after clients download through the cache." />;
+  if (mods.length === 0) return <EmptyState title={t("storage.nothingCached")} hint={t("storage.emptyHint")} />;
   const max = Math.max(1, ...mods.map((m) => m.logical_bytes));
   return (
     <ul className="space-y-3">
@@ -36,10 +39,11 @@ function ModuleBreakdown({ usage }: { usage: Usage }) {
           <div className="mb-1 flex flex-wrap items-baseline justify-between gap-2 text-sm">
             <span className="font-medium">{m.module}</span>
             <span className="num text-xs text-muted">
-              {formatBytes(m.logical_bytes)} · {formatNumber(m.entries)} objects{m.pinned > 0 ? ` · ${formatNumber(m.pinned)} pinned` : ""}
+              {t("storage.moduleLine", { bytes: formatBytes(m.logical_bytes), count: m.entries })}
+              {m.pinned > 0 ? ` · ${t("storage.pinnedCount", { count: m.pinned })}` : ""}
             </span>
           </div>
-          <ProgressBar value={m.logical_bytes / max} tone="info" label={`${m.module} share of cached data`} />
+          <ProgressBar value={m.logical_bytes / max} tone="info" label={t("storage.moduleShare", { module: m.module })} />
         </li>
       ))}
     </ul>
@@ -48,6 +52,7 @@ function ModuleBreakdown({ usage }: { usage: Usage }) {
 
 function ObjectBrowser({ modules, onChanged }: { modules: string[]; onChanged: () => void }) {
   const toast = useToast();
+  const { t } = useT();
   const [search, setSearch] = useState("");
   const [q, setQ] = useState("");
   const [module, setModule] = useState("");
@@ -78,7 +83,7 @@ function ObjectBrowser({ modules, onChanged }: { modules: string[]; onChanged: (
     setBusyId(e.id);
     try {
       await api.pinEntry(e.id, !e.pinned);
-      toast.success(e.pinned ? "Object unpinned" : "Object pinned — it will not be evicted");
+      toast.success(e.pinned ? t("storage.unpinnedToast") : t("storage.pinnedToast"));
       await blobs.reload();
       onChanged();
     } catch (err) {
@@ -93,7 +98,7 @@ function ObjectBrowser({ modules, onChanged }: { modules: string[]; onChanged: (
     setBusyId(deleting.id);
     try {
       await api.deleteEntry(deleting.id);
-      toast.success("Object removed from the cache");
+      toast.success(t("storage.removedToast"));
       setDeleting(null);
       await blobs.reload();
       onChanged();
@@ -105,17 +110,17 @@ function ObjectBrowser({ modules, onChanged }: { modules: string[]; onChanged: (
   };
 
   return (
-    <Card title="Cached objects" bodyClassName="p-0">
+    <Card title={t("storage.cachedObjects")} bodyClassName="p-0">
       <div className="grid items-end gap-3 border-b border-line p-4 sm:grid-cols-2 lg:grid-cols-[1fr_12rem_12rem_auto]">
-        <Field label="Search path">
+        <Field label={t("storage.searchPath")}>
           {(p) => (
             <div className="relative">
               <Search className="pointer-events-none absolute left-2.5 top-2.5 size-4 text-dim" aria-hidden />
-              <Input {...p} type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="e.g. linux-firmware" className="pl-8" spellCheck={false} />
+              <Input {...p} type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("storage.searchPlaceholder")} className="pl-8" spellCheck={false} />
             </div>
           )}
         </Field>
-        <Field label="Module">
+        <Field label={t("common.module")}>
           {(p) => (
             <Select
               {...p}
@@ -125,7 +130,7 @@ function ObjectBrowser({ modules, onChanged }: { modules: string[]; onChanged: (
                 setOffset(0);
               }}
             >
-              <option value="">All modules</option>
+              <option value="">{t("common.allModules")}</option>
               {modules.map((m) => (
                 <option key={m} value={m}>
                   {m}
@@ -134,7 +139,7 @@ function ObjectBrowser({ modules, onChanged }: { modules: string[]; onChanged: (
             </Select>
           )}
         </Field>
-        <Field label="Sort by">
+        <Field label={t("storage.sortBy")}>
           {(p) => (
             <Select
               {...p}
@@ -144,9 +149,9 @@ function ObjectBrowser({ modules, onChanged }: { modules: string[]; onChanged: (
                 setOffset(0);
               }}
             >
-              <option value="recent">Recently used</option>
-              <option value="size">Size</option>
-              <option value="hits">Hits</option>
+              <option value="recent">{t("storage.sortRecent")}</option>
+              <option value="size">{t("storage.size")}</option>
+              <option value="hits">{t("common.hits")}</option>
             </Select>
           )}
         </Field>
@@ -160,25 +165,25 @@ function ObjectBrowser({ modules, onChanged }: { modules: string[]; onChanged: (
               setOffset(0);
             }}
           />
-          Pinned only
+          {t("storage.pinnedOnly")}
         </label>
       </div>
 
       <Resource state={blobs}>
         {() =>
           entries.length === 0 ? (
-            <EmptyState title={q || module || pinned ? "No objects match these filters" : "The cache is empty"} hint={q || module || pinned ? undefined : "Objects appear here after clients download through the cache."} />
+            <EmptyState title={q || module || pinned ? t("storage.noMatch") : t("storage.empty")} hint={q || module || pinned ? undefined : t("storage.emptyHint")} />
           ) : (
-            <Table label="Cached objects">
+            <Table label={t("storage.cachedObjects")}>
               <thead>
                 <tr>
-                  <Th>Path</Th>
-                  <Th>Module / repo</Th>
-                  <Th>Hash</Th>
-                  <Th right>Size</Th>
-                  <Th right>Hits</Th>
-                  <Th>Last access</Th>
-                  <Th right>Actions</Th>
+                  <Th>{t("common.path")}</Th>
+                  <Th>{t("storage.moduleRepo")}</Th>
+                  <Th>{t("storage.hash")}</Th>
+                  <Th right>{t("storage.size")}</Th>
+                  <Th right>{t("common.hits")}</Th>
+                  <Th>{t("storage.lastAccess")}</Th>
+                  <Th right>{t("common.actions")}</Th>
                 </tr>
               </thead>
               <tbody>
@@ -189,8 +194,8 @@ function ObjectBrowser({ modules, onChanged }: { modules: string[]; onChanged: (
                         <span className="truncate" title={e.path}>
                           {e.path}
                         </span>
-                        {e.pinned && <Badge tone="warn">pinned</Badge>}
-                        {e.immutable && <Badge title="Immutable: never revalidated against upstream">immutable</Badge>}
+                        {e.pinned && <Badge tone="warn">{t("storage.pinnedBadge")}</Badge>}
+                        {e.immutable && <Badge title={t("storage.immutableHint")}>{t("storage.immutableBadge")}</Badge>}
                       </span>
                     </Td>
                     <Td className="whitespace-nowrap text-muted">
@@ -206,10 +211,10 @@ function ObjectBrowser({ modules, onChanged }: { modules: string[]; onChanged: (
                     </Td>
                     <Td right>
                       <span className="inline-flex gap-1">
-                        <IconButton tone={e.pinned ? "active" : "default"} disabled={busyId === e.id} label={e.pinned ? `Unpin ${e.path}` : `Pin ${e.path}`} aria-pressed={e.pinned} onClick={() => void togglePin(e)}>
+                        <IconButton tone={e.pinned ? "active" : "default"} disabled={busyId === e.id} label={t(e.pinned ? "storage.unpin" : "storage.pin", { path: e.path })} aria-pressed={e.pinned} onClick={() => void togglePin(e)}>
                           {e.pinned ? <PinOff className="size-4" aria-hidden /> : <Pin className="size-4" aria-hidden />}
                         </IconButton>
-                        <IconButton tone="danger" disabled={busyId === e.id} label={`Delete ${e.path} from the cache`} onClick={() => setDeleting(e)}>
+                        <IconButton tone="danger" disabled={busyId === e.id} label={t("storage.deleteEntry", { path: e.path })} onClick={() => setDeleting(e)}>
                           <Trash2 className="size-4" aria-hidden />
                         </IconButton>
                       </span>
@@ -224,23 +229,23 @@ function ObjectBrowser({ modules, onChanged }: { modules: string[]; onChanged: (
 
       <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5">
         <span className="num text-xs text-dim" aria-live="polite">
-          {total === 0 ? "0 objects" : `${formatNumber(offset + 1)}–${formatNumber(Math.min(offset + PAGE, total))} of ${formatNumber(total)} objects`}
+          {total === 0 ? t("storage.zeroObjects") : t("storage.pageRange", { from: offset + 1, to: Math.min(offset + PAGE, total), total })}
         </span>
         <span className="inline-flex gap-1">
           <Button size="sm" disabled={offset === 0} onClick={() => setOffset(Math.max(0, offset - PAGE))} icon={<ChevronLeft className="size-3.5" aria-hidden />}>
-            Previous
+            {t("storage.previous")}
           </Button>
           <Button size="sm" disabled={offset + PAGE >= total} onClick={() => setOffset(offset + PAGE)}>
-            Next <ChevronRight className="size-3.5" aria-hidden />
+            {t("storage.next")} <ChevronRight className="size-3.5" aria-hidden />
           </Button>
         </span>
       </div>
 
       {deleting && (
-        <ConfirmDialog title="Delete cached object?" confirmLabel="Delete object" busy={busyId === deleting.id} onConfirm={confirmDelete} onClose={() => setDeleting(null)}>
+        <ConfirmDialog title={t("storage.deleteTitle")} confirmLabel={t("storage.deleteConfirm")} busy={busyId === deleting.id} onConfirm={confirmDelete} onClose={() => setDeleting(null)}>
           <p className="break-all font-mono text-xs">{deleting.path}</p>
           <p className="mt-3 text-muted">
-            {formatBytes(deleting.size)} in {deleting.module}/{deleting.repo}. The next client that asks for it downloads it from upstream again.
+            {t("storage.deleteText", { bytes: formatBytes(deleting.size), repo: `${deleting.module}/${deleting.repo}` })}
           </p>
         </ConfirmDialog>
       )}
@@ -250,6 +255,7 @@ function ObjectBrowser({ modules, onChanged }: { modules: string[]; onChanged: (
 
 export function Storage() {
   const toast = useToast();
+  const { t } = useT();
   const storage = useApi(api.storage, [], 10_000);
   const [gcBusy, setGcBusy] = useState(false);
   const [verifyBusy, setVerifyBusy] = useState(false);
@@ -260,8 +266,8 @@ export function Storage() {
     try {
       const r = await api.runGC();
       const freed = (r.gc?.bytes_freed ?? 0) + (r.eviction?.bytes_freed ?? 0);
-      toast.success(`Cleanup finished: ${formatNumber(r.gc?.blobs_removed ?? 0)} blobs and ${formatNumber(r.eviction?.entries_removed ?? 0)} objects removed, ${formatBytes(freed)} freed`);
-      if (r.eviction?.unsatisfied) toast.error("Eviction could not free enough space");
+      toast.success(t("storage.cleanupDone", { blobs: r.gc?.blobs_removed ?? 0, objects: r.eviction?.entries_removed ?? 0, bytes: formatBytes(freed) }));
+      if (r.eviction?.unsatisfied) toast.error(t("storage.evictionFailed"));
       await storage.reload();
       setBrowserKey((k) => k + 1);
     } catch (e) {
@@ -275,8 +281,8 @@ export function Storage() {
     setVerifyBusy(true);
     try {
       const r = await api.verify();
-      if (r.corrupt + r.missing > 0) toast.error(`Integrity check: ${r.corrupt} corrupt and ${r.missing} missing of ${r.checked} blobs`);
-      else toast.success(`Integrity check passed: ${formatNumber(r.checked)} blobs verified`);
+      if (r.corrupt + r.missing > 0) toast.error(t("storage.verifyFailed", { corrupt: r.corrupt, missing: r.missing, checked: r.checked }));
+      else toast.success(t("storage.verifyPassed", { checked: r.checked }));
       await storage.reload();
     } catch (e) {
       toast.error(e);
@@ -288,15 +294,15 @@ export function Storage() {
   return (
     <>
       <PageHeader
-        title="Storage"
-        description="What is on disk, how it is maintained, and every cached object."
+        title={t("nav.storage")}
+        description={t("storage.description")}
         actions={
           <>
             <Button icon={<Sparkles className="size-4" aria-hidden />} busy={gcBusy} onClick={runGC}>
-              Run cleanup now
+              {t("storage.runCleanup")}
             </Button>
             <Button icon={<ShieldCheck className="size-4" aria-hidden />} busy={verifyBusy} onClick={runVerify}>
-              Verify integrity
+              {t("storage.verify")}
             </Button>
           </>
         }
@@ -307,15 +313,15 @@ export function Storage() {
             <div className="space-y-3">
               <UsageCards usage={data.usage} />
               <div className="grid gap-3 xl:grid-cols-2">
-                <Card title="Utilisation">
+                <Card title={t("storage.utilisation")}>
                   <StorageBar usage={data.usage} />
                   <dl className="num mt-4 grid grid-cols-2 gap-3 text-xs sm:grid-cols-4">
                     {(
                       [
-                        ["Cache limit", data.usage.max_size > 0 ? formatBytes(data.usage.max_size) : "unlimited"],
-                        ["Disk size", formatBytes(data.usage.disk_total)],
-                        ["Disk free", formatBytes(data.usage.disk_free)],
-                        ["Keep free", data.usage.min_free > 0 ? formatBytes(data.usage.min_free) : "–"],
+                        [t("common.cacheLimit"), data.usage.max_size > 0 ? formatBytes(data.usage.max_size) : t("common.unlimited")],
+                        [t("storage.diskSize"), formatBytes(data.usage.disk_total)],
+                        [t("storage.diskFree"), formatBytes(data.usage.disk_free)],
+                        [t("storage.keepFree"), data.usage.min_free > 0 ? formatBytes(data.usage.min_free) : "–"],
                       ] as const
                     ).map(([k, v]) => (
                       <div key={k}>
@@ -325,11 +331,11 @@ export function Storage() {
                     ))}
                   </dl>
                 </Card>
-                <Card title="By module">
+                <Card title={t("storage.byModule")}>
                   <ModuleBreakdown usage={data.usage} />
                 </Card>
               </div>
-              <Card title="Maintenance">
+              <Card title={t("common.maintenance")}>
                 <MaintenanceReport maintenance={data.maintenance} />
               </Card>
             </div>

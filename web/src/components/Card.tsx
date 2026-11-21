@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useT } from "../i18n";
 
 export function Card({
   title,
@@ -160,12 +161,13 @@ export function EmptyState({ icon, title, hint }: { icon?: ReactNode; title: str
 }
 
 export function ErrorNote({ message, onRetry }: { message: string; onRetry?: () => void }) {
+  const { t } = useT();
   return (
     <div role="alert" className="flex flex-wrap items-center gap-3 rounded-lg border border-bad/40 bg-bad/10 px-3 py-2 text-sm text-bad">
       <span className="min-w-0 flex-1 break-words">{message}</span>
       {onRetry && (
         <button type="button" onClick={onRetry} className="rounded-md border border-bad/40 px-2 py-1 text-xs font-medium hover:bg-bad/10">
-          Retry
+          {t("common.retry")}
         </button>
       )}
     </div>
@@ -177,11 +179,12 @@ export function Notice({ tone = "info", children }: { tone?: "info" | "warn" | "
   return <div className={`rounded-lg border px-3 py-2 text-sm text-fg ${cls}`}>{children}</div>;
 }
 
-export function Loading({ label = "Loading…" }: { label?: string }) {
+export function Loading({ label }: { label?: string }) {
+  const { t } = useT();
   return (
     <div className="flex items-center justify-center gap-2 px-4 py-10 text-sm text-dim" role="status">
       <span className="size-4 animate-spin rounded-full border-2 border-line border-t-info" aria-hidden />
-      {label}
+      {label ?? t("common.loading")}
     </div>
   );
 }
@@ -194,6 +197,7 @@ export function Resource<T>({
   state: { data: T | undefined; error: string | null; loading: boolean; reload: () => void };
   children: (data: T) => ReactNode;
 }) {
+  const { t } = useT();
   if (state.data === undefined) {
     if (state.error) return <ErrorNote message={state.error} onRetry={state.reload} />;
     return <Loading />;
@@ -202,7 +206,7 @@ export function Resource<T>({
     <>
       {state.error && (
         <div className="mb-3">
-          <ErrorNote message={`Refresh failed: ${state.error}`} onRetry={state.reload} />
+          <ErrorNote message={t("common.refreshFailed", { error: state.error })} onRetry={state.reload} />
         </div>
       )}
       {children(state.data)}

@@ -1,4 +1,5 @@
 import type { Usage } from "../api/types";
+import { useT } from "../i18n";
 import { formatBytes, formatPercent } from "../lib/format";
 import { ProgressBar } from "./Card";
 
@@ -24,15 +25,16 @@ export function utilisation(u: Usage): Utilisation {
 }
 
 export function StorageBar({ usage }: { usage: Usage }) {
+  const { t } = useT();
   const u = utilisation(usage);
-  if (!u.known) return <p className="text-xs text-dim">Disk size unknown — no limit configured.</p>;
+  if (!u.known) return <p className="text-xs text-dim">{t("storageBar.unknown")}</p>;
   const tone = u.ratio >= 0.95 ? "bad" : u.ratio >= 0.85 ? "warn" : "ok";
   return (
     <div className="space-y-1.5">
-      <ProgressBar value={u.ratio} tone={tone} label={`Storage utilisation against ${u.basis}`} />
+      <ProgressBar value={u.ratio} tone={tone} label={u.basis === "disk" ? t("storageBar.againstDisk") : t("storageBar.againstCacheLimit")} />
       <div className="num flex flex-wrap justify-between gap-x-3 text-xs text-dim">
         <span>
-          {formatBytes(u.used)} of {formatBytes(u.limit)} {u.basis === "disk" ? "disk used" : "cache limit"}
+          {t(u.basis === "disk" ? "storageBar.ofDisk" : "storageBar.ofCacheLimit", { used: formatBytes(u.used), limit: formatBytes(u.limit) })}
         </span>
         <span>{formatPercent(u.ratio)}</span>
       </div>

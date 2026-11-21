@@ -1,22 +1,23 @@
-import type { HistoryPoint } from "../api/types";
+import type { HistoryPoint, HistoryRange } from "../api/types";
+import { useT, type Translate } from "../i18n";
 import { formatBytes, formatCompact } from "../lib/format";
 import { bucketLabel } from "../lib/history";
 import { COLORS, Legend, TimeChart, type Series } from "./Charts";
 import { EmptyState } from "./Card";
 
-export function requestSeries(points: HistoryPoint[]): Series[] {
+export function requestSeries(points: HistoryPoint[], t: Translate): Series[] {
   return [
-    { key: "hits", label: "Hits", color: COLORS.ok, values: points.map((p) => p.hits) },
-    { key: "revalidated", label: "Revalidated", color: COLORS.alt, values: points.map((p) => p.revalidated) },
-    { key: "misses", label: "Misses", color: COLORS.info, values: points.map((p) => p.misses) },
-    { key: "errors", label: "Errors", color: COLORS.bad, values: points.map((p) => p.errors) },
+    { key: "hits", label: t("common.hits"), color: COLORS.ok, values: points.map((p) => p.hits) },
+    { key: "revalidated", label: t("common.revalidated"), color: COLORS.alt, values: points.map((p) => p.revalidated) },
+    { key: "misses", label: t("common.misses"), color: COLORS.info, values: points.map((p) => p.misses) },
+    { key: "errors", label: t("common.errors"), color: COLORS.bad, values: points.map((p) => p.errors) },
   ];
 }
 
-export function byteSeries(points: HistoryPoint[]): Series[] {
+export function byteSeries(points: HistoryPoint[], t: Translate): Series[] {
   return [
-    { key: "cache", label: "Served from cache (saved)", color: COLORS.ok, values: points.map((p) => p.bytes_cache) },
-    { key: "upstream", label: "Downloaded from upstream", color: COLORS.info, values: points.map((p) => p.bytes_upstream) },
+    { key: "cache", label: t("charts.servedFromCache"), color: COLORS.ok, values: points.map((p) => p.bytes_cache) },
+    { key: "upstream", label: t("charts.downloadedFromUpstream"), color: COLORS.info, values: points.map((p) => p.bytes_upstream) },
   ];
 }
 
@@ -29,8 +30,9 @@ function hasData(series: Series[]): boolean {
 }
 
 export function RequestsHistoryChart({ points, step, height = 200 }: { points: HistoryPoint[]; step: number; height?: number }) {
-  const series = requestSeries(points);
-  if (!hasData(series)) return <EmptyState title="No requests in this time range" hint="Point a client at the cache to see activity here." />;
+  const { t } = useT();
+  const series = requestSeries(points, t);
+  if (!hasData(series)) return <EmptyState title={t("charts.noRequestsInRange")} hint={t("charts.noRequestsInRangeHint")} />;
   return (
     <div className="space-y-2">
       <Legend series={series} />
@@ -41,15 +43,16 @@ export function RequestsHistoryChart({ points, step, height = 200 }: { points: H
         height={height}
         formatY={(v) => formatCompact(v)}
         formatX={(t) => bucketLabel(t, step, span(points))}
-        label="Requests by result over time"
+        label={t("charts.requestsOverTime")}
       />
     </div>
   );
 }
 
 export function BytesHistoryChart({ points, step, height = 200 }: { points: HistoryPoint[]; step: number; height?: number }) {
-  const series = byteSeries(points);
-  if (!hasData(series)) return <EmptyState title="No data transferred in this time range" />;
+  const { t } = useT();
+  const series = byteSeries(points, t);
+  if (!hasData(series)) return <EmptyState title={t("charts.noDataInRange")} />;
   return (
     <div className="space-y-2">
       <Legend series={series} />
@@ -61,16 +64,15 @@ export function BytesHistoryChart({ points, step, height = 200 }: { points: Hist
         binary
         formatY={formatBytes}
         formatX={(t) => bucketLabel(t, step, span(points))}
-        label="Bytes served from cache versus downloaded from upstream over time"
+        label={t("charts.bytesOverTime")}
       />
     </div>
   );
 }
 
-export const RANGES = [
-  { value: "1h", label: "1 h" },
-  { value: "6h", label: "6 h" },
-  { value: "24h", label: "24 h" },
-  { value: "7d", label: "7 d" },
-  { value: "30d", label: "30 d" },
-] as const;
+export const RANGES: readonly HistoryRange[] = ["1h", "6h", "24h", "7d", "30d"];
+
+/** Options for the time range switch, labelled in the active language. */
+export function rangeOptions(t: Translate): { value: HistoryRange; label: string }[] {
+  return RANGES.map((value) => ({ value, label: t(`range.${value}`) }));
+}

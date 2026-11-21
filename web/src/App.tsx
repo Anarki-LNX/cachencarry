@@ -2,6 +2,7 @@ import { Link, Route, Routes } from "react-router-dom";
 import { Button } from "./components/Controls";
 import { EmptyState, Loading } from "./components/Card";
 import { Layout } from "./components/Layout";
+import { useT } from "./i18n";
 import { useAuth } from "./state/auth";
 import { LiveProvider } from "./state/live";
 import { AuthShell } from "./pages/AuthShell";
@@ -21,20 +22,21 @@ import { Health } from "./pages/Health";
 
 export function App() {
   const { phase, error, refresh } = useAuth();
+  const { t } = useT();
 
   if (phase === "loading") {
     return (
       <div className="grid h-full place-items-center">
-        <Loading label="Connecting to UniCache…" />
+        <Loading label={t("app.connecting")} />
       </div>
     );
   }
   if (phase === "unreachable") {
     return (
-      <AuthShell title="Server unreachable">
-        <p className="mb-4 text-sm text-muted">{error ?? "The UniCache server did not answer."}</p>
+      <AuthShell title={t("app.unreachableTitle")}>
+        <p className="mb-4 text-sm text-muted">{error ?? t("app.unreachableText")}</p>
         <Button variant="primary" onClick={() => void refresh()} className="w-full">
-          Try again
+          {t("app.tryAgain")}
         </Button>
       </AuthShell>
     );
@@ -59,7 +61,7 @@ export function App() {
           <Route path="/health" element={<Health />} />
           <Route
             path="*"
-            element={<EmptyState title="Page not found" hint={<Link className="text-info underline" to="/">Back to the dashboard</Link>} />}
+            element={<EmptyState title={t("app.notFound")} hint={<Link className="text-info underline" to="/">{t("app.backToDashboard")}</Link>} />}
           />
         </Routes>
       </Layout>

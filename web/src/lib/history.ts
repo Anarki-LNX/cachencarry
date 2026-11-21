@@ -1,4 +1,5 @@
 import type { Counters, History, HistoryPoint } from "../api/types";
+import { locale } from "../i18n/core";
 
 export const ZERO: Counters = {
   hits: 0,
@@ -47,8 +48,8 @@ export function hitRatio(c: Counters): number {
 /** Axis/tooltip label for a bucket; includes the date once the range spans more than a day. */
 export function bucketLabel(t: number, stepSeconds: number, spanSeconds = 0): string {
   const d = new Date(t * 1000);
-  if (stepSeconds >= 86400) return d.toLocaleDateString([], { month: "short", day: "numeric" });
+  if (stepSeconds >= 86400) return d.toLocaleDateString(locale(), { month: "short", day: "numeric" });
   if (spanSeconds > 86400 || stepSeconds >= 3600)
-    return d.toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false });
-  return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: false });
+    return d.toLocaleString(locale(), { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false });
+  return d.toLocaleTimeString(locale(), { hour: "2-digit", minute: "2-digit", hour12: false });
 }

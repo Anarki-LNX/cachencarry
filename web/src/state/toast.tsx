@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from "react";
 import { AlertTriangle, CheckCircle2, Info, X } from "lucide-react";
 import { errorMessage } from "../api/client";
+import { useT } from "../i18n";
 
 type Kind = "success" | "error" | "info";
 interface Toast {
@@ -17,6 +18,7 @@ interface ToastApi {
 const Ctx = createContext<ToastApi | null>(null);
 
 export function ToastProvider({ children }: { children: ReactNode }) {
+  const { t: tr } = useT();
   const [toasts, setToasts] = useState<Toast[]>([]);
   const nextId = useRef(1);
 
@@ -56,7 +58,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             <button
               type="button"
               onClick={() => dismiss(t.id)}
-              aria-label="Dismiss notification"
+              aria-label={tr("common.dismissNotification")}
               className="rounded p-0.5 text-dim hover:text-fg"
             >
               <X className="size-4" aria-hidden />

@@ -1,5 +1,6 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { X } from "lucide-react";
+import { useT } from "../i18n";
 import { Button, IconButton } from "./Controls";
 
 export function Modal({
@@ -14,6 +15,7 @@ export function Modal({
   footer?: ReactNode;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
+  const { t } = useT();
 
   useEffect(() => {
     const dlg = ref.current;
@@ -42,7 +44,7 @@ export function Modal({
     >
       <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
         <h2 className="text-sm font-semibold">{title}</h2>
-        <IconButton label="Close dialog" onClick={onClose}>
+        <IconButton label={t("common.closeDialog")} onClick={onClose}>
           <X className="size-4" aria-hidden />
         </IconButton>
       </div>
@@ -67,6 +69,7 @@ export function ConfirmDialog({
   onConfirm: () => void;
   onClose: () => void;
 }) {
+  const { t } = useT();
   return (
     <Modal
       title={title}
@@ -74,7 +77,7 @@ export function ConfirmDialog({
       footer={
         <>
           <Button onClick={onClose} data-autofocus>
-            Cancel
+            {t("common.cancel")}
           </Button>
           <Button variant="danger" busy={busy} onClick={onConfirm}>
             {confirmLabel}

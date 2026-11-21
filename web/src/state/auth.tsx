@@ -3,6 +3,8 @@ import { api, errorMessage, setCsrf, setUnauthorizedHandler } from "../api/clien
 import type { AuthResult, Session } from "../api/types";
 
 type Phase = "loading" | "unreachable" | "setup" | "login" | "ready";
+/** Dictionary key of the notice, so it follows the language chosen on the login screen. */
+type NoticeKey = "auth.sessionExpired" | "auth.passwordChanged";
 
 interface AuthState {
   phase: Phase;
@@ -11,10 +13,10 @@ interface AuthState {
   setupTokenRequired: boolean;
   error: string | null;
   /** Shown on the login screen, e.g. after a password change. */
-  notice: string | null;
+  notice: NoticeKey | null;
   refresh: () => Promise<void>;
   signedIn: (r: AuthResult) => void;
-  signedOut: (notice?: string) => void;
+  signedOut: (notice?: NoticeKey) => void;
   logout: () => Promise<void>;
 }
 
@@ -25,7 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
+  const [notice, setNotice] = useState<NoticeKey | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -49,7 +51,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const signedOut = useCallback((msg?: string) => {
+  const signedOut = useCallback((msg?: NoticeKey) => {
     setCsrf("");
     setUser("");
     setNotice(msg ?? null);
@@ -61,7 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [refresh]);
 
   useEffect(() => {
-    setUnauthorizedHandler(() => signedOut("Your session has expired. Please sign in again."));
+    setUnauthorizedHandler(() => signedOut("auth.sessionExpired"));
     return () => setUnauthorizedHandler(null);
   }, [signedOut]);
 

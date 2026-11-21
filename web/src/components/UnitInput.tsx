@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useT } from "../i18n";
 import { Input, Select } from "./Controls";
 
 export interface Unit {
@@ -47,6 +48,7 @@ export function UnitInput({
   "aria-describedby"?: string;
   "aria-invalid"?: boolean;
 }) {
+  const { t } = useT();
   const [unit, setUnit] = useState(() => bestUnit(value, units, defaultUnit));
   const [text, setText] = useState(() => String(value / bestUnit(value, units, defaultUnit)));
 
@@ -83,7 +85,7 @@ export function UnitInput({
         {...aria}
       />
       <Select
-        aria-label={`${label} unit`}
+        aria-label={t("common.unitOf", { label })}
         value={unit}
         onChange={(e) => {
           const u = Number(e.target.value);

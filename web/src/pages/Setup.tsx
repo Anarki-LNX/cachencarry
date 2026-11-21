@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { api, errorMessage } from "../api/client";
 import { Button, CodeBlock, Field, Input } from "../components/Controls";
 import { ErrorNote } from "../components/Card";
+import { useT } from "../i18n";
 import { useAuth } from "../state/auth";
 import { AuthShell } from "./AuthShell";
 
@@ -9,6 +10,7 @@ const MIN_PASSWORD = 10;
 
 export function Setup() {
   const { signedIn, setupTokenRequired } = useAuth();
+  const { t } = useT();
   const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -17,8 +19,8 @@ export function Setup() {
   const [error, setError] = useState<string | null>(null);
   const [touched, setTouched] = useState(false);
 
-  const pwError = touched && password.length < MIN_PASSWORD ? `Use at least ${MIN_PASSWORD} characters.` : null;
-  const confirmError = touched && confirm !== password ? "The passwords do not match." : null;
+  const pwError = touched && password.length < MIN_PASSWORD ? t("auth.passwordTooShort", { min: MIN_PASSWORD }) : null;
+  const confirmError = touched && confirm !== password ? t("auth.passwordMismatch") : null;
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -36,35 +38,35 @@ export function Setup() {
   };
 
   return (
-    <AuthShell wide title="Welcome — create the administrator account" subtitle="This one-time setup secures the management interface. Clients on your LAN never need an account.">
+    <AuthShell wide title={t("setup.title")} subtitle={t("setup.subtitle")}>
       <form onSubmit={submit} className="space-y-4" noValidate>
         {error && <ErrorNote message={error} />}
-        <Field label="Username">
+        <Field label={t("auth.username")}>
           {(p) => <Input {...p} value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="username" autoCapitalize="none" spellCheck={false} required />}
         </Field>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Password" hint={`At least ${MIN_PASSWORD} characters.`} error={pwError}>
+          <Field label={t("auth.password")} hint={t("auth.passwordHint", { min: MIN_PASSWORD })} error={pwError}>
             {(p) => <Input {...p} type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" minLength={MIN_PASSWORD} required />}
           </Field>
-          <Field label="Confirm password" error={confirmError}>
+          <Field label={t("auth.confirmPassword")} error={confirmError}>
             {(p) => <Input {...p} type="password" value={confirm} onChange={(e) => setConfirm(e.target.value)} autoComplete="new-password" required />}
           </Field>
         </div>
         {setupTokenRequired && (
           <div className="space-y-3">
-            <Field label="Setup token" hint="Proves that you have access to the server. It is stored in the file setup-token inside the data directory.">
+            <Field label={t("setup.token")} hint={t("setup.tokenHint")}>
               {(p) => <Input {...p} value={token} onChange={(e) => { setToken(e.target.value); setError(null); }} autoComplete="off" spellCheck={false} className="font-mono" required />}
             </Field>
             <div className="space-y-2 text-xs text-muted">
-              <p>Read the token on the server:</p>
-              <CodeBlock text="su -s /bin/sh unicache -c '/usr/local/bin/unicache setup-token'" copyLabel="Copy command" />
-              <p>With Docker Compose:</p>
-              <CodeBlock text="docker compose exec unicache unicache setup-token" copyLabel="Copy command" />
+              <p>{t("setup.readToken")}</p>
+              <CodeBlock text="su -s /bin/sh unicache -c '/usr/local/bin/unicache setup-token'" copyLabel={t("setup.copyCommand")} />
+              <p>{t("setup.withCompose")}</p>
+              <CodeBlock text="docker compose exec unicache unicache setup-token" copyLabel={t("setup.copyCommand")} />
             </div>
           </div>
         )}
         <Button type="submit" variant="primary" busy={busy} className="w-full">
-          Create account
+          {t("setup.createAccount")}
         </Button>
       </form>
     </AuthShell>

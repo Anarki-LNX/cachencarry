@@ -5,7 +5,8 @@ import { Badge, Card, EmptyState, PageHeader } from "../components/Card";
 import { Button, Field, Input, Select } from "../components/Controls";
 import { RESULTS, ResultBadge } from "../components/ResultBadge";
 import { Table, Td, Th, Tr } from "../components/Table";
-import { clockTime, formatBytes, formatMs, formatRate } from "../lib/format";
+import { useT } from "../i18n";
+import { absoluteTime, clockTime, formatBytes, formatMs, formatRate } from "../lib/format";
 import { useLive } from "../state/live";
 
 function speed(r: RequestRecord): string {
@@ -14,6 +15,7 @@ function speed(r: RequestRecord): string {
 }
 
 export function Traffic() {
+  const { t } = useT();
   const liveRequests = useLive((s) => s.requests);
   const [paused, setPaused] = useState(false);
   const frozen = useRef<RequestRecord[]>(liveRequests);
@@ -49,28 +51,28 @@ export function Traffic() {
   return (
     <>
       <PageHeader
-        title="Live Traffic"
-        description="Every client request as it finishes. The newest 500 are kept in the browser."
+        title={t("nav.traffic")}
+        description={t("traffic.description")}
         actions={
           <>
-            {paused && missed > 0 && <Badge tone="warn">{missed} new while paused</Badge>}
+            {paused && missed > 0 && <Badge tone="warn">{t("traffic.newWhilePaused", { count: missed })}</Badge>}
             <Button
               icon={paused ? <Play className="size-4" aria-hidden /> : <Pause className="size-4" aria-hidden />}
               aria-pressed={paused}
               onClick={() => setPaused(!paused)}
-              title="Space bar toggles pause"
+              title={t("traffic.spaceToggles")}
             >
-              {paused ? "Resume" : "Pause"}
+              {paused ? t("traffic.resume") : t("traffic.pause")}
             </Button>
           </>
         }
       />
       <Card bodyClassName="p-0">
         <div className="grid gap-3 border-b border-line p-4 sm:grid-cols-3">
-          <Field label="Module">
+          <Field label={t("common.module")}>
             {(p) => (
               <Select {...p} value={module} onChange={(e) => setModule(e.target.value)}>
-                <option value="">All modules</option>
+                <option value="">{t("common.allModules")}</option>
                 {moduleOptions.map((m) => (
                   <option key={m} value={m}>
                     {m}
@@ -79,13 +81,13 @@ export function Traffic() {
               </Select>
             )}
           </Field>
-          <Field label="Client">
-            {(p) => <Input {...p} value={client} onChange={(e) => setClient(e.target.value)} placeholder="IP address contains…" spellCheck={false} />}
+          <Field label={t("common.client")}>
+            {(p) => <Input {...p} value={client} onChange={(e) => setClient(e.target.value)} placeholder={t("traffic.clientPlaceholder")} spellCheck={false} />}
           </Field>
-          <Field label="Result">
+          <Field label={t("traffic.result")}>
             {(p) => (
               <Select {...p} value={result} onChange={(e) => setResult(e.target.value)}>
-                <option value="">All results</option>
+                <option value="">{t("traffic.allResults")}</option>
                 {RESULTS.map((r) => (
                   <option key={r} value={r}>
                     {r}
@@ -97,30 +99,30 @@ export function Traffic() {
         </div>
         {rows.length === 0 ? (
           <EmptyState
-            title={requests.length === 0 ? "No requests yet" : "No requests match these filters"}
-            hint={requests.length === 0 ? "Point a client at the cache — requests appear here the moment they finish." : undefined}
+            title={requests.length === 0 ? t("common.noRequestsYet") : t("traffic.noMatch")}
+            hint={requests.length === 0 ? t("traffic.noRequestsHint") : undefined}
           />
         ) : (
           <>
-            <Table label="Client requests, newest first">
+            <Table label={t("traffic.tableLabel")}>
               <thead>
                 <tr>
-                  <Th>Time</Th>
-                  <Th>Client</Th>
-                  <Th>Module</Th>
-                  <Th>Repo</Th>
-                  <Th>Path</Th>
-                  <Th>Result</Th>
-                  <Th>Source</Th>
-                  <Th right>Bytes</Th>
-                  <Th right>Duration</Th>
-                  <Th right>Avg speed</Th>
+                  <Th>{t("common.time")}</Th>
+                  <Th>{t("common.client")}</Th>
+                  <Th>{t("common.module")}</Th>
+                  <Th>{t("traffic.repo")}</Th>
+                  <Th>{t("common.path")}</Th>
+                  <Th>{t("traffic.result")}</Th>
+                  <Th>{t("traffic.source")}</Th>
+                  <Th right>{t("traffic.bytes")}</Th>
+                  <Th right>{t("traffic.duration")}</Th>
+                  <Th right>{t("traffic.avgSpeed")}</Th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((r) => (
                   <Tr key={r.id}>
-                    <Td className="num whitespace-nowrap text-xs text-muted" title={new Date(r.time).toLocaleString()}>
+                    <Td className="num whitespace-nowrap text-xs text-muted" title={absoluteTime(r.time)}>
                       {clockTime(r.time)}
                     </Td>
                     <Td mono className="whitespace-nowrap">{r.client}</Td>
@@ -136,7 +138,7 @@ export function Traffic() {
                       <span className="flex items-center gap-1.5">
                         <ResultBadge result={r.result} />
                         {r.status > 0 && <span className="num text-xs text-dim">{r.status}</span>}
-                        {r.partial && <Badge title="Range request (partial content)">partial</Badge>}
+                        {r.partial && <Badge title={t("traffic.rangeRequest")}>{t("traffic.partial")}</Badge>}
                       </span>
                     </Td>
                     <Td className={`whitespace-nowrap text-xs ${r.source === "cache" ? "text-ok" : r.source === "upstream" ? "text-info" : "text-dim"}`}>{r.source || "–"}</Td>
@@ -148,7 +150,8 @@ export function Traffic() {
               </tbody>
             </Table>
             <p className="num px-4 py-2 text-xs text-dim">
-              Showing {rows.length} of {requests.length} requests{paused ? " · paused" : ""}
+              {t("traffic.showing", { shown: rows.length, total: requests.length })}
+              {paused ? ` · ${t("traffic.paused")}` : ""}
             </p>
           </>
         )}

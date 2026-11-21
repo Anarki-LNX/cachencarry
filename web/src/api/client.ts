@@ -1,3 +1,5 @@
+import { translate } from "../i18n/core";
+import { serverError } from "../i18n/server";
 import type * as T from "./types";
 
 export class ApiError extends Error {
@@ -42,7 +44,7 @@ async function request<R>(method: string, path: string, opts: Options = {}): Pro
     });
   } catch (e) {
     if (e instanceof DOMException && e.name === "AbortError") throw e;
-    throw new ApiError(0, "Cannot reach the UniCache server");
+    throw new ApiError(0, translate("error.unreachable"));
   }
 
   let payload: unknown = null;
@@ -58,8 +60,8 @@ async function request<R>(method: string, path: string, opts: Options = {}): Pro
   if (!res.ok) {
     const msg =
       payload && typeof payload === "object" && "error" in payload && typeof payload.error === "string"
-        ? payload.error
-        : `Request failed (${res.status} ${res.statusText})`;
+        ? serverError(payload.error)
+        : translate("error.requestFailed", { status: `${res.status} ${res.statusText}`.trim() });
     if (res.status === 401 && !opts.anonymous) onUnauthorized?.();
     throw new ApiError(res.status, msg);
   }

@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import { formatRate } from "../lib/format";
+import { useT } from "../i18n";
+import { clockTime, formatRate } from "../lib/format";
 import { useLive } from "../state/live";
 import { COLORS, Legend, TimeChart, type Series } from "./Charts";
 
@@ -7,6 +8,7 @@ const WINDOW = 120;
 
 /** Live LAN vs upstream throughput for the last two minutes. */
 export function ThroughputChart({ height = 200 }: { height?: number }) {
+  const { t } = useT();
   const rates = useLive((s) => s.rates);
 
   const { xs, series, current } = useMemo(() => {
@@ -23,19 +25,19 @@ export function ThroughputChart({ height = 200 }: { height?: number }) {
       up.push(r?.upstream ?? 0);
     }
     const series: Series[] = [
-      { key: "lan", label: "To LAN clients", color: COLORS.ok, values: lan },
-      { key: "upstream", label: "From upstream", color: COLORS.info, values: up },
+      { key: "lan", label: t("charts.toLanClients"), color: COLORS.ok, values: lan },
+      { key: "upstream", label: t("charts.fromUpstream"), color: COLORS.info, values: up },
     ];
     return { xs, series, current: rates[rates.length - 1] };
-  }, [rates]);
+  }, [rates, t]);
 
   return (
     <div className="space-y-2">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <Legend series={series} />
         <div className="num flex gap-4 text-xs">
-          <span className="text-ok">LAN {formatRate(current?.lan ?? 0)}</span>
-          <span className="text-info">Upstream {formatRate(current?.upstream ?? 0)}</span>
+          <span className="text-ok">{t("charts.lanRate", { rate: formatRate(current?.lan ?? 0) })}</span>
+          <span className="text-info">{t("charts.upstreamRate", { rate: formatRate(current?.upstream ?? 0) })}</span>
         </div>
       </div>
       <TimeChart
@@ -45,8 +47,8 @@ export function ThroughputChart({ height = 200 }: { height?: number }) {
         height={height}
         binary
         formatY={formatRate}
-        formatX={(t) => new Date(t * 1000).toLocaleTimeString([], { hour12: false })}
-        label="Live throughput to LAN clients and from upstream, last two minutes"
+        formatX={clockTime}
+        label={t("charts.throughput")}
       />
     </div>
   );

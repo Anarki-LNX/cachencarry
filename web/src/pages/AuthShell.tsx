@@ -1,16 +1,20 @@
 import type { ReactNode } from "react";
 import { Database, Moon, Sun } from "lucide-react";
 import { IconButton } from "../components/Controls";
+import { LanguageSwitch } from "../components/LanguageSwitch";
+import { useT } from "../i18n";
 import { useAuth } from "../state/auth";
 import { useTheme } from "../state/theme";
 
 export function AuthShell({ title, subtitle, children, wide }: { title: string; subtitle?: ReactNode; children: ReactNode; wide?: boolean }) {
   const { theme, toggle } = useTheme();
   const { version } = useAuth();
+  const { t } = useT();
   return (
     <div className="flex min-h-full flex-col items-center justify-center p-4">
-      <div className="absolute right-3 top-3">
-        <IconButton label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"} onClick={toggle}>
+      <div className="absolute right-3 top-3 flex items-center gap-2">
+        <LanguageSwitch />
+        <IconButton label={theme === "dark" ? t("layout.lightMode") : t("layout.darkMode")} onClick={toggle}>
           {theme === "dark" ? <Sun className="size-4" aria-hidden /> : <Moon className="size-4" aria-hidden />}
         </IconButton>
       </div>

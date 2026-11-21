@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useT } from "../i18n";
 
 export const COLORS = {
   ok: "var(--c-ok)",
@@ -65,10 +66,11 @@ export function Sparkline({
   height?: number;
   label: string;
 }) {
+  const { t } = useT();
   const max = Math.max(0, ...values);
   if (values.length < 2 || max <= 0) {
     return (
-      <svg width={width} height={height} role="img" aria-label={`${label}: no activity`}>
+      <svg width={width} height={height} role="img" aria-label={t("charts.noActivity", { label })}>
         <line x1={0} x2={width} y1={height - 1} y2={height - 1} stroke="var(--c-line)" strokeWidth={1} />
       </svg>
     );

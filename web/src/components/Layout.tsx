@@ -22,27 +22,30 @@ import {
   User,
   X,
 } from "lucide-react";
+import { useT, type Key } from "../i18n";
 import { useAuth } from "../state/auth";
 import { useLive } from "../state/live";
 import { useTheme } from "../state/theme";
 import { loadFlag, saveFlag } from "../lib/theme";
 import { IconButton } from "./Controls";
+import { LanguageSwitch } from "./LanguageSwitch";
 
-export const NAV = [
-  { to: "/", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/modules", label: "Cache Modules", icon: Boxes },
-  { to: "/traffic", label: "Live Traffic", icon: Activity },
-  { to: "/clients", label: "Clients", icon: MonitorSmartphone },
-  { to: "/repositories", label: "Repositories", icon: FolderGit2 },
-  { to: "/storage", label: "Storage", icon: HardDrive },
-  { to: "/downloads", label: "Downloads", icon: ArrowDownToLine },
-  { to: "/statistics", label: "Statistics", icon: BarChart3 },
-  { to: "/policies", label: "Policies", icon: ShieldCheck },
-  { to: "/settings", label: "Settings", icon: SettingsIcon },
-  { to: "/health", label: "System Health", icon: HeartPulse },
+export const NAV: { to: string; label: Key; icon: typeof LayoutDashboard }[] = [
+  { to: "/", label: "nav.dashboard", icon: LayoutDashboard },
+  { to: "/modules", label: "nav.modules", icon: Boxes },
+  { to: "/traffic", label: "nav.traffic", icon: Activity },
+  { to: "/clients", label: "nav.clients", icon: MonitorSmartphone },
+  { to: "/repositories", label: "nav.repositories", icon: FolderGit2 },
+  { to: "/storage", label: "nav.storage", icon: HardDrive },
+  { to: "/downloads", label: "nav.downloads", icon: ArrowDownToLine },
+  { to: "/statistics", label: "nav.statistics", icon: BarChart3 },
+  { to: "/policies", label: "nav.policies", icon: ShieldCheck },
+  { to: "/settings", label: "nav.settings", icon: SettingsIcon },
+  { to: "/health", label: "nav.health", icon: HeartPulse },
 ];
 
 function LiveIndicator() {
+  const { t } = useT();
   const connection = useLive((s) => s.connection);
   const live = connection === "live";
   return (
@@ -53,43 +56,48 @@ function LiveIndicator() {
       }`}
     >
       <span className={`size-1.5 rounded-full ${live ? "bg-ok" : "animate-pulse bg-warn"}`} aria-hidden />
-      {live ? "Live" : connection === "connecting" ? "Connecting…" : "Reconnecting…"}
+      {live ? t("layout.live") : connection === "connecting" ? t("layout.connecting") : t("layout.reconnecting")}
     </span>
   );
 }
 
 function DownloadsCount() {
+  const { t } = useT();
   const count = useLive((s) => s.downloads.length);
   if (count === 0) return null;
   return (
-    <span className="num ml-auto rounded-full bg-info/15 px-1.5 text-[10px] font-semibold text-info" aria-label={`${count} active downloads`}>
+    <span className="num ml-auto rounded-full bg-info/15 px-1.5 text-[10px] font-semibold text-info" aria-label={t("layout.activeDownloads", { count })}>
       {count}
     </span>
   );
 }
 
 function Sidebar({ expanded, onNavigate }: { expanded: boolean; onNavigate?: () => void }) {
+  const { t } = useT();
   return (
-    <nav aria-label="Main navigation" className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-2">
-      {NAV.map(({ to, label, icon: Icon }) => (
-        <NavLink
-          key={to}
-          to={to}
-          end={to === "/"}
-          onClick={onNavigate}
-          title={expanded ? undefined : label}
-          aria-label={expanded ? undefined : label}
-          className={({ isActive }) =>
-            `flex h-9 items-center gap-3 rounded-lg px-2.5 text-sm transition-colors ${
-              isActive ? "bg-ok/10 font-medium text-ok" : "text-muted hover:bg-raised hover:text-fg"
-            } ${expanded ? "" : "justify-center"}`
-          }
-        >
-          <Icon className="size-[18px] shrink-0" aria-hidden />
-          {expanded && <span className="truncate">{label}</span>}
-          {expanded && to === "/downloads" && <DownloadsCount />}
-        </NavLink>
-      ))}
+    <nav aria-label={t("layout.mainNavigation")} className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-2">
+      {NAV.map(({ to, label: labelKey, icon: Icon }) => {
+        const label = t(labelKey);
+        return (
+          <NavLink
+            key={to}
+            to={to}
+            end={to === "/"}
+            onClick={onNavigate}
+            title={expanded ? undefined : label}
+            aria-label={expanded ? undefined : label}
+            className={({ isActive }) =>
+              `flex h-9 items-center gap-3 rounded-lg px-2.5 text-sm transition-colors ${
+                isActive ? "bg-ok/10 font-medium text-ok" : "text-muted hover:bg-raised hover:text-fg"
+              } ${expanded ? "" : "justify-center"}`
+            }
+          >
+            <Icon className="size-[18px] shrink-0" aria-hidden />
+            {expanded && <span className="truncate">{label}</span>}
+            {expanded && to === "/downloads" && <DownloadsCount />}
+          </NavLink>
+        );
+      })}
     </nav>
   );
 }
@@ -108,6 +116,7 @@ function Brand({ expanded }: { expanded: boolean }) {
 export function Layout({ children }: { children: ReactNode }) {
   const { user, version, logout } = useAuth();
   const { theme, toggle } = useTheme();
+  const { t } = useT();
   const [expanded, setExpanded] = useState(() => loadFlag("unicache.sidebar", true));
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
@@ -121,14 +130,15 @@ export function Layout({ children }: { children: ReactNode }) {
   }, [mobileOpen]);
 
   const current = NAV.find((n) => (n.to === "/" ? location.pathname === "/" : location.pathname.startsWith(n.to)));
+  const title = current ? t(current.label) : null;
   useEffect(() => {
-    document.title = current ? `${current.label} · UniCache` : "UniCache";
-  }, [current]);
+    document.title = title ? `${title} · UniCache` : "UniCache";
+  }, [title]);
 
   return (
     <div className="flex h-full">
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-50 focus:rounded-lg focus:bg-panel focus:px-3 focus:py-2">
-        Skip to content
+        {t("layout.skipToContent")}
       </a>
 
       {/* Desktop sidebar */}
@@ -138,7 +148,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <div className={`flex items-center border-t border-line p-2 ${expanded ? "justify-between" : "justify-center"}`}>
           {expanded && <span className="num truncate px-1 text-[11px] text-dim">{version ? (/^\d/.test(version) ? `v${version}` : version) : ""}</span>}
           <IconButton
-            label={expanded ? "Collapse sidebar" : "Expand sidebar"}
+            label={expanded ? t("layout.collapseSidebar") : t("layout.expandSidebar")}
             aria-expanded={expanded}
             onClick={() => {
               saveFlag("unicache.sidebar", !expanded);
@@ -157,7 +167,7 @@ export function Layout({ children }: { children: ReactNode }) {
           <aside className="absolute inset-y-0 left-0 flex w-64 max-w-[85vw] flex-col border-r border-line bg-panel">
             <div className="flex items-center justify-between pr-2">
               <Brand expanded />
-              <IconButton label="Close navigation" onClick={() => setMobileOpen(false)}>
+              <IconButton label={t("layout.closeNavigation")} onClick={() => setMobileOpen(false)}>
                 <X className="size-4" aria-hidden />
               </IconButton>
             </div>
@@ -168,20 +178,21 @@ export function Layout({ children }: { children: ReactNode }) {
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex h-14 shrink-0 items-center gap-2 border-b border-line bg-panel/60 px-3 sm:px-5">
-          <IconButton label="Open navigation" className="md:hidden" aria-expanded={mobileOpen} onClick={() => setMobileOpen(true)}>
+          <IconButton label={t("layout.openNavigation")} className="md:hidden" aria-expanded={mobileOpen} onClick={() => setMobileOpen(true)}>
             <Menu className="size-5" aria-hidden />
           </IconButton>
-          <span className="truncate text-sm font-medium text-muted md:hidden">{current?.label ?? "UniCache"}</span>
+          <span className="truncate text-sm font-medium text-muted md:hidden">{title ?? "UniCache"}</span>
           <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
             <LiveIndicator />
-            <IconButton label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"} onClick={toggle}>
+            <LanguageSwitch />
+            <IconButton label={theme === "dark" ? t("layout.lightMode") : t("layout.darkMode")} onClick={toggle}>
               {theme === "dark" ? <Sun className="size-4" aria-hidden /> : <Moon className="size-4" aria-hidden />}
             </IconButton>
             <span className="hidden items-center gap-1.5 rounded-lg border border-line px-2 py-1 text-xs text-muted sm:inline-flex">
               <User className="size-3.5" aria-hidden />
               <span className="max-w-32 truncate">{user}</span>
             </span>
-            <IconButton label={`Sign out ${user}`} onClick={() => void logout()}>
+            <IconButton label={t("layout.signOut", { user })} onClick={() => void logout()}>
               <LogOut className="size-4" aria-hidden />
             </IconButton>
           </div>

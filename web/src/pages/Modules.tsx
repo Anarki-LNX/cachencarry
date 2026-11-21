@@ -5,6 +5,8 @@ import type { Module, TestResult } from "../api/types";
 import { Badge, EmptyState, PageHeader, Resource, StatusDot } from "../components/Card";
 import { Button, CodeBlock, Switch } from "../components/Controls";
 import { ResultBadge } from "../components/ResultBadge";
+import { useT } from "../i18n";
+import { adapterDescription, adapterRepoHint, maturityLabel } from "../i18n/server";
 import { absoluteTime, formatBytes, formatMs, formatNumber, formatPercent, relativeTime, requestsOf } from "../lib/format";
 import { useApi } from "../lib/useApi";
 import { useToast } from "../state/toast";
@@ -19,12 +21,13 @@ function Stat({ label, value }: { label: string; value: string }) {
 }
 
 function TestResults({ results }: { results: TestResult[] }) {
-  if (results.length === 0) return <p className="text-xs text-dim">No enabled repositories to test.</p>;
+  const { t } = useT();
+  if (results.length === 0) return <p className="text-xs text-dim">{t("modules.noReposToTest")}</p>;
   return (
-    <ul className="space-y-1.5" aria-label="Connectivity test results">
+    <ul className="space-y-1.5" aria-label={t("modules.testResults")}>
       {results.map((r, i) => (
         <li key={`${r.repo}-${r.upstream}-${i}`} className="flex items-start gap-2 text-xs">
-          {r.ok ? <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-ok" aria-label="Reachable" /> : <XCircle className="mt-0.5 size-3.5 shrink-0 text-bad" aria-label="Failed" />}
+          {r.ok ? <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-ok" aria-label={t("modules.reachable")} /> : <XCircle className="mt-0.5 size-3.5 shrink-0 text-bad" aria-label={t("modules.failed")} />}
           <span className="min-w-0 flex-1">
             <span className="block break-all font-mono">{r.upstream}</span>
             <span className="num block text-dim">
@@ -41,6 +44,8 @@ function TestResults({ results }: { results: TestResult[] }) {
 
 function ModuleCard({ module: m, onChanged }: { module: Module; onChanged: () => Promise<void> }) {
   const toast = useToast();
+  const { t } = useT();
+  const title = m.info.title || m.info.name;
   const [busy, setBusy] = useState(false);
   const [testing, setTesting] = useState(false);
   const [results, setResults] = useState<TestResult[] | null>(null);
@@ -51,7 +56,7 @@ function ModuleCard({ module: m, onChanged }: { module: Module; onChanged: () =>
     setBusy(true);
     try {
       await api.setModuleEnabled(m.info.name, next);
-      toast.success(`${m.info.title} ${next ? "enabled" : "disabled"}`);
+      toast.success(t(next ? "modules.enabledToast" : "modules.disabledToast", { title }));
       await onChanged();
     } catch (e) {
       toast.error(e);
@@ -67,9 +72,9 @@ function ModuleCard({ module: m, onChanged }: { module: Module; onChanged: () =>
       const list = res.results ?? [];
       setResults(list);
       const failed = list.filter((r) => !r.ok).length;
-      if (list.length === 0) toast.info(`${m.info.title}: nothing to test`);
-      else if (failed === 0) toast.success(`${m.info.title}: all ${list.length} upstreams reachable`);
-      else toast.error(`${m.info.title}: ${failed} of ${list.length} upstreams failed`);
+      if (list.length === 0) toast.info(t("modules.nothingToTest", { title }));
+      else if (failed === 0) toast.success(t("modules.allReachable", { title, count: list.length }));
+      else toast.error(t("modules.someFailed", { title, failed, count: list.length }));
     } catch (e) {
       toast.error(e);
     } finally {
@@ -78,25 +83,25 @@ function ModuleCard({ module: m, onChanged }: { module: Module; onChanged: () =>
   };
 
   return (
-    <section className="flex min-w-0 flex-col rounded-xl border border-line bg-panel" aria-label={m.info.title}>
+    <section className="flex min-w-0 flex-col rounded-xl border border-line bg-panel" aria-label={title}>
       <header className="flex items-start gap-3 border-b border-line p-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h2 className="text-base font-semibold">{m.info.title || m.info.name}</h2>
-            <Badge tone={m.info.maturity === "stable" ? "ok" : "warn"}>{m.info.maturity}</Badge>
+            <h2 className="text-base font-semibold">{title}</h2>
+            <Badge tone={m.info.maturity === "stable" ? "ok" : "warn"}>{maturityLabel(m.info.maturity)}</Badge>
             <span className="font-mono text-xs text-dim">{m.info.name}</span>
           </div>
-          <p className="mt-1 text-sm text-muted">{m.info.description}</p>
+          <p className="mt-1 text-sm text-muted">{adapterDescription(m.info)}</p>
         </div>
-        <Switch checked={m.enabled} disabled={busy} onChange={toggle} label={`${m.enabled ? "Disable" : "Enable"} ${m.info.title}`} />
+        <Switch checked={m.enabled} disabled={busy} onChange={toggle} label={t(m.enabled ? "modules.disable" : "modules.enable", { title })} />
       </header>
 
       <div className="flex flex-1 flex-col gap-4 p-4">
         <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Stat label="Requests" value={formatNumber(requestsOf(m.counters))} />
-          <Stat label="Hit ratio" value={lookups === 0 ? "–" : formatPercent(m.hit_ratio)} />
-          <Stat label="Saved" value={formatBytes(m.counters.bytes_cache)} />
-          <Stat label="Stored" value={`${formatBytes(m.usage?.logical_bytes ?? 0)} · ${formatNumber(m.usage?.entries ?? 0)} obj`} />
+          <Stat label={t("common.requests")} value={formatNumber(requestsOf(m.counters))} />
+          <Stat label={t("common.hitRatio")} value={lookups === 0 ? "–" : formatPercent(m.hit_ratio)} />
+          <Stat label={t("common.saved")} value={formatBytes(m.counters.bytes_cache)} />
+          <Stat label={t("common.stored")} value={t("modules.storedValue", { bytes: formatBytes(m.usage?.logical_bytes ?? 0), count: formatNumber(m.usage?.entries ?? 0) })} />
         </dl>
 
         {m.last_error && (
@@ -104,7 +109,7 @@ function ModuleCard({ module: m, onChanged }: { module: Module; onChanged: () =>
             <AlertTriangle className="mt-0.5 size-3.5 shrink-0 text-bad" aria-hidden />
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2 text-fg">
-                <span className="font-medium">Last error</span>
+                <span className="font-medium">{t("modules.lastError")}</span>
                 <ResultBadge result={m.last_error.result} />
                 {m.last_error.status > 0 && <span className="num text-muted">HTTP {m.last_error.status}</span>}
                 <span className="text-dim" title={absoluteTime(m.last_error.time)}>
@@ -120,23 +125,23 @@ function ModuleCard({ module: m, onChanged }: { module: Module; onChanged: () =>
         )}
 
         <div className="space-y-3">
-          <h3 className="text-[11px] font-semibold uppercase tracking-wider text-muted">Repositories</h3>
+          <h3 className="text-[11px] font-semibold uppercase tracking-wider text-muted">{t("nav.repositories")}</h3>
           {repos.length === 0 ? (
-            <p className="text-xs text-dim">No repositories configured. {m.info.repo_hint}</p>
+            <p className="text-xs text-dim">{t("modules.noRepos")} {adapterRepoHint(m.info)}</p>
           ) : (
             repos.map((r) => (
               <details key={r.id} className="group rounded-lg border border-line">
                 <summary className="flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-raised/60">
-                  <StatusDot tone={r.enabled ? "ok" : "neutral"} label={r.enabled ? "Enabled" : "Disabled"} />
+                  <StatusDot tone={r.enabled ? "ok" : "neutral"} label={r.enabled ? t("common.enabled") : t("common.disabled")} />
                   <span className="font-medium">{r.name}</span>
                   <span className="min-w-0 flex-1 truncate font-mono text-xs text-dim">{r.url}</span>
-                  <span className="text-xs text-info group-open:hidden">Client setup</span>
+                  <span className="text-xs text-info group-open:hidden">{t("modules.clientSetup")}</span>
                 </summary>
                 <div className="space-y-2 border-t border-line p-3">
                   <p className="text-xs text-muted">
-                    Upstream{(r.upstreams ?? []).length === 1 ? "" : "s"}: <span className="break-all font-mono">{(r.upstreams ?? []).join(", ") || "none"}</span>
+                    {t("modules.upstreamsLabel", { count: (r.upstreams ?? []).length })} <span className="break-all font-mono">{(r.upstreams ?? []).join(", ") || t("common.none")}</span>
                   </p>
-                  {r.client_config ? <CodeBlock text={r.client_config} copyLabel="Copy client config" /> : <p className="text-xs text-dim">No client configuration snippet for this repository.</p>}
+                  {r.client_config ? <CodeBlock text={r.client_config} copyLabel={t("modules.copyClientConfig")} /> : <p className="text-xs text-dim">{t("modules.noClientConfig")}</p>}
                 </div>
               </details>
             ))
@@ -145,7 +150,7 @@ function ModuleCard({ module: m, onChanged }: { module: Module; onChanged: () =>
 
         <div className="mt-auto space-y-3">
           <Button icon={<PlugZap className="size-4" aria-hidden />} busy={testing} onClick={test}>
-            Test connectivity
+            {t("modules.testConnectivity")}
           </Button>
           {results && <TestResults results={results} />}
         </div>
@@ -156,13 +161,14 @@ function ModuleCard({ module: m, onChanged }: { module: Module; onChanged: () =>
 
 export function Modules() {
   const modules = useApi(api.modules, [], 15_000);
+  const { t } = useT();
   return (
     <>
-      <PageHeader title="Cache Modules" description="Each module speaks one package ecosystem. Enable what your machines use and paste the client configuration on them." />
+      <PageHeader title={t("nav.modules")} description={t("modules.description")} />
       <Resource state={modules}>
         {(data) => {
           const list = data.modules ?? [];
-          if (list.length === 0) return <EmptyState title="No cache modules available" />;
+          if (list.length === 0) return <EmptyState title={t("dashboard.noModules")} />;
           return (
             <div className="grid gap-3 lg:grid-cols-2">
               {list.map((m) => (

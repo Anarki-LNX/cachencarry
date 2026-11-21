@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
+import { useT, type Key } from "../i18n";
 import { Input, Select } from "./Controls";
 
-const UNITS = [
-  { label: "seconds", seconds: 1 },
-  { label: "minutes", seconds: 60 },
-  { label: "hours", seconds: 3600 },
-  { label: "days", seconds: 86400 },
+const UNITS: { label: Key; seconds: number }[] = [
+  { label: "duration.seconds", seconds: 1 },
+  { label: "duration.minutes", seconds: 60 },
+  { label: "duration.hours", seconds: 3600 },
+  { label: "duration.days", seconds: 86400 },
 ];
 
 function bestUnit(seconds: number): number {
@@ -32,6 +33,7 @@ export function DurationInput({
   "aria-describedby"?: string;
   "aria-invalid"?: boolean;
 }) {
+  const { t } = useT();
   const [unit, setUnit] = useState(() => bestUnit(value));
   const [text, setText] = useState(() => String(value / bestUnit(value)));
 
@@ -72,7 +74,7 @@ export function DurationInput({
       <Select
         value={unit}
         disabled={disabled}
-        aria-label={`${label} unit`}
+        aria-label={t("common.unitOf", { label })}
         onChange={(e) => {
           const u = Number(e.target.value);
           setUnit(u);
@@ -82,7 +84,7 @@ export function DurationInput({
       >
         {UNITS.map((u) => (
           <option key={u.seconds} value={u.seconds}>
-            {u.label}
+            {t(u.label)}
           </option>
         ))}
       </Select>

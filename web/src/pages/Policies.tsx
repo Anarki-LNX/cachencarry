@@ -4,6 +4,7 @@ import type { Module, Policies as PoliciesT } from "../api/types";
 import { Card, Notice, PageHeader, Resource } from "../components/Card";
 import { Button, Field, Switch } from "../components/Controls";
 import { DurationInput } from "../components/DurationInput";
+import { useT } from "../i18n";
 import { formatDuration } from "../lib/format";
 import { useApi } from "../lib/useApi";
 import { useToast } from "../state/toast";
@@ -17,13 +18,14 @@ function normalise(p: PoliciesT): PoliciesT {
 
 function PolicyForm({ initial, modules, onSaved }: { initial: PoliciesT; modules: Module[]; onSaved: () => Promise<void> }) {
   const toast = useToast();
+  const { t } = useT();
   const [form, setForm] = useState<PoliciesT>(() => normalise(initial));
   const [busy, setBusy] = useState(false);
   useEffect(() => setForm(normalise(initial)), [initial]);
 
   const overrides = form.module_ttl_seconds ?? {};
-  const metaErr = form.metadata_ttl_seconds > MAX_METADATA ? "At most 30 days." : null;
-  const negErr = form.negative_ttl_seconds > MAX_NEGATIVE ? "At most 1 hour." : null;
+  const metaErr = form.metadata_ttl_seconds > MAX_METADATA ? t("policies.max30Days") : null;
+  const negErr = form.negative_ttl_seconds > MAX_NEGATIVE ? t("policies.max1Hour") : null;
   const overrideErr = Object.values(overrides).some((v) => v > MAX_METADATA);
   const dirty = JSON.stringify(normalise(initial)) !== JSON.stringify(form);
 
@@ -44,7 +46,7 @@ function PolicyForm({ initial, modules, onSaved }: { initial: PoliciesT; modules
     setBusy(true);
     try {
       await api.savePolicies(form);
-      toast.success("Policies saved");
+      toast.success(t("policies.saved"));
       await onSaved();
     } catch (err) {
       toast.error(err);
@@ -55,38 +57,38 @@ function PolicyForm({ initial, modules, onSaved }: { initial: PoliciesT; modules
 
   return (
     <form onSubmit={submit} className="space-y-3" noValidate>
-      <Card title="Freshness">
+      <Card title={t("policies.freshness")}>
         <div className="space-y-5">
           <Notice tone="info">
-            Packages and other versioned files are immutable: once cached they are never revalidated. These settings only affect repository indexes and other metadata that change upstream.
+            {t("policies.notice")}
           </Notice>
           <Field
-            label="Metadata TTL"
-            hint="How long repository indexes (package lists, release files, databases) are reused before UniCache asks upstream whether they changed. Shorter = fresher updates, longer = fewer upstream requests. 0 revalidates on every request."
+            label={t("policies.metadataTtl")}
+            hint={t("policies.metadataTtlHint")}
             error={metaErr}
           >
-            {(p) => <DurationInput {...p} label="Metadata TTL" value={form.metadata_ttl_seconds} onChange={(v) => setForm({ ...form, metadata_ttl_seconds: v })} />}
+            {(p) => <DurationInput {...p} label={t("policies.metadataTtl")} value={form.metadata_ttl_seconds} onChange={(v) => setForm({ ...form, metadata_ttl_seconds: v })} />}
           </Field>
           <Field
-            label="Negative TTL"
-            hint="How long a “not found” answer from upstream is remembered, so clients probing for files that do not exist do not hit upstream every time. 0 disables it; at most 1 hour."
+            label={t("policies.negativeTtl")}
+            hint={t("policies.negativeTtlHint")}
             error={negErr}
           >
-            {(p) => <DurationInput {...p} label="Negative TTL" value={form.negative_ttl_seconds} onChange={(v) => setForm({ ...form, negative_ttl_seconds: v })} />}
+            {(p) => <DurationInput {...p} label={t("policies.negativeTtl")} value={form.negative_ttl_seconds} onChange={(v) => setForm({ ...form, negative_ttl_seconds: v })} />}
           </Field>
           <div className="flex items-start gap-3">
-            <Switch checked={form.serve_stale_on_error} onChange={(v) => setForm({ ...form, serve_stale_on_error: v })} label="Serve stale metadata when upstream fails" />
+            <Switch checked={form.serve_stale_on_error} onChange={(v) => setForm({ ...form, serve_stale_on_error: v })} label={t("policies.serveStaleSwitch")} />
             <div>
-              <p className="text-sm font-medium">Serve stale on upstream error</p>
-              <p className="mt-0.5 text-xs text-dim">If upstream is unreachable, answer with the expired cached copy instead of an error. Keeps installs working while your Internet connection or a mirror is down.</p>
+              <p className="text-sm font-medium">{t("policies.serveStale")}</p>
+              <p className="mt-0.5 text-xs text-dim">{t("policies.serveStaleHint")}</p>
             </div>
           </div>
         </div>
       </Card>
 
-      <Card title="Per-module metadata TTL">
+      <Card title={t("policies.perModule")}>
         {names.length === 0 ? (
-          <p className="text-sm text-dim">No modules available.</p>
+          <p className="text-sm text-dim">{t("policies.noModules")}</p>
         ) : (
           <ul className="divide-y divide-line/60">
             {names.map((name) => {
@@ -94,16 +96,16 @@ function PolicyForm({ initial, modules, onSaved }: { initial: PoliciesT; modules
               return (
                 <li key={name} className="flex flex-wrap items-center gap-x-4 gap-y-2 py-3 first:pt-0 last:pb-0">
                   <div className="flex min-w-48 flex-1 items-center gap-3">
-                    <Switch checked={has} onChange={(v) => setOverride(name, v ? form.metadata_ttl_seconds : null)} label={`Override metadata TTL for ${title(name)}`} />
+                    <Switch checked={has} onChange={(v) => setOverride(name, v ? form.metadata_ttl_seconds : null)} label={t("policies.override", { module: title(name) })} />
                     <span className="text-sm font-medium">{title(name)}</span>
                   </div>
                   {has ? (
                     <div>
-                      <DurationInput label={`Metadata TTL for ${title(name)}`} value={overrides[name]} onChange={(v) => setOverride(name, v)} aria-invalid={overrides[name] > MAX_METADATA || undefined} />
-                      {overrides[name] > MAX_METADATA && <p className="mt-1 text-xs text-bad">At most 30 days.</p>}
+                      <DurationInput label={t("policies.ttlFor", { module: title(name) })} value={overrides[name]} onChange={(v) => setOverride(name, v)} aria-invalid={overrides[name] > MAX_METADATA || undefined} />
+                      {overrides[name] > MAX_METADATA && <p className="mt-1 text-xs text-bad">{t("policies.max30Days")}</p>}
                     </div>
                   ) : (
-                    <span className="text-xs text-dim">Uses the default ({formatDuration(form.metadata_ttl_seconds)})</span>
+                    <span className="text-xs text-dim">{t("policies.usesDefault", { duration: formatDuration(form.metadata_ttl_seconds) })}</span>
                   )}
                 </li>
               );
@@ -114,12 +116,12 @@ function PolicyForm({ initial, modules, onSaved }: { initial: PoliciesT; modules
 
       <div className="flex items-center gap-3">
         <Button type="submit" variant="primary" busy={busy} disabled={!dirty || !!metaErr || !!negErr || overrideErr}>
-          Save policies
+          {t("policies.save")}
         </Button>
         <Button disabled={!dirty || busy} onClick={() => setForm(normalise(initial))}>
-          Discard changes
+          {t("common.discardChanges")}
         </Button>
-        {dirty && <span className="text-xs text-warn">Unsaved changes</span>}
+        {dirty && <span className="text-xs text-warn">{t("common.unsavedChanges")}</span>}
       </div>
     </form>
   );
@@ -128,9 +130,10 @@ function PolicyForm({ initial, modules, onSaved }: { initial: PoliciesT; modules
 export function Policies() {
   const policies = useApi(api.policies, []);
   const modules = useApi(api.modules, []);
+  const { t } = useT();
   return (
     <>
-      <PageHeader title="Policies" description="How long cached answers are trusted before UniCache checks upstream again. Changes apply immediately." />
+      <PageHeader title={t("nav.policies")} description={t("policies.description")} />
       <Resource state={policies}>{(p) => <PolicyForm initial={p} modules={modules.data?.modules ?? []} onSaved={policies.reload} />}</Resource>
     </>
   );
