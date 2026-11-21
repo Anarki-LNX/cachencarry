@@ -55,11 +55,29 @@ Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 
 A Proxmox host is a Debian system: point its Debian sources at
 `/apt/debian` and `/apt/debian-security` as above. For the Proxmox
-repositories themselves add a repository in the dashboard (module `apt`,
-name `proxmox`, upstream `http://download.proxmox.com/debian/pve`) and use
-`http://unicache.lan:8080/apt/proxmox` in the PVE source entry. Not tested
-with the enterprise repository, which needs credentials (UniCache does not
-forward credentials).
+repositories add repositories to UniCache (dashboard or configuration file):
+
+| Name | Upstream |
+|---|---|
+| `proxmox` | `http://download.proxmox.com/debian/pve` |
+| `proxmox-ceph` | `http://download.proxmox.com/debian/ceph-squid` |
+
+and use `http://unicache.lan:8080/apt/proxmox` and `/apt/proxmox-ceph` in
+`/etc/apt/sources.list.d/proxmox.sources` and `ceph.sources`. Tested on
+Proxmox VE 9.2 with the no-subscription repository. The enterprise repository
+needs credentials, which UniCache does not forward; leave it pointing at
+Proxmox directly.
+
+If UniCache runs in a container on that same host, the host can only update
+while the container is running. Keep copies of the original source files so
+the change is easy to undo.
+
+## Docker's APT repositories
+
+Add `docker-debian` (`https://download.docker.com/linux/debian`) or
+`docker-ubuntu` (`https://download.docker.com/linux/ubuntu`) and use
+`http://unicache.lan:8080/apt/docker-debian` in `docker.list` /
+`docker.sources`. This caches the Docker packages, not container images.
 
 ## Other APT repositories
 

@@ -45,6 +45,14 @@ Honest record of what was actually executed for v0.1 and what was not.
   CachyOS database signatures), then the same package downloaded on both
   machines: `MISS` on the first, `HIT` from cache on the second.
 
+- **Real APT clients against the Proxmox instance**, `apt update` with
+  signature verification through the cache, no errors: Proxmox VE 9.2 host
+  (Debian 13, Debian security, `pve-no-subscription`, Ceph), a Debian 12
+  container and an Ubuntu 26.04 container (Ubuntu incl. `-security`), plus
+  Docker's APT repositories for Debian and Ubuntu.
+- In-place upgrade 0.1.0 to 0.1.1 with `install.sh` on that instance:
+  configuration, administrator account, policies and cache kept.
+
 ## Not verified yet
 
 - **`docker compose up` itself.** The development machine's Docker daemon
@@ -54,6 +62,9 @@ Honest record of what was actually executed for v0.1 and what was not.
   port publishing and bridge networking are untested.
 - The systemd unit on Ubuntu and on bare-metal Debian (only tested in the
   Proxmox LXC above).
+- Installing or upgrading packages through the cache on the APT clients
+  (only `apt update` was run there; package downloads were tested with the
+  Debian 13 container client earlier).
 - **Docker inside a Proxmox LXC**, and bind-mounting a host directory into
   the container (UID mapping section of the guide).
 - A large package update from a real CachyOS client (see below for what
