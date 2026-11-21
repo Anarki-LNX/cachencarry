@@ -59,6 +59,10 @@ Honest record of what was actually executed for v0.1 and what was not.
   authentication and CSRF), plus a browser check of the form (save, reset
   button, value active in storage).
 
+- **GitHub Actions** on the public repository: race-detector tests, dashboard
+  lint and build, container image build and a start-up smoke test of the
+  container all pass.
+
 ## Not verified yet
 
 - **`docker compose up` itself.** The development machine's Docker daemon
@@ -79,7 +83,7 @@ Honest record of what was actually executed for v0.1 and what was not.
   Statistics, Policies, Settings, and the setup wizard. They build and lint,
   and their API endpoints are covered by the backend tests.
 - CachyOS, Ubuntu, Manjaro, Linux Mint clients; TLS listener; reverse proxy
-  setups; the GitHub Actions workflow.
+  setups.
 - Performance and memory under load on small hardware.
 
 ## Not implemented
