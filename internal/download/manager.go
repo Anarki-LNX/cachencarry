@@ -375,7 +375,13 @@ func (m *Manager) run(ctx context.Context, f *Flight) {
 	var err error
 	select {
 	case m.sem <- struct{}{}:
-		value, err = m.fetch(ctx, f)
+		if f.clients.Load() <= 0 {
+			// Every client gave up while the flight was queued: do not
+			// spend bandwidth on something nobody is waiting for.
+			err = ErrCancelled
+		} else {
+			value, err = m.fetch(ctx, f)
+		}
 		<-m.sem
 	case <-ctx.Done():
 		err = ErrCancelled

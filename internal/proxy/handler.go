@@ -113,6 +113,12 @@ type outcome struct {
 
 func (h *Handler) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	start := time.Now()
+	// Cached content comes from third parties and is served from the same
+	// origin as the management interface. Make sure a browser never treats
+	// it as an active document of this origin: no MIME sniffing, and a
+	// sandboxed, script-less context if someone opens it directly.
+	rw.Header().Set("X-Content-Type-Options", "nosniff")
+	rw.Header().Set("Content-Security-Policy", "sandbox; default-src 'none'")
 	w := newCountingWriter(rw, h.o.Stats, h.o.ClientRateLimit, r.Context())
 	client := security.ClientIP(r, h.o.Trusted)
 	rec := stats.Record{Time: start, Client: client.String(), Method: r.Method, Partial: r.Header.Get("Range") != ""}

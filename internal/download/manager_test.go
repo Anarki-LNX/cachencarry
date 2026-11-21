@@ -557,3 +557,67 @@ func TestLimiter(t *testing.T) {
 		t.Fatal("unlimited limiter blocked")
 	}
 }
+
+// TestQueuedFlightWithoutClientsIsAbandoned: when every client disconnects
+// while its download is still waiting for a free slot, the download is not
+// started at all.
+func TestQueuedFlightWithoutClientsIsAbandoned(t *testing.T) {
+	release := make(chan struct{})
+	var hits atomic.Int32
+	up := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		hits.Add(1)
+		if r.URL.Path == "/slow" {
+			<-release
+		}
+		w.Write([]byte("data"))
+	}))
+	defer up.Close()
+	e := newEnv(t, func(o *download.Options) { o.MaxConcurrent = 1 })
+	slow, _ := e.mgr.Do(e.req("slow", up.URL+"/slow"), nil)
+	for hits.Load() == 0 {
+		time.Sleep(time.Millisecond)
+	}
+	queued, _ := e.mgr.Do(e.req("queued", up.URL+"/queued"), nil)
+	kept, _ := e.mgr.Do(e.req("kept", up.URL+"/kept"), nil)
+	queued.Leave() // its only client goes away
+	close(release)
+	if _, err := slow.Wait(ctx); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := queued.Wait(ctx); !errors.Is(err, download.ErrCancelled) {
+		t.Fatalf("abandoned flight: err = %v, want ErrCancelled", err)
+	}
+	if _, err := kept.Wait(ctx); err != nil {
+		t.Fatal(err)
+	}
+	if hits.Load() != 2 {
+		t.Fatalf("%d upstream requests, want 2 (the abandoned one must not start)", hits.Load())
+	}
+}
+
+// TestLateReaderOfUncachedObject: a client that only gets to read after the
+// flight finished still receives the body, even when the object was not
+// stored (regression test).
+func TestLateReaderOfUncachedObject(t *testing.T) {
+	up := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) { w.Write([]byte("not stored")) }))
+	defer up.Close()
+	e := newEnv(t, nil)
+	req := e.req("f", up.URL+"/f")
+	req.Publish = func(w *storage.Writer, r *download.Response) (any, error) { w.Abort(); return nil, nil }
+	f, _ := e.mgr.Do(req, nil)
+	if _, err := f.Wait(ctx); err != nil { // completely finished, temp file unlinked
+		t.Fatal(err)
+	}
+	body, err := f.Reader(ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, err := io.ReadAll(body)
+	if err != nil || string(got) != "not stored" {
+		t.Fatalf("late reader got %q, %v", got, err)
+	}
+	f.Leave()
+	if _, err := f.Reader(ctx); err == nil {
+		t.Fatal("reader after the last client left must fail")
+	}
+}

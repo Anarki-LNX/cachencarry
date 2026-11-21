@@ -1,0 +1,143 @@
+# UniCache configuration.
+#
+# Native install: /etc/unicache/config.yaml
+# Docker:         ./configs/config.yaml (mounted to /etc/unicache)
+#
+# Everything here is optional; the values shown are the defaults. Every
+# scalar can also be set through an environment variable named
+# UNICACHE_<SECTION>_<KEY>, e.g. UNICACHE_SERVER_PORT=9090 (environment wins).
+#
+# Modules and repositories are *seeded* from this file exactly once. After
+# that they are managed in the web interface and stored in the database, so
+# upgrades never overwrite your changes.
+
+version: 1
+
+server:
+  listen: "0.0.0.0"
+  port: 8080
+  # Serve HTTPS when both are set (recommended for the web interface if the
+  # network is not fully trusted). Note: package managers then need https://
+  # URLs and must trust the certificate.
+  tls_cert: ""
+  tls_key: ""
+  shutdown_timeout: 20s
+  # Reverse proxies whose X-Forwarded-For header is trusted.
+  trusted_proxies: []
+
+storage:
+  path: /var/lib/unicache
+  # Maximum size of the cache, e.g. 500GB or 4TB. 0 = unlimited.
+  max_size: 0
+  # Keep at least this much of the filesystem free: percentage or size.
+  min_free_space: "10%"
+  # How often eviction and garbage collection run.
+  gc_interval: 10m
+  # Background integrity check: every interval, re-hash this many blobs
+  # (oldest check first). 0 disables it.
+  verify_interval: 6h
+  verify_batch_size: 200
+
+database:
+  driver: sqlite
+  # Defaults to <storage.path>/metadata.db
+  path: ""
+
+cache:
+  # How long repository indexes (Release, Packages, *.db …) are served
+  # before they are revalidated upstream. Packages are immutable and are
+  # never revalidated.
+  metadata_ttl: 5m
+  # How long "404 Not Found" answers are remembered.
+  negative_ttl: 30s
+  # Remove packages nobody requested for this long (e.g. 180d). 0 = keep
+  # until the space is needed (LRU).
+  immutable_max_age: 0
+  # Serve expired indexes when the upstream mirror is unreachable.
+  serve_stale_on_error: true
+
+download:
+  max_concurrent: 16
+  connect_timeout: 15s
+  header_timeout: 30s
+  # Abort a transfer when no data arrives for this long.
+  idle_timeout: 60s
+  retries: 3
+  retry_backoff: 500ms
+  # Resume interrupted downloads with HTTP Range requests.
+  resume: true
+  # Largest object that will be downloaded, e.g. 50GB. 0 = unlimited.
+  max_object_size: 0
+  # Bandwidth limits in bytes per second, e.g. 20MB. 0 = unlimited.
+  upstream_rate_limit: 0   # all upstream downloads together
+  client_rate_limit: 0     # per client response
+
+security:
+  # Networks that may use the cache. The default covers the private IPv4 and
+  # IPv6 ranges only. Never add 0.0.0.0/0 on an Internet-facing host.
+  allowed_clients:
+    - 127.0.0.0/8
+    - ::1/128
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+    - fc00::/7
+    - fe80::/10
+  # Networks that may reach the web interface and the API.
+  admin_allowed:
+    - 127.0.0.0/8
+    - ::1/128
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+    - fc00::/7
+    - fe80::/10
+  # Upstream hosts must resolve to public addresses (SSRF protection). Set
+  # to true only if you use a mirror inside your own network.
+  allow_private_upstreams: false
+  session_ttl: 12h
+  # First administrator, created on first start only. Prefer the environment
+  # variable UNICACHE_SECURITY_ADMIN_PASSWORD, or leave empty and use the
+  # setup wizard with the token from <storage.path>/setup-token.
+  admin_user: admin
+  admin_password: ""
+  # Mark the session cookie "Secure" (automatic when TLS is configured;
+  # enable when a TLS reverse proxy sits in front).
+  secure_cookies: false
+
+logging:
+  level: info      # debug, info, warn, error
+  format: text     # text, json
+  file: ""         # additionally log to this file
+
+monitoring:
+  enabled: true
+  live_stats: true
+  request_log_size: 2000    # recent requests kept in memory for Live Traffic
+  history_retention: 30d    # per-minute statistics kept in the database
+
+modules:
+  apt:
+    enabled: true
+    repositories:
+      - name: debian
+        upstreams: ["https://deb.debian.org/debian"]
+      - name: debian-security
+        upstreams: ["https://security.debian.org/debian-security"]
+      - name: ubuntu
+        upstreams: ["http://archive.ubuntu.com/ubuntu"]
+      - name: ubuntu-security
+        upstreams: ["http://security.ubuntu.com/ubuntu"]
+  pacman:
+    enabled: true
+    # metadata_ttl: 2m      # per-module override
+    repositories:
+      - name: archlinux
+        # Several upstreams = failover mirrors, tried in order.
+        upstreams:
+          - https://geo.mirror.pkgbuild.com
+          - https://mirror.rackspace.com/archlinux
+      - name: cachyos
+        upstreams: ["https://mirror.cachyos.org/repo"]
+  generic:
+    enabled: false

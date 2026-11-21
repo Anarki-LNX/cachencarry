@@ -59,6 +59,9 @@ func (s *Store) Status() MaintenanceStatus {
 
 const gcBatch = 200
 
+// defaultKickInterval bounds how often published data triggers a limit check.
+const defaultKickInterval = 5 * time.Second
+
 // GC deletes blobs that no entry references. It is safe to run while
 // downloads and publications are in progress (see the package comment).
 func (s *Store) GC(ctx context.Context) (GCReport, error) {
@@ -439,6 +442,20 @@ func (s *Store) RunMaintenance(ctx context.Context, gcEvery, verifyEvery time.Du
 		defer t.Stop()
 		verify = t.C
 	}
+	interval := s.opts.KickInterval
+	if interval <= 0 {
+		interval = defaultKickInterval
+	}
+	var lastKick time.Time
+	var deferred <-chan time.Time // a limit check postponed by the debounce
+	checkLimits := func() {
+		lastKick, deferred = time.Now(), nil
+		if need, _, err := s.excess(ctx); err == nil && need > 0 {
+			if _, err := s.Evict(ctx); err != nil && ctx.Err() == nil {
+				s.log.Error("eviction", "err", err)
+			}
+		}
+	}
 	for {
 		select {
 		case <-ctx.Done():
@@ -446,6 +463,20 @@ func (s *Store) RunMaintenance(ctx context.Context, gcEvery, verifyEvery time.Du
 				s.log.Warn("flush access times", "err", err)
 			}
 			return
+		case <-s.kick:
+			// New data arrived. Enforce the limits promptly so a burst of
+			// downloads cannot fill the disk between two regular runs,
+			// but not more often than once per interval. A check that
+			// falls into the debounce window is postponed, never dropped.
+			if wait := interval - time.Since(lastKick); wait > 0 {
+				if deferred == nil {
+					deferred = time.After(wait)
+				}
+				continue
+			}
+			checkLimits()
+		case <-deferred:
+			checkLimits()
 		case <-flush.C:
 			if err := s.FlushTouches(); err != nil {
 				s.log.Warn("flush access times", "err", err)

@@ -36,6 +36,9 @@ type Options struct {
 	Logger  *slog.Logger
 	UI      fs.FS // built frontend; nil serves a notice page
 	NoSync  bool  // skip fsync (tests only)
+	// EvictDebounce overrides how quickly new data triggers a storage
+	// limit check (tests only; default 5s).
+	EvictDebounce time.Duration
 }
 
 // App is a fully wired UniCache instance.
@@ -89,6 +92,7 @@ func New(ctx context.Context, cfg *config.Config, opts Options) (*App, error) {
 	a.Store, err = storage.Open(db, storage.Options{
 		Root: cfg.Storage.Path, MaxSize: int64(cfg.Storage.MaxSize),
 		MinFreeBytes: minBytes, MinFreePct: minPct, Logger: log, NoSync: opts.NoSync,
+		KickInterval: opts.EvictDebounce,
 	})
 	if err != nil {
 		return nil, err

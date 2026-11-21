@@ -88,6 +88,9 @@ type Options struct {
 	MinFreePct   float64 // minimum free space in percent, 0 = off
 	Logger       *slog.Logger
 	NoSync       bool // tests only
+	// KickInterval is the minimum time between limit checks triggered by
+	// newly published data (default 5s).
+	KickInterval time.Duration
 }
 
 // Store is the shared storage engine.
@@ -101,6 +104,10 @@ type Store struct {
 
 	touchMu sync.Mutex
 	touches map[int64]*touch
+
+	// kick asks the maintenance loop to check the size limits soon
+	// (after new data was published) instead of waiting for the next tick.
+	kick chan struct{}
 
 	evictMu     sync.Mutex
 	lastEvict   EvictionReport
@@ -127,7 +134,14 @@ func Open(db *database.DB, opts Options) (*Store, error) {
 	if log == nil {
 		log = slog.Default()
 	}
-	return &Store{cas: c, db: db, opts: opts, log: log, touches: map[int64]*touch{}}, nil
+	return &Store{cas: c, db: db, opts: opts, log: log, touches: map[int64]*touch{}, kick: make(chan struct{}, 1)}, nil
+}
+
+func (s *Store) kickEviction() {
+	select {
+	case s.kick <- struct{}{}:
+	default:
+	}
 }
 
 // Root returns the storage root directory.
@@ -186,6 +200,12 @@ func scanEntry(row scanner) (*Entry, error) {
 // blob is deduplicated against existing content; an existing entry for the
 // same key is replaced. On error the temporary data is discarded.
 func (s *Store) Publish(ctx context.Context, w *Writer, key Key, m Meta) (*Entry, error) {
+	// fsync before taking the gate: it can take long for large objects and
+	// must not hold up garbage collection or other publishers.
+	if err := w.w.Seal(); err != nil {
+		return nil, err
+	}
+	defer s.kickEviction()
 	s.gate.RLock()
 	defer s.gate.RUnlock()
 

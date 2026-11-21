@@ -1,0 +1,11 @@
+.git
+.github
+.claude
+bin
+dist
+data
+web/node_modules
+web/dist
+docs
+*.md
+*.db

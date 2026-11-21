@@ -1,0 +1,51 @@
+[Unit]
+Description=UniCache - universal LAN cache
+Documentation=https://github.com/Anarki-LNX/unicache
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=unicache
+Group=unicache
+ExecStart=/usr/local/bin/unicache serve -config /etc/unicache/config.yaml
+# Optional overrides, e.g. UNICACHE_SECURITY_ADMIN_PASSWORD for first start.
+EnvironmentFile=-/etc/unicache/unicache.env
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=40
+LimitNOFILE=65536
+
+# Directories (created and owned by systemd)
+StateDirectory=unicache
+StateDirectoryMode=0750
+LogsDirectory=unicache
+LogsDirectoryMode=0750
+ConfigurationDirectory=unicache
+
+# Hardening. All of these work in an unprivileged Proxmox LXC container.
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+SystemCallArchitectures=native
+CapabilityBoundingSet=
+AmbientCapabilities=
+UMask=0027
+# If storage.path is outside /var/lib/unicache, allow it with a drop-in:
+#   systemctl edit unicache
+#   [Service]
+#   ReadWritePaths=/mnt/cache
+
+[Install]
+WantedBy=multi-user.target

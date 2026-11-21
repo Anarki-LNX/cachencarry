@@ -91,8 +91,13 @@ func (db *DB) Close() error {
 
 // IntegrityCheck runs SQLite's quick integrity check.
 func (db *DB) IntegrityCheck(ctx context.Context) error {
+	// Use the read pool so a long check never blocks writers.
+	h := db.R
+	if h == nil {
+		h = db.W
+	}
 	var res string
-	if err := db.W.QueryRowContext(ctx, "PRAGMA quick_check").Scan(&res); err != nil {
+	if err := h.QueryRowContext(ctx, "PRAGMA quick_check").Scan(&res); err != nil {
 		return err
 	}
 	if res != "ok" {

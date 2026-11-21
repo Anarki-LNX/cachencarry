@@ -184,12 +184,13 @@ func (s *Store) CleanTemp() (removed int, err error) {
 // Writer receives the bytes of one object. Data is written to a temporary
 // file and hashed on the way; Commit publishes it atomically.
 type Writer struct {
-	store *Store
-	f     *os.File
-	path  string
-	h     hash.Hash
-	n     int64
-	done  bool
+	store  *Store
+	f      *os.File
+	path   string
+	h      hash.Hash
+	n      int64
+	done   bool
+	sealed bool
 }
 
 // NewWriter starts a new temporary object.
@@ -203,6 +204,9 @@ func (s *Store) NewWriter() (*Writer, error) {
 
 // Write appends p to the temporary object.
 func (w *Writer) Write(p []byte) (int, error) {
+	if w.sealed || w.done {
+		return 0, errors.New("cas: write after seal")
+	}
 	n, err := w.f.Write(p)
 	if n > 0 {
 		w.h.Write(p[:n])
@@ -225,8 +229,36 @@ func (w *Writer) Abort() {
 		return
 	}
 	w.done = true
-	w.f.Close()
+	if !w.sealed {
+		w.f.Close()
+	}
 	os.Remove(w.path)
+}
+
+// Seal flushes the data to stable storage and closes the temporary file. It
+// is the slow part of publishing (fsync) and is separate from Commit so
+// callers can do it before taking locks. After Seal no more data can be
+// written. Commit seals implicitly if needed.
+func (w *Writer) Seal() error {
+	if w.done {
+		return errors.New("cas: writer already finished")
+	}
+	if w.sealed {
+		return nil
+	}
+	if !w.store.noSync {
+		if err := w.f.Sync(); err != nil {
+			w.Abort()
+			return fmt.Errorf("cas: sync: %w", err)
+		}
+	}
+	if err := w.f.Close(); err != nil {
+		w.done = true
+		os.Remove(w.path)
+		return fmt.Errorf("cas: close: %w", err)
+	}
+	w.sealed = true
+	return nil
 }
 
 // Commit finishes the object: the data is flushed to stable storage and the
@@ -234,8 +266,8 @@ func (w *Writer) Abort() {
 // already exists the temporary file is dropped instead (deduplication) and
 // existed is true.
 func (w *Writer) Commit() (hash string, size int64, existed bool, err error) {
-	if w.done {
-		return "", 0, false, errors.New("cas: writer already finished")
+	if err = w.Seal(); err != nil {
+		return "", 0, false, err
 	}
 	w.done = true
 	defer func() {
@@ -243,15 +275,6 @@ func (w *Writer) Commit() (hash string, size int64, existed bool, err error) {
 			os.Remove(w.path)
 		}
 	}()
-	if !w.store.noSync {
-		if err = w.f.Sync(); err != nil {
-			w.f.Close()
-			return "", 0, false, fmt.Errorf("cas: sync: %w", err)
-		}
-	}
-	if err = w.f.Close(); err != nil {
-		return "", 0, false, fmt.Errorf("cas: close: %w", err)
-	}
 	hash = hex.EncodeToString(w.h.Sum(nil))
 	size = w.n
 	dst, _ := w.store.Path(hash)

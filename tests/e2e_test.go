@@ -147,7 +147,8 @@ func start(t *testing.T, mut func(*config.Config), ups ...*upstream) *instance {
 	if err := cfg.Validate(); err != nil {
 		t.Fatal(err)
 	}
-	a, err := app.New(context.Background(), cfg, app.Options{Version: "test", Logger: testutil.Logger(), NoSync: true})
+	a, err := app.New(context.Background(), cfg, app.Options{Version: "test", Logger: testutil.Logger(), NoSync: true,
+		EvictDebounce: 20 * time.Millisecond})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1205,32 +1206,77 @@ func TestSSEStreamDeliversRequests(t *testing.T) {
 	}
 }
 
-func TestEvictionEndToEnd(t *testing.T) {
+// TestStorageLimitIsEnforcedAutomatically: downloading more than max_size
+// allows triggers eviction on its own (no waiting for the periodic job), the
+// least recently used packages go first, and an evicted package is simply
+// fetched again.
+func TestStorageLimitIsEnforcedAutomatically(t *testing.T) {
 	up := newUpstream(t)
 	for i := 0; i < 6; i++ {
 		up.put(fmt.Sprintf("/pool/p%d.deb", i), randBytes(10_000))
 	}
 	uc := start(t, func(c *config.Config) { c.Storage.MaxSize = 35_000 }, up)
-	for i := 0; i < 6; i++ {
+	for i := 0; i < 3; i++ {
 		get(t, uc.url(fmt.Sprintf("/apt/debian/pool/p%d.deb", i)))
-		time.Sleep(1100 * time.Millisecond / 6) // spread access times a little
 	}
-	uc.DB.W.Exec(`UPDATE entries SET last_access = id`) // deterministic LRU order: p0 oldest
-	rep, err := uc.Store.Evict(context.Background())
-	if err != nil {
-		t.Fatal(err)
+	// Make the LRU order unambiguous (access times have 1 s resolution).
+	uc.DB.W.Exec(`UPDATE entries SET last_access = last_access - 1000 + id`)
+	for i := 3; i < 6; i++ {
+		get(t, uc.url(fmt.Sprintf("/apt/debian/pool/p%d.deb", i)))
 	}
-	u, _ := uc.Store.Usage(context.Background())
-	if u.BlobBytes > 35_000 || rep.EntriesRemoved != 3 {
-		t.Fatalf("after eviction: %d bytes, %d removed", u.BlobBytes, rep.EntriesRemoved)
+	deadline := time.Now().Add(10 * time.Second)
+	for {
+		u, err := uc.Store.Usage(context.Background())
+		if err != nil {
+			t.Fatal(err)
+		}
+		if u.BlobBytes <= 35_000 {
+			if u.BlobBytes != 30_000 {
+				t.Fatalf("evicted too much: %d bytes left", u.BlobBytes)
+			}
+			break
+		}
+		if time.Now().After(deadline) {
+			t.Fatalf("limit not enforced: %d bytes stored, limit 35000", u.BlobBytes)
+		}
+		time.Sleep(10 * time.Millisecond)
 	}
-	// An evicted package is simply downloaded again.
-	resp, _ := get(t, uc.url("/apt/debian/pool/p0.deb"))
-	if resp.StatusCode != 200 || resp.Header.Get("X-Cache") != "MISS" {
-		t.Fatalf("evicted object: status %d, X-Cache %q", resp.StatusCode, resp.Header.Get("X-Cache"))
-	}
-	resp, _ = get(t, uc.url("/apt/debian/pool/p5.deb"))
+	resp, _ := get(t, uc.url("/apt/debian/pool/p5.deb"))
 	if resp.Header.Get("X-Cache") != "HIT" {
 		t.Fatal("most recently used object was evicted")
+	}
+	resp, body := get(t, uc.url("/apt/debian/pool/p0.deb"))
+	if resp.StatusCode != 200 || resp.Header.Get("X-Cache") != "MISS" || len(body) != 10_000 {
+		t.Fatalf("evicted object: status %d, X-Cache %q", resp.StatusCode, resp.Header.Get("X-Cache"))
+	}
+}
+
+// TestCachedContentCannotAttackTheDashboard: a (malicious or compromised)
+// upstream serving HTML must not get script execution in the origin of the
+// management interface.
+func TestCachedContentCannotAttackTheDashboard(t *testing.T) {
+	up := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/html")
+		w.Header().Set("Cache-Control", "max-age=3600")
+		fmt.Fprint(w, "<script>fetch('/api/v1/session')</script>")
+	}))
+	defer up.Close()
+	uc := start(t, func(c *config.Config) {
+		c.Modules["generic"] = config.Module{Enabled: true, Repositories: []config.Repository{{Name: "files", Upstreams: []string{up.URL}}}}
+		c.Modules["apt"] = config.Module{Enabled: true, Repositories: []config.Repository{{Name: "debian", Upstreams: []string{up.URL}}}}
+	})
+	for _, path := range []string{"/generic/files/evil.html", "/generic/files/evil.html", "/apt/debian/dists/x/evil.html", "/apt/debian/missing/../x"} {
+		resp, _ := get(t, uc.url(path))
+		if csp := resp.Header.Get("Content-Security-Policy"); !strings.Contains(csp, "sandbox") {
+			t.Errorf("%s (X-Cache %q): Content-Security-Policy = %q, want sandbox", path, resp.Header.Get("X-Cache"), csp)
+		}
+		if resp.Header.Get("X-Content-Type-Options") != "nosniff" {
+			t.Errorf("%s: nosniff missing", path)
+		}
+	}
+	// The dashboard itself is not sandboxed but has a strict policy.
+	resp, _ := get(t, uc.url("/"))
+	if csp := resp.Header.Get("Content-Security-Policy"); !strings.Contains(csp, "default-src 'self'") || strings.Contains(csp, "sandbox") {
+		t.Errorf("dashboard CSP = %q", csp)
 	}
 }

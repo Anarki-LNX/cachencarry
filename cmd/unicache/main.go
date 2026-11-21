@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"syscall"
@@ -38,6 +39,7 @@ Usage:
                                       set a new password (read from stdin)
   unicache backup [-config FILE] -out FILE
                                       write a consistent copy of the metadata database
+  unicache setup-token [-config FILE] print the one-time token for the setup wizard
   unicache version
 
 The configuration file defaults to $UNICACHE_CONFIG or /etc/unicache/config.yaml.
@@ -103,6 +105,13 @@ func run(args []string) error {
 		return resetPassword(cfg, *user)
 	case "backup":
 		return backup(cfg, *out)
+	case "setup-token":
+		tok, err := os.ReadFile(filepath.Join(cfg.Storage.Path, "setup-token"))
+		if err != nil {
+			return errors.New("no setup token: an administrator already exists (use reset-password to recover access) or the server has not been started yet")
+		}
+		fmt.Print(string(tok))
+		return nil
 	case "serve":
 		return serve(cfg)
 	default:
