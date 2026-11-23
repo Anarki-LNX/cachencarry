@@ -19,4 +19,5 @@ services, API keys.
 | `instagram-reel-final.mp4` | 1080 x 1920, 30 fps, H.264 High, AAC 48 kHz stereo, 34.1 s, -16 LUFS |
 | `instagram-reel-preview.mp4` | 540 x 960 preview of the same video |
 | `instagram-thumbnail.png` | 1080 x 1920 cover from the closing scene |
-| `video/` | Everything needed to record and render the video again |
+| `carousel/slide-1.png` to `slide-8.png` | 1080 x 1350 carousel built from the same recordings, with its own post text |
+| `video/` | Everything needed to record and render the video and the carousel again |

@@ -21,6 +21,17 @@ npm run render               # renders and runs finish.sh: final, preview, thumb
 
 `npm run studio` opens the Remotion editor with a live preview.
 
+## Carousel
+
+```sh
+cd marketing/instagram/video
+./render-carousel.sh         # writes ../carousel/slide-1.png to slide-8.png (1080 x 1350)
+```
+
+Slides are defined in `video/src/Carousel.tsx`. Post text and alt texts are
+in `carousel/werbetext.md`. The slides reuse the recordings in
+`public/footage`, so run `npm run capture` first on a fresh checkout.
+
 ## Change something
 
 | What | Where |
