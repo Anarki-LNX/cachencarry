@@ -1,0 +1,21 @@
+{
+  "name": "cachencarry-instagram-video",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "capture": "node capture.mjs",
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts Reel out/render.mp4 --browser-executable=/usr/bin/chromium --codec=h264 --crf=18 --audio-codec=aac --audio-bitrate=192k && ./finish.sh"
+  },
+  "dependencies": {
+    "@remotion/bundler": "^4.0.546",
+    "@remotion/cli": "^4.0.546",
+    "@types/react": "^19.3.0",
+    "playwright-core": "^1.65.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "^4.0.546",
+    "typescript": "^7.0.2"
+  }
+}
