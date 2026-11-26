@@ -1,0 +1,23 @@
+1
+00:00:00,250 --> 00:00:03,217
+Zwei Wörter. Ein ganzes
+Netzwerk schneller.
+
+2
+00:00:03,867 --> 00:00:07,112
+MISS bedeutet: Das Paket
+muss noch vom Mirror kommen.
+
+3
+00:00:11,367 --> 00:00:14,392
+HIT bedeutet: Es liegt
+bereits in deinem Cache.
+
+4
+00:00:14,492 --> 00:00:17,574
+Und genau das macht Cache
+& Carry so praktisch.
+
+5
+00:00:18,867 --> 00:00:21,810
+Probier es selbst. Open Source auf GitHub.

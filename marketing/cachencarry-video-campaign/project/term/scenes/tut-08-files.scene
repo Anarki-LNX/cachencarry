@@ -1,0 +1,9 @@
+# Chapter 7: where configuration, data and logs live.
+prompt \033[1;32mroot@cc-tutorial\033[0m:\033[1;34m~\033[0m# 
+exec ssh -o IdentitiesOnly=yes -o LogLevel=ERROR -i ~/.ssh/id_ed25519_proxmox -tt root@192.168.1.10 pct exec 130 -- bash -lc
+quote 2
+$ ls /etc/cachencarry
+$ grep -A3 "^storage:" /etc/cachencarry/config.yaml
+$ du -sh /var/lib/cachencarry
+$ journalctl -u cachencarry -n 4 --no-pager -o cat
+end

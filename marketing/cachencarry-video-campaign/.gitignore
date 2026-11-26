@@ -1,0 +1,12 @@
+# Large or reproducible intermediates stay out of git
+node_modules/
+tools/
+assets/recordings/
+project/public/footage/
+project/public/term/
+project/public/vo/
+project/out/
+work/
+final/*.mp4
+*.onnx
+project/public/audio/

@@ -1,0 +1,86 @@
+1
+00:00:01,200 --> 00:00:02,379
+Kennst du das?
+
+2
+00:00:02,479 --> 00:00:05,922
+Drei Linux-Rechner im
+Netzwerk. Drei Updates.
+
+3
+00:00:06,022 --> 00:00:09,952
+Und dieselben Pakete werden immer
+wieder aus dem Internet geladen.
+
+4
+00:00:12,600 --> 00:00:16,217
+Was wäre, wenn dein Netzwerk
+ein eigenes Paketlager hätte?
+
+5
+00:00:16,317 --> 00:00:20,816
+Einmal herunterladen. Lokal
+speichern. Immer wieder verwenden.
+
+6
+00:00:25,400 --> 00:00:27,299
+Das ist Cache & Carry.
+
+7
+00:00:27,399 --> 00:00:31,039
+Ein schlanker, selbst gehosteter
+Paketcache für dein Netzwerk.
+
+8
+00:00:31,139 --> 00:00:36,857
+Im Dashboard siehst du jede Anfrage, jedes
+gespeicherte Paket und wie viel Bandbreite du sparst.
+
+9
+00:00:39,800 --> 00:00:42,744
+Beim ersten Abruf kommt
+das Paket vom Mirror.
+
+10
+00:00:42,844 --> 00:00:44,742
+Danach liegt es im Cache.
+
+11
+00:00:44,842 --> 00:00:48,122
+Der nächste Rechner bekommt es
+direkt aus deinem Netzwerk.
+
+12
+00:00:56,600 --> 00:01:03,177
+Und wenn mehrere Rechner gleichzeitig dieselbe Datei
+brauchen, kann ein einziger Upstream-Download alle versorgen.
+
+13
+00:01:03,277 --> 00:01:13,524
+In unserem Testnetzwerk kam ein Paketindex mit 8,6 MiB
+in 959 ms aus dem Internet. Aus dem Cache in 9 ms.
+
+14
+00:01:14,624 --> 00:01:18,567
+Ob Proxmox, Debian,
+Ubuntu, Arch oder CachyOS:
+
+15
+00:01:18,617 --> 00:01:23,592
+Cache & Carry bringt deine unterstützten
+Paketquellen unter ein gemeinsames Dach.
+
+16
+00:01:23,692 --> 00:01:28,121
+Als schlanker systemd-Dienst, zum
+Beispiel in einem Proxmox-Container.
+
+17
+00:01:29,624 --> 00:01:35,690
+Cache & Carry ist kostenlos auf GitHub verfügbar,
+Open Source und bereit für dein Homelab.
+
+18
+00:01:35,790 --> 00:01:42,031
+Wenn du es ausprobierst, lass einen Stern da, teile das
+Projekt und sag mir in den Kommentaren, wie du es einsetzt.

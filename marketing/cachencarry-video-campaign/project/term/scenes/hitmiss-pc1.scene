@@ -1,0 +1,4 @@
+prompt [\033[1;36mroot@arch-pc1\033[0m ~]# 
+exec docker exec -it ccdemo-pc1 bash -lc
+$ pacman -S --noconfirm vim
+end

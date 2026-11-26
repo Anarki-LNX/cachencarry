@@ -1,0 +1,23 @@
+1
+00:00:00,250 --> 00:00:02,485
+Is your network downloading
+all of this several times?
+
+2
+00:00:03,500 --> 00:00:07,303
+Why should every machine download
+the same packages from the Internet?
+
+3
+00:00:11,000 --> 00:00:14,570
+Cache & Carry stores them
+centrally on your network.
+
+4
+00:00:14,670 --> 00:00:18,113
+Download once. Then use it locally.
+
+5
+00:00:20,000 --> 00:00:24,174
+Your own LAN cache. Open
+source and free on GitHub.

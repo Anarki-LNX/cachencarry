@@ -1,0 +1,26 @@
+1
+00:00:00,250 --> 00:00:01,847
+Und was kostet das?
+
+2
+00:00:03,500 --> 00:00:06,339
+Die Software? Kostenlos auf GitHub.
+
+3
+00:00:06,439 --> 00:00:09,313
+Open Source unter Apache 2.0.
+
+4
+00:00:11,300 --> 00:00:15,288
+Du betreibst sie selbst in deinem
+Netzwerk und behältst die Kontrolle.
+
+5
+00:00:15,388 --> 00:00:18,854
+Nur Hardware und Strom für deinen
+Server bringst du selbst mit.
+
+6
+00:00:20,300 --> 00:00:23,812
+Gib dem Repository einen
+Stern und probier es aus.

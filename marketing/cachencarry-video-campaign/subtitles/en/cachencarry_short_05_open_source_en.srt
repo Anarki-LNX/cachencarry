@@ -1,0 +1,25 @@
+1
+00:00:00,250 --> 00:00:01,847
+And what does it cost?
+
+2
+00:00:03,500 --> 00:00:06,339
+The software? Free on GitHub.
+
+3
+00:00:06,439 --> 00:00:09,313
+Open source under Apache 2.0.
+
+4
+00:00:11,300 --> 00:00:15,288
+You run it yourself on your
+network and stay in control.
+
+5
+00:00:15,388 --> 00:00:18,854
+You only bring the hardware
+and power for your server.
+
+6
+00:00:20,300 --> 00:00:23,812
+Star the repository and try it out.

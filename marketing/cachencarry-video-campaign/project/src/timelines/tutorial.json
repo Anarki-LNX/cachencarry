@@ -1,0 +1,485 @@
+{
+ "id": "tutorial",
+ "fps": 30,
+ "frames": 10709,
+ "scenes": [
+  {
+   "id": "title",
+   "start": 0,
+   "frames": 345,
+   "lines": [
+    {
+     "file": "vo/tutorial/01.wav",
+     "start": 48,
+     "frames": 149,
+     "de": "In diesem Tutorial installieren wir Cache & Carry auf einem frischen Server, Schritt für Schritt.",
+     "en": "In this tutorial we install Cache & Carry on a fresh server, step by step."
+    },
+    {
+     "file": "vo/tutorial/02.wav",
+     "start": 208,
+     "frames": 119,
+     "de": "Cache & Carry ist ein Paketcache für dein lokales Netzwerk.",
+     "en": "Cache & Carry is a package cache for your local network."
+    }
+   ],
+   "chapter": 1
+  },
+  {
+   "id": "diagram",
+   "start": 345,
+   "frames": 1081,
+   "lines": [
+    {
+     "file": "vo/tutorial/03.wav",
+     "start": 15,
+     "frames": 227,
+     "de": "Der erste Rechner lädt ein Paket aus dem Internet. Cache & Carry speichert es, und jeder weitere Rechner bekommt es direkt aus dem LAN.",
+     "en": "The first machine downloads a package from the Internet. Cache & Carry stores it, and every other machine gets it straight from the LAN."
+    },
+    {
+     "file": "vo/tutorial/04.wav",
+     "start": 253,
+     "frames": 227,
+     "de": "Unterstützt werden heute APT für Debian, Ubuntu und Proxmox sowie Pacman für Arch Linux und CachyOS.",
+     "en": "Supported today: APT for Debian, Ubuntu and Proxmox, and Pacman for Arch Linux and CachyOS."
+    },
+    {
+     "file": "vo/tutorial/05.wav",
+     "start": 491,
+     "frames": 361,
+     "de": "Die Hardware darf klein sein: Ein Kern und 256 MB RAM sind das Minimum, mit zwei Kernen und einem GB läuft es komfortabel. Dazu Speicherplatz für alles, was im Cache landen soll.",
+     "en": "The hardware can be small: one core and 256 MB of RAM are the minimum, two cores and one GB are comfortable. Plus disk space for everything you want to cache."
+    },
+    {
+     "file": "vo/tutorial/06.wav",
+     "start": 862,
+     "frames": 202,
+     "de": "Am Ende hast du einen laufenden Dienst, ein Dashboard und zwei Debian-Clients, die ihre Pakete aus deinem Cache holen.",
+     "en": "At the end you have a running service, a dashboard and two Debian clients that get their packages from your cache."
+    }
+   ],
+   "chapter": 1
+  },
+  {
+   "id": "proxmox",
+   "start": 1426,
+   "frames": 976,
+   "lines": [
+    {
+     "file": "vo/tutorial/07.wav",
+     "start": 72,
+     "frames": 309,
+     "de": "Wir nehmen den empfohlenen Weg: einen unprivilegierten Debian 13 Container auf Proxmox. Ein normaler Server mit Debian oder Ubuntu und systemd funktioniert genauso.",
+     "en": "We take the recommended route: an unprivileged Debian 13 container on Proxmox. A normal Debian or Ubuntu server with systemd works the same way."
+    },
+    {
+     "file": "vo/tutorial/08.wav",
+     "start": 392,
+     "frames": 249,
+     "de": "Auf dem Proxmox-Host legen wir den Container an: zwei Kerne, ein GB RAM, acht GB Speicher und eine feste IP-Adresse.",
+     "en": "On the Proxmox host we create the container: two cores, one GB of RAM, eight GB of storage and a fixed IP address."
+    },
+    {
+     "file": "vo/tutorial/09.wav",
+     "start": 652,
+     "frames": 306,
+     "de": "Proxmox warnt, dass systemd 257 eventuell Nesting braucht. Für Cache & Carry ist das nicht nötig: Der Dienst wurde genau so ohne Nesting getestet.",
+     "en": "Proxmox warns that systemd 257 may need nesting. Cache & Carry does not: the service was tested exactly like this, without nesting."
+    }
+   ],
+   "chapter": 2
+  },
+  {
+   "id": "server",
+   "start": 2402,
+   "frames": 906,
+   "lines": [
+    {
+     "file": "vo/tutorial/10.wav",
+     "start": 12,
+     "frames": 279,
+     "de": "In der Konsole des Containers prüfen wir das System: Debian 13, Architektur amd64. Danach richtet sich das Release-Archiv.",
+     "en": "In the container's console we check the system: Debian 13, architecture amd64. That decides which release archive we need."
+    },
+    {
+     "file": "vo/tutorial/11.wav",
+     "start": 301,
+     "frames": 391,
+     "de": "Die Adresse 192.168.1.41 brauchen wir später für die Clients. Zwei Kerne, ein GB RAM, und unter /var/lib ist genug Platz für den Cache.",
+     "en": "We will need the address 192.168.1.41 for the clients later. Two cores, one GB of RAM, and enough space for the cache under /var/lib."
+    },
+    {
+     "file": "vo/tutorial/12.wav",
+     "start": 703,
+     "frames": 184,
+     "de": "Wir arbeiten hier als root. Auf einem normalen Server stellst du den Installationsbefehlen sudo voran.",
+     "en": "We work as root here. On a normal server, put sudo in front of the install commands."
+    }
+   ],
+   "chapter": 2
+  },
+  {
+   "id": "download",
+   "start": 3308,
+   "frames": 697,
+   "lines": [
+    {
+     "file": "vo/tutorial/13.wav",
+     "start": 72,
+     "frames": 221,
+     "de": "Jetzt laden wir das offizielle Release 0.2.1 von GitHub herunter und dazu die Datei mit den Prüfsummen.",
+     "en": "Now we download the official release 0.2.1 from GitHub, together with the checksum file."
+    },
+    {
+     "file": "vo/tutorial/14.wav",
+     "start": 303,
+     "frames": 149,
+     "de": "sha256sum bestätigt: Das Archiv ist unverändert.",
+     "en": "sha256sum confirms: the archive is unchanged."
+    },
+    {
+     "file": "vo/tutorial/15.wav",
+     "start": 463,
+     "frames": 217,
+     "de": "Wir entpacken es. Darin sind das Programm, die systemd-Unit, eine Beispielkonfiguration und das Installationsskript.",
+     "en": "We unpack it. It contains the program, the systemd unit, an example configuration and the install script."
+    }
+   ],
+   "chapter": 3
+  },
+  {
+   "id": "install",
+   "start": 4005,
+   "frames": 420,
+   "lines": [
+    {
+     "file": "vo/tutorial/16.wav",
+     "start": 12,
+     "frames": 248,
+     "de": "Das Skript legt den Systembenutzer cachencarry an, installiert das Programm nach /usr/local/bin und erzeugt /etc/cachencarry und /var/lib/cachencarry.",
+     "en": "The script creates the system user cachencarry, installs the program to /usr/local/bin and creates /etc/cachencarry and /var/lib/cachencarry."
+    },
+    {
+     "file": "vo/tutorial/17.wav",
+     "start": 270,
+     "frames": 130,
+     "de": "Dann prüft es die Konfiguration und startet den gehärteten systemd-Dienst.",
+     "en": "Then it checks the configuration and starts the hardened systemd service."
+    }
+   ],
+   "chapter": 3
+  },
+  {
+   "id": "status",
+   "start": 4425,
+   "frames": 300,
+   "lines": [
+    {
+     "file": "vo/tutorial/18.wav",
+     "start": 12,
+     "frames": 209,
+     "de": "systemctl zeigt: Der Dienst cachencarry ist aktiv und läuft. Der Healthcheck antwortet mit ok.",
+     "en": "systemctl shows: the cachencarry service is active and running. The health check answers ok."
+    }
+   ],
+   "chapter": 3
+  },
+  {
+   "id": "browser",
+   "start": 4725,
+   "frames": 525,
+   "lines": [
+    {
+     "file": "vo/tutorial/19.wav",
+     "start": 72,
+     "frames": 127,
+     "de": "Öffne jetzt im Browser die Adresse des Servers mit Port 8080.",
+     "en": "Now open the server's address on port 8080 in your browser."
+    },
+    {
+     "file": "vo/tutorial/20.wav",
+     "start": 210,
+     "frames": 297,
+     "de": "Beim ersten Aufruf legst du das Administratorkonto an. Damit das nur kann, wer Zugriff auf den Server hat, fragt die Einrichtung nach einem einmaligen Setup-Token.",
+     "en": "On the first visit you create the administrator account. So that only someone with access to the server can do this, setup asks for a one-time setup token."
+    }
+   ],
+   "chapter": 4
+  },
+  {
+   "id": "token",
+   "start": 5250,
+   "frames": 240,
+   "lines": [
+    {
+     "file": "vo/tutorial/21.wav",
+     "start": 12,
+     "frames": 158,
+     "de": "Das Token liest du auf dem Server mit diesem Befehl aus. Im Video ist es unkenntlich gemacht.",
+     "en": "You read the token on the server with this command. It is blurred in this video."
+    }
+   ],
+   "chapter": 4
+  },
+  {
+   "id": "form",
+   "start": 5490,
+   "frames": 462,
+   "lines": [
+    {
+     "file": "vo/tutorial/22.wav",
+     "start": 12,
+     "frames": 172,
+     "de": "Benutzername, ein Passwort mit mindestens zehn Zeichen, das Token einfügen, und Konto anlegen.",
+     "en": "User name, a password with at least ten characters, paste the token, and create the account."
+    },
+    {
+     "file": "vo/tutorial/23.wav",
+     "start": 315,
+     "frames": 129,
+     "de": "Fertig. Das Dashboard ist noch leer, weil noch kein Client den Cache nutzt.",
+     "en": "Done. The dashboard is still empty because no client uses the cache yet."
+    }
+   ],
+   "chapter": 4
+  },
+  {
+   "id": "client",
+   "start": 5952,
+   "frames": 270,
+   "lines": [
+    {
+     "file": "vo/tutorial/24.wav",
+     "start": 72,
+     "frames": 165,
+     "de": "Jetzt der erste Client, ein Debian 13 Rechner. Hier siehst du seine originale Paketquelle.",
+     "en": "Now the first client, a Debian 13 machine. Here you see its original package source."
+    }
+   ],
+   "chapter": 5
+  },
+  {
+   "id": "sources",
+   "start": 6222,
+   "frames": 660,
+   "lines": [
+    {
+     "file": "vo/tutorial/25.wav",
+     "start": 9,
+     "frames": 347,
+     "de": "Wir sichern die Datei und ersetzen sie durch die Variante aus der Dokumentation. Statt deb.debian.org steht dort der Cache mit Port 8080 und dem Pfad apt/debian.",
+     "en": "We back up the file and replace it with the version from the documentation. Instead of deb.debian.org it points to the cache on port 8080 with the path apt/debian."
+    },
+    {
+     "file": "vo/tutorial/26.wav",
+     "start": 366,
+     "frames": 243,
+     "de": "Die Zeile Signed-By bleibt. apt prüft die Signaturen weiterhin selbst. Cache & Carry reicht die Dateien nur unverändert durch.",
+     "en": "The Signed-By line stays. apt still checks the signatures itself. Cache & Carry passes the files through unchanged."
+    }
+   ],
+   "chapter": 5
+  },
+  {
+   "id": "dialog",
+   "start": 6882,
+   "frames": 210,
+   "lines": [
+    {
+     "file": "vo/tutorial/27.wav",
+     "start": 9,
+     "frames": 178,
+     "de": "Die passende Konfiguration für jedes Repository zeigt dir auch das Dashboard unter Cache-Module.",
+     "en": "The dashboard also shows the matching configuration for every repository under Cache Modules."
+    }
+   ],
+   "chapter": 5
+  },
+  {
+   "id": "apt1",
+   "start": 7092,
+   "frames": 480,
+   "lines": [
+    {
+     "file": "vo/tutorial/28.wav",
+     "start": 9,
+     "frames": 128,
+     "de": "Jetzt apt update. Die Paketlisten kommen schon über den Cache.",
+     "en": "Now apt update. The package lists already come through the cache."
+    },
+    {
+     "file": "vo/tutorial/29.wav",
+     "start": 147,
+     "frames": 256,
+     "de": "Dann installieren wir curl. Der Cache ist noch leer, also holt Cache & Carry jedes Paket einmal vom Debian-Mirror. Das sind die MISS-Einträge.",
+     "en": "Then we install curl. The cache is still empty, so Cache & Carry fetches every package once from the Debian mirror. Those are the MISS entries."
+    }
+   ],
+   "chapter": 5
+  },
+  {
+   "id": "arch",
+   "start": 7572,
+   "frames": 282,
+   "lines": [
+    {
+     "file": "vo/tutorial/30.wav",
+     "start": 9,
+     "frames": 254,
+     "de": "Für Arch Linux und CachyOS geht es genauso über die Mirrorlist. Die Zeilen dafür stehen in docs/CLIENTS.md.",
+     "en": "Arch Linux and CachyOS work the same way through the mirrorlist. The lines are in docs/CLIENTS.md."
+    }
+   ],
+   "chapter": 5
+  },
+  {
+   "id": "client2",
+   "start": 7854,
+   "frames": 355,
+   "lines": [
+    {
+     "file": "vo/tutorial/31.wav",
+     "start": 72,
+     "frames": 265,
+     "de": "Jetzt der spannende Teil: ein zweiter Client mit derselben Konfiguration. Er läuft hier auf demselben PC, deshalb zeigt das Dashboard dieselbe Adresse.",
+     "en": "Now the exciting part: a second client with the same configuration. Here it runs on the same PC, so the dashboard shows the same address."
+    }
+   ],
+   "chapter": 6
+  },
+  {
+   "id": "apt2",
+   "start": 8209,
+   "frames": 425,
+   "lines": [
+    {
+     "file": "vo/tutorial/32.wav",
+     "start": 9,
+     "frames": 92,
+     "de": "apt update und dieselbe Installation.",
+     "en": "apt update and the same installation."
+    },
+    {
+     "file": "vo/tutorial/33.wav",
+     "start": 112,
+     "frames": 295,
+     "de": "Diesmal kommt alles aus dem Cache. Beim ersten Client dauerte der Download drei Sekunden, jetzt null Sekunden, mit 252 MB pro Sekunde.",
+     "en": "This time everything comes from the cache. For the first client the download took three seconds, now zero seconds, at 252 MB per second."
+    }
+   ],
+   "chapter": 6
+  },
+  {
+   "id": "traffic",
+   "start": 8634,
+   "frames": 240,
+   "lines": [
+    {
+     "file": "vo/tutorial/34.wav",
+     "start": 9,
+     "frames": 201,
+     "de": "Im Live-Traffic siehst du den Unterschied: oben die HIT-Einträge des zweiten Clients, darunter die MISS-Einträge des ersten.",
+     "en": "Live Traffic shows the difference: at the top the HIT entries of the second client, below them the MISS entries of the first."
+    }
+   ],
+   "chapter": 6
+  },
+  {
+   "id": "curl",
+   "start": 8874,
+   "frames": 240,
+   "lines": [
+    {
+     "file": "vo/tutorial/35.wav",
+     "start": 9,
+     "frames": 213,
+     "de": "Auf der Kommandozeile prüfst du es mit curl und dem Header X-Cache. Beim allerersten Abruf steht dort MISS, danach HIT.",
+     "en": "On the command line you check it with curl and the X-Cache header. On the very first request it says MISS, afterwards HIT."
+    }
+   ],
+   "chapter": 6
+  },
+  {
+   "id": "stats",
+   "start": 9114,
+   "frames": 215,
+   "lines": [
+    {
+     "file": "vo/tutorial/36.wav",
+     "start": 9,
+     "frames": 188,
+     "de": "Die Statistik zählt die Bytes, die wirklich übertragen wurden: was vom Upstream kam und was der Cache eingespart hat.",
+     "en": "Statistics count the bytes that were really transferred: what came from upstream and what the cache saved."
+    }
+   ],
+   "chapter": 6
+  },
+  {
+   "id": "files",
+   "start": 9329,
+   "frames": 510,
+   "lines": [
+    {
+     "file": "vo/tutorial/37.wav",
+     "start": 72,
+     "frames": 97,
+     "de": "Damit läuft dein Cache. Hier findest du alles Wichtige.",
+     "en": "Your cache is running. Here is where to find everything."
+    },
+    {
+     "file": "vo/tutorial/38.wav",
+     "start": 179,
+     "frames": 246,
+     "de": "Die Konfiguration liegt in /etc/cachencarry/config.yaml, der Cache in /var/lib/cachencarry, und die Logs zeigt journalctl.",
+     "en": "The configuration is in /etc/cachencarry/config.yaml, the cache in /var/lib/cachencarry, and journalctl shows the logs."
+    }
+   ],
+   "chapter": 7
+  },
+  {
+   "id": "tour",
+   "start": 9839,
+   "frames": 434,
+   "lines": [
+    {
+     "file": "vo/tutorial/39.wav",
+     "start": 9,
+     "frames": 238,
+     "de": "Im Dashboard findest du gespeicherte Pakete unter Speicher. Unter Einstellungen begrenzt du Cachegröße und Bandbreite, ohne Neustart.",
+     "en": "In the dashboard, stored packages are under Storage. Under Settings you limit cache size and bandwidth, without a restart."
+    },
+    {
+     "file": "vo/tutorial/40.wav",
+     "start": 257,
+     "frames": 159,
+     "de": "Die Anleitungen für Clients findest du unter Cache-Module und in der Dokumentation auf GitHub.",
+     "en": "Client instructions are under Cache Modules and in the documentation on GitHub."
+    }
+   ],
+   "chapter": 7
+  },
+  {
+   "id": "outro",
+   "start": 10273,
+   "frames": 436,
+   "lines": [
+    {
+     "file": "vo/tutorial/41.wav",
+     "start": 18,
+     "frames": 108,
+     "de": "Und das war's. Dein eigenes Paketlager im Netzwerk.",
+     "en": "And that's it. Your own package warehouse on your network."
+    },
+    {
+     "file": "vo/tutorial/42.wav",
+     "start": 136,
+     "frames": 210,
+     "de": "Den vollständigen Quellcode findest du kostenlos auf GitHub. Wenn dir Cache & Carry gefällt, lass gerne einen Stern da.",
+     "en": "You can find the complete source code for free on GitHub. If you like Cache & Carry, feel free to leave a star."
+    }
+   ],
+   "chapter": 7
+  }
+ ]
+}

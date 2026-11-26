@@ -1,0 +1,133 @@
+{
+ "id": "presentation",
+ "file": "cachencarry_presentation",
+ "scenes": [
+  {
+   "id": "problem",
+   "lead": 1.2,
+   "min": 12,
+   "lines": [
+    {
+     "de": "Kennst du das?",
+     "en": "Sound familiar?"
+    },
+    {
+     "de": "Drei Linux-Rechner im Netzwerk. Drei Updates.",
+     "en": "Three Linux machines on your network. Three updates."
+    },
+    {
+     "de": "Und dieselben Pakete werden immer wieder aus dem Internet geladen.",
+     "en": "And the same packages are downloaded from the Internet again and again."
+    }
+   ]
+  },
+  {
+   "id": "idea",
+   "lead": 0.6,
+   "min": 12,
+   "lines": [
+    {
+     "de": "Was wäre, wenn dein Netzwerk ein eigenes Paketlager hätte?",
+     "en": "What if your network had its own package warehouse?"
+    },
+    {
+     "de": "Einmal herunterladen. Lokal speichern. Immer wieder verwenden.",
+     "say": "Einmal herunterladen. Lokal speichern. Immer wieder verwenden.",
+     "en": "Download once. Store it locally. Use it again and again.",
+     "gap": 0.2
+    }
+   ]
+  },
+  {
+   "id": "meet",
+   "lead": 1.4,
+   "min": 15,
+   "lines": [
+    {
+     "de": "Das ist Cache & Carry.",
+     "en": "This is Cache & Carry."
+    },
+    {
+     "de": "Ein schlanker, selbst gehosteter Paketcache für dein Netzwerk.",
+     "en": "A lean, self-hosted package cache for your network."
+    },
+    {
+     "de": "Im Dashboard siehst du jede Anfrage, jedes gespeicherte Paket und wie viel Bandbreite du sparst.",
+     "en": "The dashboard shows every request, every stored package and how much bandwidth you save."
+    }
+   ]
+  },
+  {
+   "id": "hitmiss",
+   "lead": 0.8,
+   "min": 17,
+   "lines": [
+    {
+     "de": "Beim ersten Abruf kommt das Paket vom Mirror.",
+     "en": "On the first request, the package comes from the mirror."
+    },
+    {
+     "de": "Danach liegt es im Cache.",
+     "en": "After that, it is in the cache."
+    },
+    {
+     "de": "Der nächste Rechner bekommt es direkt aus deinem Netzwerk.",
+     "en": "The next machine gets it straight from your network."
+    }
+   ]
+  },
+  {
+   "id": "shared",
+   "lead": 0.6,
+   "min": 15,
+   "lines": [
+    {
+     "de": "Und wenn mehrere Rechner gleichzeitig dieselbe Datei brauchen, kann ein einziger Upstream-Download alle versorgen.",
+     "en": "And when several machines need the same file at the same time, a single upstream download can serve them all."
+    },
+    {
+     "de": "In unserem Testnetzwerk kam ein Paketindex mit 8,6 MiB in 959 ms aus dem Internet. Aus dem Cache in 9 ms.",
+     "say": "In unserem Testnetzwerk kam ein Paketindex mit acht Komma sechs Mebibeit in 959 Millisekunden aus dem Internet. Aus dem Käsch in neun.",
+     "en": "In our test network, an 8.6 MiB package index took 959 ms from the Internet. From the cache, 9 ms.",
+     "gap": 0.5
+    }
+   ]
+  },
+  {
+   "id": "homelab",
+   "lead": 0.6,
+   "min": 15,
+   "lines": [
+    {
+     "de": "Ob Proxmox, Debian, Ubuntu, Arch oder CachyOS:",
+     "en": "Whether Proxmox, Debian, Ubuntu, Arch or CachyOS:",
+     "gap": 0.15
+    },
+    {
+     "de": "Cache & Carry bringt deine unterstützten Paketquellen unter ein gemeinsames Dach.",
+     "en": "Cache & Carry brings your supported package sources under one roof."
+    },
+    {
+     "de": "Als schlanker systemd-Dienst, zum Beispiel in einem Proxmox-Container.",
+     "en": "As a lean systemd service, for example in a Proxmox container."
+    }
+   ]
+  },
+  {
+   "id": "cta",
+   "lead": 0.6,
+   "min": 17,
+   "tail": 3.2,
+   "lines": [
+    {
+     "de": "Cache & Carry ist kostenlos auf GitHub verfügbar, Open Source und bereit für dein Homelab.",
+     "en": "Cache & Carry is free on GitHub, open source and ready for your homelab."
+    },
+    {
+     "de": "Wenn du es ausprobierst, lass einen Stern da, teile das Projekt und sag mir in den Kommentaren, wie du es einsetzt.",
+     "en": "If you try it, leave a star, share the project and tell me in the comments how you use it."
+    }
+   ]
+  }
+ ]
+}

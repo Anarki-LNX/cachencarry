@@ -1,0 +1,56 @@
+{
+ "id": "short03",
+ "fps": 30,
+ "frames": 777,
+ "scenes": [
+  {
+   "id": "hook",
+   "start": 0,
+   "frames": 188,
+   "lines": [
+    {
+     "file": "vo/short03/01.wav",
+     "start": 8,
+     "frames": 162,
+     "de": "959 Millisekunden. 9 Millisekunden. Was ist passiert?",
+     "en": "959 milliseconds. 9 milliseconds. What happened?"
+    }
+   ]
+  },
+  {
+   "id": "compare",
+   "start": 188,
+   "frames": 390,
+   "lines": [
+    {
+     "file": "vo/short03/02.wav",
+     "start": 9,
+     "frames": 262,
+     "de": "Im dokumentierten Testnetzwerk brauchte ein Paketindex mit 8,6 MiB 959 Millisekunden aus dem Internet.",
+     "en": "In the documented test network, an 8.6 MiB package index took 959 milliseconds from the Internet."
+    },
+    {
+     "file": "vo/short03/03.wav",
+     "start": 281,
+     "frames": 55,
+     "de": "Aus dem Cache waren es nur 9.",
+     "en": "From the cache, it took just 9."
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "start": 578,
+   "frames": 199,
+   "lines": [
+    {
+     "file": "vo/short03/04.wav",
+     "start": 9,
+     "frames": 131,
+     "de": "Genau dafür gibt es Cache & Carry. Mehr im GitHub-Repository.",
+     "en": "That is exactly what Cache & Carry is for. More in the GitHub repository."
+    }
+   ]
+  }
+ ]
+}

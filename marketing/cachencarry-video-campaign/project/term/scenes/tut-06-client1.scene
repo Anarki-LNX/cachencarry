@@ -1,0 +1,21 @@
+# Chapter 5: Debian client 1, configured exactly as docs/CLIENTS.md (signature check untouched).
+prompt \033[1;32mroot@debian-client1\033[0m:\033[1;34m~\033[0m# 
+exec docker exec -it ccdemo-deb1 bash -lc
+$ cat /etc/apt/sources.list.d/debian.sources
+$ cp /etc/apt/sources.list.d/debian.sources /root/debian.sources.orig
+$ cat > /etc/apt/sources.list.d/debian.sources <<'EOF'
+> Types: deb
+> URIs: http://192.168.1.41:8080/apt/debian
+> Suites: trixie trixie-updates
+> Components: main contrib non-free-firmware
+> Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+> 
+> Types: deb
+> URIs: http://192.168.1.41:8080/apt/debian-security
+> Suites: trixie-security
+> Components: main contrib non-free-firmware
+> Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+> EOF
+$ apt update
+$ apt install -y curl
+end

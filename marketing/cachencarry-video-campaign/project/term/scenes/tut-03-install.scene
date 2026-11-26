@@ -1,0 +1,10 @@
+# Chapter 3: download the official release, check it, install it.
+prompt \033[1;32mroot@cc-tutorial\033[0m:\033[1;34m~\033[0m# 
+exec ssh -o IdentitiesOnly=yes -o LogLevel=ERROR -i ~/.ssh/id_ed25519_proxmox -tt root@192.168.1.10 pct exec 130 -- bash -lc
+quote 2
+$ cd /root && wget -q --show-progress https://github.com/Anarki-LNX/cachencarry/releases/download/v0.2.1/cachencarry-0.2.1-linux-amd64.tar.gz
+$ wget -q https://github.com/Anarki-LNX/cachencarry/releases/download/v0.2.1/SHA256SUMS
+$ sha256sum --check --ignore-missing SHA256SUMS
+$ tar xzf cachencarry-*-linux-amd64.tar.gz && ls cachencarry-*-linux-amd64
+$ cd cachencarry-*-linux-amd64 && ./scripts/install.sh
+end

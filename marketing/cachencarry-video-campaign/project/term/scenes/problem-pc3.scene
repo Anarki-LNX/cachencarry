@@ -1,0 +1,5 @@
+prompt [\033[1;36mroot@arch-pc3\033[0m ~]# 
+exec docker exec -it -e COLUMNS=80 ccdemo-pc3 bash -lc
+wait 0.9
+$ pacman -Sy --noconfirm git
+end

@@ -1,0 +1,14 @@
+{
+ "id": "short01", "file": "cachencarry_short_01_problem",
+ "scenes": [
+  {"id": "hook", "lead": 0.25, "min": 3.2, "lines": [
+   {"de": "Dein Netzwerk lädt das alles mehrfach?", "en": "Is your network downloading all of this several times?"}]},
+  {"id": "problem", "lead": 0.3, "min": 7.5, "lines": [
+   {"de": "Warum soll jeder Rechner dieselben Pakete aus dem Internet laden?", "en": "Why should every machine download the same packages from the Internet?"}]},
+  {"id": "solution", "lead": 0.3, "min": 9, "lines": [
+   {"de": "Cache & Carry speichert sie zentral in deinem Netzwerk.", "en": "Cache & Carry stores them centrally on your network."},
+   {"de": "Einmal herunterladen. Danach lokal nutzen.", "en": "Download once. Then use it locally."}]},
+  {"id": "end", "lead": 0.3, "min": 6, "tail": 2.0, "lines": [
+   {"de": "Dein eigener LAN-Cache. Open Source und kostenlos auf GitHub.", "en": "Your own LAN cache. Open source and free on GitHub."}]}
+ ]
+}

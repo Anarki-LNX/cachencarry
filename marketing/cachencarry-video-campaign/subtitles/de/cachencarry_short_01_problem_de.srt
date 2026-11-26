@@ -1,0 +1,22 @@
+1
+00:00:00,250 --> 00:00:02,485
+Dein Netzwerk lädt das alles mehrfach?
+
+2
+00:00:03,500 --> 00:00:07,303
+Warum soll jeder Rechner dieselben
+Pakete aus dem Internet laden?
+
+3
+00:00:11,000 --> 00:00:14,570
+Cache & Carry speichert sie
+zentral in deinem Netzwerk.
+
+4
+00:00:14,670 --> 00:00:18,113
+Einmal herunterladen. Danach lokal nutzen.
+
+5
+00:00:20,000 --> 00:00:24,174
+Dein eigener LAN-Cache. Open
+Source und kostenlos auf GitHub.

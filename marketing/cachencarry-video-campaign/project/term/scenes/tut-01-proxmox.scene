@@ -1,0 +1,7 @@
+# Chapter 2, on the Proxmox host: create the unprivileged Debian 13 container.
+prompt \033[1;32mroot@pve\033[0m:\033[1;34m~\033[0m# 
+exec ssh -o IdentitiesOnly=yes -o LogLevel=ERROR -i ~/.ssh/id_ed25519_proxmox -tt root@192.168.1.10
+$ pveam list local | grep debian-13
+$ pct create 130 local:vztmpl/debian-13-standard_13.6-1_amd64.tar.zst --hostname cc-tutorial --unprivileged 1 --cores 2 --memory 1024 --rootfs local-lvm:8 --net0 name=eth0,bridge=vmbr0,ip=192.168.1.41/24,gw=192.168.1.1 --onboot 1
+$ pct start 130 && pct status 130
+end

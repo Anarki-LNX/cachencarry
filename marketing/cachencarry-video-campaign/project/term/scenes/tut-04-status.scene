@@ -1,0 +1,7 @@
+# Chapter 3: the service is running.
+prompt \033[1;32mroot@cc-tutorial\033[0m:\033[1;34m~\033[0m# 
+exec ssh -o IdentitiesOnly=yes -o LogLevel=ERROR -i ~/.ssh/id_ed25519_proxmox -tt root@192.168.1.10 pct exec 130 -- bash -lc
+quote 2
+$ systemctl status cachencarry --no-pager | head -9
+$ wget -qO- http://localhost:8080/healthz; echo
+end

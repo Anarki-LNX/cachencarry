@@ -1,0 +1,70 @@
+{
+ "id": "short02",
+ "fps": 30,
+ "frames": 722,
+ "scenes": [
+  {
+   "id": "hook",
+   "start": 0,
+   "frames": 107,
+   "lines": [
+    {
+     "file": "vo/short02/01.wav",
+     "start": 8,
+     "frames": 82,
+     "de": "Zwei Wörter. Ein ganzes Netzwerk schneller.",
+     "en": "Two words. A whole network, faster."
+    }
+   ]
+  },
+  {
+   "id": "miss",
+   "start": 107,
+   "frames": 225,
+   "lines": [
+    {
+     "file": "vo/short02/02.wav",
+     "start": 9,
+     "frames": 90,
+     "de": "MISS bedeutet: Das Paket muss noch vom Mirror kommen.",
+     "en": "MISS means the package still has to come from the mirror."
+    }
+   ]
+  },
+  {
+   "id": "hit",
+   "start": 332,
+   "frames": 225,
+   "lines": [
+    {
+     "file": "vo/short02/03.wav",
+     "start": 9,
+     "frames": 83,
+     "de": "HIT bedeutet: Es liegt bereits in deinem Cache.",
+     "en": "HIT means it is already in your cache."
+    },
+    {
+     "file": "vo/short02/04.wav",
+     "start": 103,
+     "frames": 85,
+     "de": "Und genau das macht Cache & Carry so praktisch.",
+     "en": "And that is exactly what makes Cache & Carry so handy."
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "start": 557,
+   "frames": 165,
+   "lines": [
+    {
+     "file": "vo/short02/05.wav",
+     "start": 9,
+     "frames": 81,
+     "de": "Probier es selbst. Open Source auf GitHub.",
+     "en": "Try it yourself. Open source on GitHub."
+    }
+   ]
+  }
+ ]
+}
