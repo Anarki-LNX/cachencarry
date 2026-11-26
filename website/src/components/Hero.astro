@@ -14,24 +14,31 @@ const tr = t(locale);
 const h = tr.hero;
 const ext = { target: '_blank', rel: 'noopener noreferrer' } as const;
 
-// Client nodes on the right, y positions in the 560 × 440 viewBox
+// Client nodes on the right, y positions in the 560 × 480 viewBox. Groups of machines
+// that use the same repository: a package only helps machines of the same family.
+// CachyOS pulls many packages from the Arch repositories, so it shares the Arch file.
 const clients = [
-  { y: 70, name: 'Debian 13' },
-  { y: 160, name: 'Ubuntu' },
-  { y: 250, name: 'Arch Linux' },
-  { y: 340, name: 'CachyOS' },
+  { y: 74, name: 'Debian · PC' },
+  { y: 118, name: 'Debian · NAS' },
+  { y: 162, name: 'Debian · LXC' },
+  { y: 222, name: 'Ubuntu · PC' },
+  { y: 266, name: 'Ubuntu · Laptop' },
+  { y: 326, name: 'Arch · PC' },
+  { y: 370, name: 'Arch · Laptop' },
+  { y: 414, name: 'CachyOS' },
 ];
 const cx = 260;
-const cy = 220;
+const cy = 244;
 const inetX = 58;
 const divider = 178;
-const pathTo = (y: number) => `M${cx + 34} ${cy} C ${cx + 105} ${cy}, ${cx + 115} ${y}, 420 ${y}`;
+const pathTo = (y: number) => `M${cx + 34} ${cy} C ${cx + 105} ${cy}, ${cx + 115} ${y}, 412 ${y}`;
 const inPath = `M${inetX + 30} ${cy} L ${cx - 34} ${cy}`;
 
-// One loop of the story, as fractions of DUR: the first client asks, the cache misses,
-// fetches the file once from the Internet and hands it over. Then the other clients ask
-// and are served straight from the cache (HIT).
-const DUR = '12s';
+// One loop of DUR seconds, told once per group: the first machine of a group asks,
+// the cache misses, fetches the file once from the Internet and hands it over. The
+// other machines of the same group ask next and are served straight from the cache.
+const DURS = 21;
+const DUR = `${DURS}s`;
 type Kind = 'req' | 'in' | 'hit';
 interface Move {
   path: string;
@@ -40,31 +47,49 @@ interface Move {
   reverse: boolean;
   kind: Kind;
 }
-const moves: Move[] = [
-  { path: 'p-out-0', t0: 0.02, t1: 0.09, reverse: true, kind: 'req' },
-  { path: 'p-in', t0: 0.1, t1: 0.16, reverse: true, kind: 'req' },
-  { path: 'p-in', t0: 0.18, t1: 0.3, reverse: false, kind: 'in' },
-  { path: 'p-out-0', t0: 0.31, t1: 0.39, reverse: false, kind: 'hit' },
-  { path: 'p-out-1', t0: 0.44, t1: 0.5, reverse: true, kind: 'req' },
-  { path: 'p-out-1', t0: 0.51, t1: 0.57, reverse: false, kind: 'hit' },
-  { path: 'p-out-2', t0: 0.59, t1: 0.65, reverse: true, kind: 'req' },
-  { path: 'p-out-2', t0: 0.66, t1: 0.72, reverse: false, kind: 'hit' },
-  { path: 'p-out-3', t0: 0.74, t1: 0.8, reverse: true, kind: 'req' },
-  { path: 'p-out-3', t0: 0.81, t1: 0.87, reverse: false, kind: 'hit' },
-];
+const missWin: [number, number][] = [];
+const hitWin: [number, number][] = [];
+/** times in seconds from `at`, converted to fractions of the loop */
+const story = (first: number, others: number[], at: number): Move[] => {
+  const q = (sec: number) => (at + sec) / DURS;
+  const out: Move[] = [
+    { path: `p-out-${first}`, t0: q(0.2), t1: q(1.0), reverse: true, kind: 'req' },
+    { path: 'p-in', t0: q(1.1), t1: q(1.7), reverse: true, kind: 'req' },
+    { path: 'p-in', t0: q(1.85), t1: q(3.0), reverse: false, kind: 'in' },
+    { path: `p-out-${first}`, t0: q(3.1), t1: q(3.9), reverse: false, kind: 'hit' },
+  ];
+  missWin.push([q(1.1), q(3.1)]);
+  others.forEach((c, j) => {
+    const s0 = 4.3 + j * 1.6;
+    out.push({ path: `p-out-${c}`, t0: q(s0), t1: q(s0 + 0.65), reverse: true, kind: 'req' });
+    out.push({ path: `p-out-${c}`, t0: q(s0 + 0.7), t1: q(s0 + 1.35), reverse: false, kind: 'hit' });
+  });
+  hitWin.push([q(4.95), q(4.3 + (others.length - 1) * 1.6 + 1.5)]);
+  return out;
+};
+const moves: Move[] = [...story(0, [1, 2], 0), ...story(3, [4], 7.5), ...story(5, [6, 7], 13.4)];
 const f = (n: number) => n.toFixed(3);
 const motion = (m: Move) => ({
   keyPoints: m.reverse ? '1;1;0;0' : '0;0;1;1',
   keyTimes: `0;${f(m.t0)};${f(m.t1)};1`,
 });
-const fade = (t0: number, t1: number) => ({
-  values: '0;0;1;1;0;0',
-  keyTimes: `0;${f(t0)};${f(t0 + 0.01)};${f(t1 - 0.01)};${f(t1)};1`,
-});
+/** Opacity 0 outside the given windows, 1 inside, with short fades. */
+const windows = (list: [number, number][]) => {
+  const values = ['0'];
+  const times = ['0'];
+  for (const [t0, t1] of list) {
+    values.push('0', '1', '1', '0');
+    times.push(f(t0), f(t0 + 0.008), f(t1 - 0.008), f(t1));
+  }
+  values.push('0');
+  times.push('1');
+  return { values: values.join(';'), keyTimes: times.join(';') };
+};
+const fade = (t0: number, t1: number) => windows([[t0, t1]]);
 // a client's LED lights up when its file arrives
-const served = moves.filter((m) => m.kind === 'hit').map((m) => ({ i: Number(m.path.slice(-1)), t: m.t1 }));
-const missWindow = fade(0.1, 0.31);
-const hitWindow = fade(0.5, 0.9);
+const served = moves.filter((m) => m.kind === 'hit').map((m) => ({ i: Number(m.path.slice(6)), t: m.t1 }));
+const missWindow = windows(missWin);
+const hitWindow = windows(hitWin);
 ---
 
 <section class="hero" id={anchors.overview} aria-labelledby="hero-title">
@@ -104,7 +129,7 @@ const hitWindow = fade(0.5, 0.9);
     </div>
 
     <figure class="hero__fig">
-      <svg class="net" viewBox="0 0 560 440" role="img" aria-labelledby="net-title">
+      <svg class="net" viewBox="0 0 560 480" role="img" aria-labelledby="net-title">
         <title id="net-title">{h.diagramLabel}</title>
         <defs>
           <linearGradient id="g-in" x1="0" x2="1">
@@ -122,12 +147,12 @@ const hitWindow = fade(0.5, 0.9);
         </defs>
 
         <!-- frame around the whole picture, split into Internet and LAN -->
-        <rect class="net__zone" x="6" y="24" width="546" height="392" rx="22"></rect>
-        <path class="net__divider" d={`M${divider} 40 V 400`}></path>
+        <rect class="net__zone" x="6" y="24" width="546" height="444" rx="22"></rect>
+        <path class="net__divider" d={`M${divider} 40 V 452`}></path>
         <text class="net__zone-label net__zone-label--inet" x="26" y="48">
           {h.diagramInternet}
         </text>
-        <text class="net__zone-label" x="532" y="48" text-anchor="end">
+        <text class="net__zone-label" x="538" y="48" text-anchor="end">
           {h.diagramLan}
         </text>
 
@@ -186,8 +211,8 @@ const hitWindow = fade(0.5, 0.9);
         <!-- clients -->
         {clients.map((c, i) => (
           <g class="net__client">
-            <rect x="420" y={c.y - 17} width="112" height="34" rx="9" />
-            <circle cx="436" cy={c.y} r="4" class="net__led">
+            <rect x="412" y={c.y - 17} width="130" height="34" rx="9" />
+            <circle cx="427" cy={c.y} r="4" class="net__led">
               {served
                 .filter((s) => s.i === i)
                 .map((s) => (
@@ -196,11 +221,11 @@ const hitWindow = fade(0.5, 0.9);
                     dur={DUR}
                     repeatCount="indefinite"
                     values="4;4;7;4;4"
-                    keyTimes={`0;${f(s.t)};${f(s.t + 0.02)};${f(s.t + 0.05)};1`}
+                    keyTimes={`0;${f(s.t)};${f(s.t + 0.015)};${f(s.t + 0.04)};1`}
                   />
                 ))}
             </circle>
-            <text x="448" y={c.y + 4.5} class="net__name">
+            <text x="438" y={c.y + 4.5} class="net__name">
               {c.name}
             </text>
           </g>
@@ -442,7 +467,7 @@ const hitWindow = fade(0.5, 0.9);
   }
   .net__halo {
     animation: breathe 6s ease-in-out infinite;
-    transform-origin: 260px 220px;
+    transform-origin: 260px 244px;
   }
   @keyframes breathe {
     50% {

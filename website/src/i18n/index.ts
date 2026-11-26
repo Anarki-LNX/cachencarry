@@ -64,12 +64,12 @@ const de = {
     license: 'Apache 2.0 · kostenlos für alle',
     release: 'Aktuelle Version',
     diagramLabel:
-      'Schema: Ein Rechner im LAN fragt ein Paket an. Cache & Carry holt es einmal aus dem Internet und liefert es aus. Die nächsten Rechner bekommen dasselbe Paket direkt aus dem Cache.',
+      'Schema: Ein Debian-Rechner im LAN fragt ein Paket an. Cache & Carry holt es einmal aus dem Internet und liefert es aus. Die anderen Debian-Rechner bekommen dasselbe Paket direkt aus dem Cache. Danach dasselbe für die Ubuntu-Rechner und für Arch Linux, dessen Pakete auch CachyOS nutzt.',
     diagramInternet: 'Internet',
     diagramMirror: 'Mirror',
     diagramCache: 'Cache & Carry',
     diagramLan: 'LAN',
-    diagramOnce: '1 × geladen',
+    diagramOnce: '1 × je Paket',
     diagramNote: 'Schematische Darstellung, keine Live-Daten',
     legendRequest: 'Anfrage',
     legendInternet: 'Aus dem Internet',
@@ -217,7 +217,7 @@ const de = {
     ],
     diagramLabel:
       'Ablauf: Drei Rechner fragen dasselbe Paket an. Cache & Carry lädt es einmal vom Mirror und liefert es an alle drei.',
-    clients: ['Debian', 'Arch Linux', 'Ubuntu'],
+    clients: ['Debian · PC', 'Debian · NAS', 'Debian · LXC'],
   },
   bench: {
     label: 'Beispielmessung',
@@ -477,12 +477,12 @@ const en: Copy = {
     license: 'Apache 2.0 · free for everyone',
     release: 'Latest version',
     diagramLabel:
-      'Diagram: a machine on the LAN asks for a package. Cache & Carry fetches it once from the Internet and hands it over. The next machines get the same package straight from the cache.',
+      'Diagram: a Debian machine on the LAN asks for a package. Cache & Carry fetches it once from the Internet and hands it over. The other Debian machines get the same package straight from the cache. Then the same for the Ubuntu machines and for Arch Linux, whose packages CachyOS uses as well.',
     diagramInternet: 'Internet',
     diagramMirror: 'Mirror',
     diagramCache: 'Cache & Carry',
     diagramLan: 'LAN',
-    diagramOnce: 'fetched 1 ×',
+    diagramOnce: '1 × per package',
     diagramNote: 'Schematic illustration, not live data',
     legendRequest: 'Request',
     legendInternet: 'From the Internet',
@@ -630,7 +630,7 @@ const en: Copy = {
     ],
     diagramLabel:
       'Flow: three machines ask for the same package. Cache & Carry fetches it once from the mirror and serves all three.',
-    clients: ['Debian', 'Arch Linux', 'Ubuntu'],
+    clients: ['Debian · PC', 'Debian · NAS', 'Debian · LXC'],
   },
   bench: {
     label: 'Example measurement',
