@@ -1,0 +1,30 @@
+---
+import Base from '~/layouts/Base.astro';
+import Hero from '~/components/Hero.astro';
+import Features from '~/components/Features.astro';
+import HowItWorks from '~/components/HowItWorks.astro';
+import Benchmark from '~/components/Benchmark.astro';
+import Screenshots from '~/components/Screenshots.astro';
+import Videos from '~/components/Videos.astro';
+import Install from '~/components/Install.astro';
+import OpenSource from '~/components/OpenSource.astro';
+import { type Locale, locales, t } from '~/i18n';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const locale = Astro.params.lang as Locale;
+const tr = t(locale);
+---
+
+<Base locale={locale} title={tr.meta.title} description={tr.meta.description} softwareJsonLd>
+  <Hero locale={locale} />
+  <Features locale={locale} />
+  <HowItWorks locale={locale} />
+  <Benchmark locale={locale} />
+  <Screenshots locale={locale} />
+  <Videos locale={locale} />
+  <Install locale={locale} />
+  <OpenSource locale={locale} />
+</Base>

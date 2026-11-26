@@ -1,0 +1,281 @@
+---
+import Icon from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import { REPO, YOUTUBE_CHANNEL } from '~/config/site';
+import { videos, validateVideos, watchUrl, embedUrl } from '~/data/videos';
+import { type Locale, t, anchors } from '~/i18n';
+
+// Video tutorials from src/data/videos.ts. Nothing is loaded from YouTube until a
+// visitor presses play: the card shows a local thumbnail, and only the click puts
+// the youtube-nocookie.com player into the page. With no published video the
+// section shows an honest empty state.
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const tr = t(locale);
+const v = tr.videos;
+const list = validateVideos(videos);
+const dateFmt = new Intl.DateTimeFormat(locale === 'de' ? 'de-DE' : 'en-GB', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
+const ext = { target: '_blank', rel: 'noopener noreferrer' } as const;
+---
+
+<section class="section" id={anchors.tutorials} aria-labelledby="videos-title">
+  <div class="container">
+    <SectionHead num="05" label={v.label} title={v.title} lead={v.lead} id="videos-title" />
+
+    {list.length === 0 ? (
+      <div class="card vid__empty" data-reveal>
+        <div class="vid__empty-art" aria-hidden="true">
+          <span class="vid__soon">
+            <Icon name="clock" size={22} />
+            <span>{v.soon}</span>
+          </span>
+        </div>
+        <div class="vid__empty-text">
+          <h3>{v.emptyTitle}</h3>
+          <p class="muted">{v.emptyText}</p>
+          <p class="label vid__planned-title">{v.emptyPlanned}</p>
+          <ul role="list" class="vid__topics">
+            {v.plannedTopics.map((topic) => (
+              <li>{topic}</li>
+            ))}
+          </ul>
+          <div class="vid__links">
+            <a class="btn btn--ghost" href={REPO.deployment} {...ext}>
+              <Icon name="book" size={16} />
+              <span>{tr.install.docsDeployment}</span>
+              <span class="visually-hidden">{tr.a11y.newTab}</span>
+            </a>
+            {YOUTUBE_CHANNEL && (
+              <a class="btn btn--ghost" href={YOUTUBE_CHANNEL} {...ext}>
+                <Icon name="youtube" size={18} />
+                <span>{v.channel}</span>
+                <span class="visually-hidden">{tr.a11y.newTab}</span>
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    ) : (
+      <>
+        <ul role="list" class="vid__grid">
+          {list.map((item) => (
+            <li class="card vid__card" data-reveal data-category={item.category}>
+              <div class="vid__media" data-video data-embed={embedUrl(item.id)} data-title={item.title[locale]}>
+                <img
+                  src={item.thumbnail}
+                  alt=""
+                  width="1280"
+                  height="720"
+                  loading="lazy"
+                  decoding="async"
+                  class="vid__thumb"
+                />
+                <a class="vid__start" href={watchUrl(item.id)} {...ext} data-video-start>
+                  <span class="vid__play">
+                    <Icon name="play" size={24} />
+                  </span>
+                  <span class="visually-hidden">
+                    {v.play}: {item.title[locale]}
+                  </span>
+                </a>
+                {item.duration && <span class="vid__dur">{item.duration}</span>}
+              </div>
+              <div class="vid__body">
+                <p class="vid__meta">
+                  <span class="vid__cat">{v.categories[item.category]}</span>
+                  <span>{v.language[item.language]}</span>
+                  <time datetime={item.published}>{dateFmt.format(new Date(item.published))}</time>
+                </p>
+                <h3>{item.title[locale]}</h3>
+                <p class="muted">{item.description[locale]}</p>
+                <a class="vid__yt" href={watchUrl(item.id)} {...ext}>
+                  <Icon name="youtube" size={16} /> {v.onYoutube}
+                  <span class="visually-hidden">{tr.a11y.newTab}</span>
+                </a>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p class="vid__privacy">
+          <Icon name="lock" size={14} /> {v.playNote}
+        </p>
+        {YOUTUBE_CHANNEL && (
+          <p class="vid__channel">
+            <a href={YOUTUBE_CHANNEL} {...ext}>
+              {v.channel} <Icon name="arrow-up-right" size={14} />
+              <span class="visually-hidden">{tr.a11y.newTab}</span>
+            </a>
+          </p>
+        )}
+      </>
+    )}
+  </div>
+</section>
+
+<script>
+  import '~/scripts/videos';
+</script>
+
+<style>
+  .vid__empty {
+    display: grid;
+    gap: var(--s-8);
+    padding: clamp(1.5rem, 1rem + 3vw, 3rem);
+    overflow: hidden;
+  }
+  .vid__empty-art {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--line-2);
+    border-radius: var(--r-md);
+    background:
+      radial-gradient(60% 80% at 50% 50%, rgb(52 211 153 / 0.12), transparent 70%),
+      repeating-linear-gradient(135deg, rgb(255 255 255 / 0.025) 0 12px, transparent 12px 24px), var(--bg-deep);
+  }
+  .vid__play {
+    display: grid;
+    place-items: center;
+    width: 68px;
+    height: 68px;
+    border: 1px solid rgb(52 211 153 / 0.5);
+    border-radius: 50%;
+    background: rgb(7 9 13 / 0.75);
+    color: var(--gate-ink);
+    box-shadow: 0 0 40px -6px rgb(52 211 153 / 0.5);
+  }
+  .vid__soon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 1.1rem;
+    border: 1px dashed var(--line-3);
+    border-radius: var(--r-pill);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .vid__empty-text {
+    display: grid;
+    align-content: center;
+    gap: var(--s-3);
+  }
+  .vid__planned-title {
+    margin-top: var(--s-3);
+  }
+  .vid__topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+  .vid__topics li {
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--line-2);
+    border-radius: var(--r-pill);
+    color: var(--soft);
+    font-size: 0.8125rem;
+  }
+  .vid__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-4);
+  }
+  .vid__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+    gap: var(--s-5);
+  }
+  .vid__card {
+    overflow: hidden;
+  }
+  .vid__media {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--bg-deep);
+  }
+  .vid__media :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .vid__thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .vid__start {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(to top, rgb(4 5 8 / 0.55), transparent 60%);
+  }
+  .vid__start:focus-visible {
+    outline-offset: -4px;
+  }
+  .vid__start:hover .vid__play {
+    background: var(--gate);
+    color: var(--on-gate);
+  }
+  .vid__dur {
+    position: absolute;
+    right: var(--s-3);
+    bottom: var(--s-3);
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--r-xs);
+    background: rgb(4 5 8 / 0.85);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+  .vid__body {
+    display: grid;
+    gap: var(--s-2);
+    padding: var(--s-5);
+  }
+  .vid__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-3);
+    color: var(--faint);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+  .vid__cat {
+    color: var(--gate-ink);
+  }
+  .vid__yt {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    justify-self: start;
+    font-size: var(--fs-small);
+  }
+  .vid__privacy,
+  .vid__channel {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: var(--s-5);
+    color: var(--faint);
+    font-size: 0.875rem;
+  }
+  @media (min-width: 900px) {
+    .vid__empty {
+      grid-template-columns: 1fr 1.1fr;
+      align-items: center;
+    }
+  }
+</style>

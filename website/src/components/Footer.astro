@@ -1,0 +1,181 @@
+---
+import Icon from './Icon.astro';
+import { REPO, RELEASE, LOOPOUT, YOUTUBE_CHANNEL, donateUrl } from '~/config/site';
+import { type Locale, t, anchors } from '~/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const tr = t(locale);
+const f = tr.footer;
+const ext = { target: '_blank', rel: 'noopener noreferrer' } as const;
+
+const project = [
+  { href: REPO.url, label: 'GitHub', external: true },
+  { href: REPO.releases, label: `Releases · v${RELEASE.version}`, external: true },
+  { href: REPO.license, label: f.license, external: true },
+  { href: `#${anchors.tutorials}`, label: f.tutorials, external: false },
+  ...(YOUTUBE_CHANNEL ? [{ href: YOUTUBE_CHANNEL, label: 'YouTube', external: true }] : []),
+  ...(donateUrl ? [{ href: donateUrl, label: tr.donate.button, external: true }] : []),
+];
+const docs = [
+  { href: REPO.readme, label: f.readme },
+  { href: REPO.deployment, label: f.deployment },
+  { href: REPO.clients, label: f.clients },
+  { href: REPO.architecture, label: f.architecture },
+  { href: REPO.security, label: tr.open.links[3]?.title ?? 'Security' },
+];
+const legal = [
+  { href: LOOPOUT.imprint, label: f.imprint },
+  { href: LOOPOUT.privacy, label: f.privacy },
+  { href: locale === 'de' ? LOOPOUT.projectDe : LOOPOUT.projectEn, label: f.loopoutPage },
+];
+---
+
+<footer class="ftr">
+  <div class="container">
+    <div class="ftr__top">
+      <div class="ftr__brand">
+        <img src="/brand/logo-on-dark.svg" alt="Cache & Carry" width="373" height="80" loading="lazy" />
+        <p class="ftr__text">{f.text}</p>
+        <p class="ftr__slogan">{f.slogan}</p>
+      </div>
+      <nav class="ftr__cols" aria-label={tr.a11y.footerNav}>
+        <div>
+          <h2 class="label">{f.project}</h2>
+          <ul role="list">
+            {project.map((l) => (
+              <li>
+                <a href={l.href} {...(l.external ? ext : {})}>
+                  {l.label}
+                  {l.external && <span class="visually-hidden"> {tr.a11y.newTab}</span>}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2 class="label">{f.docs}</h2>
+          <ul role="list">
+            {docs.map((l) => (
+              <li>
+                <a href={l.href} {...ext}>
+                  {l.label}
+                  <span class="visually-hidden"> {tr.a11y.newTab}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2 class="label">{f.legal}</h2>
+          <ul role="list">
+            {legal.map((l) => (
+              <li>
+                <a href={l.href} {...ext}>
+                  {l.label}
+                  <span class="visually-hidden"> {tr.a11y.newTab}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="ftr__bottom">
+      <p>
+        {f.by}
+        <a class="ftr__loopout" href={LOOPOUT.home} {...ext}>
+          LOOP OUT TECH <Icon name="arrow-up-right" size={13} />
+          <span class="visually-hidden">{tr.a11y.newTab}</span>
+        </a>
+      </p>
+      <p>{f.privacyNote}</p>
+      <p>Apache License 2.0</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr {
+    padding-block: var(--s-16) var(--s-10);
+    border-top: 1px solid var(--line);
+    background: linear-gradient(to bottom, transparent, rgb(52 211 153 / 0.025));
+  }
+  .ftr__top {
+    display: grid;
+    gap: var(--s-12);
+  }
+  .ftr__brand {
+    display: grid;
+    gap: var(--s-4);
+    max-width: 24rem;
+  }
+  .ftr__brand img {
+    width: 220px;
+    height: auto;
+  }
+  .ftr__text {
+    color: var(--muted);
+    font-size: var(--fs-small);
+  }
+  .ftr__slogan {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--soft);
+  }
+  .ftr__cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: var(--s-8);
+  }
+  .ftr__cols h2 {
+    margin-bottom: var(--s-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+  }
+  .ftr__cols li + li {
+    margin-top: var(--s-1);
+  }
+  .ftr__cols a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    color: var(--soft);
+    font-size: var(--fs-small);
+    text-decoration: none;
+  }
+  .ftr__cols a:hover {
+    color: var(--text);
+    text-decoration: underline;
+  }
+  .ftr__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-8);
+    justify-content: space-between;
+    margin-top: var(--s-12);
+    padding-top: var(--s-6);
+    border-top: 1px solid var(--line);
+    color: var(--faint);
+    font-size: 0.875rem;
+  }
+  .ftr__loopout {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    margin-left: 0.3rem;
+    color: var(--soft);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+  }
+  @media (min-width: 960px) {
+    .ftr__top {
+      grid-template-columns: minmax(16rem, 1fr) 2fr;
+    }
+  }
+</style>

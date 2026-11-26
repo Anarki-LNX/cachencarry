@@ -1,0 +1,132 @@
+---
+import Icon, { type IconName } from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import { REPO } from '~/config/site';
+import { type Locale, t, anchors } from '~/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const tr = t(locale);
+const f = tr.features;
+---
+
+<section class="section" id={anchors.features} aria-labelledby="features-title">
+  <div class="container">
+    <SectionHead num="01" label={f.label} title={f.title} lead={f.lead} id="features-title" />
+    <h3 class="feat__sub label">{f.nowTitle}</h3>
+    <ul role="list" class="feat__grid">
+      {f.items.map((item) => (
+        <li class="card feat__card" data-reveal>
+          <span class="feat__icon">
+            <Icon name={item.icon as IconName} size={20} />
+          </span>
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+        </li>
+      ))}
+    </ul>
+
+    <div class="feat__planned" data-reveal>
+      <div>
+        <h3 class="label feat__planned-title">{f.plannedTitle}</h3>
+        <p class="muted">{f.plannedText}</p>
+        <p class="feat__exp">{f.experimental}</p>
+      </div>
+      <ul role="list" class="feat__chips">
+        {f.planned.map((p) => (
+          <li>{p}</li>
+        ))}
+      </ul>
+      <a class="feat__roadmap" href={REPO.roadmap} target="_blank" rel="noopener noreferrer">
+        {f.roadmap} <Icon name="arrow-up-right" size={14} />
+        <span class="visually-hidden">{tr.a11y.newTab}</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .feat__sub {
+    margin-bottom: var(--s-4);
+  }
+  .feat__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    gap: var(--s-4);
+  }
+  .feat__card {
+    display: grid;
+    align-content: start;
+    gap: var(--s-3);
+    padding: var(--s-6);
+    transition:
+      border-color var(--t-med),
+      transform var(--t-med) var(--ease-out);
+  }
+  .feat__card:hover {
+    border-color: rgb(52 211 153 / 0.3);
+  }
+  .feat__card p {
+    color: var(--muted);
+    font-size: var(--fs-small);
+  }
+  .feat__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgb(52 211 153 / 0.25);
+    border-radius: 12px;
+    background: var(--gate-wash);
+    color: var(--gate-ink);
+  }
+  .feat__planned {
+    display: grid;
+    gap: var(--s-5);
+    margin-top: var(--s-10);
+    padding: var(--s-8);
+    border: 1px dashed rgb(167 139 250 / 0.35);
+    border-radius: var(--r-lg);
+    background: var(--violet-wash);
+  }
+  .feat__planned-title {
+    margin-bottom: var(--s-2);
+    color: var(--violet-ink);
+  }
+  .feat__exp {
+    margin-top: var(--s-3);
+    color: var(--faint);
+    font-size: var(--fs-small);
+  }
+  .feat__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+  .feat__chips li {
+    padding: 0.35rem 0.85rem;
+    border: 1px solid rgb(167 139 250 / 0.35);
+    border-radius: var(--r-pill);
+    color: var(--violet-ink);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+  }
+  .feat__roadmap {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    justify-self: start;
+    color: var(--violet-ink);
+  }
+  @media (min-width: 900px) {
+    .feat__planned {
+      grid-template-columns: 1.2fr 1fr;
+      align-items: center;
+    }
+    .feat__roadmap {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

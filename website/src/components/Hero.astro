@@ -1,0 +1,470 @@
+---
+import Icon from './Icon.astro';
+import { REPO, RELEASE } from '~/config/site';
+import { type Locale, t, anchors } from '~/i18n';
+
+// First screen: claim, two actions and a schematic network. The diagram is a picture
+// of the principle (one fetch from the Internet, many deliveries on the LAN). It
+// shows no numbers and is labelled as a schematic.
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const tr = t(locale);
+const h = tr.hero;
+const ext = { target: '_blank', rel: 'noopener noreferrer' } as const;
+
+// Client nodes on the right, y positions in the 560 × 440 viewBox
+const clients = [
+  { y: 70, name: 'Debian 13' },
+  { y: 160, name: 'Ubuntu' },
+  { y: 250, name: 'Arch Linux' },
+  { y: 340, name: 'CachyOS' },
+];
+const cx = 250;
+const cy = 220;
+const pathTo = (y: number) => `M${cx + 34} ${cy} C ${cx + 110} ${cy}, ${cx + 120} ${y}, 420 ${y}`;
+const inPath = `M74 ${cy} L ${cx - 34} ${cy}`;
+---
+
+<section class="hero" id={anchors.overview} aria-labelledby="hero-title">
+  <div class="hero__glow" aria-hidden="true"></div>
+  <div class="hero__grid" aria-hidden="true"></div>
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <p class="label hero__eyebrow">
+        <span class="num">●</span> {h.eyebrow}
+      </p>
+      <h1 id="hero-title" class="hero__title">
+        Cache <em>&amp;</em> Carry
+      </h1>
+      <p class="hero__tagline">{h.tagline}</p>
+      <p class="lead hero__lead">{h.lead}</p>
+      <div class="hero__ctas">
+        <a class="btn btn--primary" href={REPO.url} {...ext}>
+          <Icon name="github" size={18} />
+          <span>{h.ctaGithub}</span>
+          <span class="visually-hidden">{tr.a11y.newTab}</span>
+        </a>
+        <a class="btn btn--ghost" href={`#${anchors.install}`}>
+          <span>{h.ctaInstall}</span>
+          <Icon name="arrow-right" size={16} />
+        </a>
+      </div>
+      <p class="hero__meta">
+        <span class="hero__pill">
+          <Icon name="shield" size={14} /> {h.license}
+        </span>
+        <a class="hero__pill hero__pill--link" href={RELEASE.url} {...ext}>
+          <Icon name="git-branch" size={14} />
+          {h.release} v{RELEASE.version}
+          <span class="visually-hidden">{tr.a11y.newTab}</span>
+        </a>
+      </p>
+    </div>
+
+    <figure class="hero__fig">
+      <svg class="net" viewBox="0 0 560 440" role="img" aria-labelledby="net-title">
+        <title id="net-title">{h.diagramLabel}</title>
+        <defs>
+          <linearGradient id="g-in" x1="0" x2="1">
+            <stop offset="0" stop-color="#5b8cff" stop-opacity="0.15"></stop>
+            <stop offset="1" stop-color="#5b8cff" stop-opacity="0.8"></stop>
+          </linearGradient>
+          <linearGradient id="g-out" x1="0" x2="1">
+            <stop offset="0" stop-color="#34d399" stop-opacity="0.8"></stop>
+            <stop offset="1" stop-color="#67e8f9" stop-opacity="0.35"></stop>
+          </linearGradient>
+          <radialGradient id="g-core">
+            <stop offset="0" stop-color="#34d399" stop-opacity="0.35"></stop>
+            <stop offset="1" stop-color="#34d399" stop-opacity="0"></stop>
+          </radialGradient>
+        </defs>
+
+        <!-- LAN zone -->
+        <rect class="net__zone" x="180" y="24" width="364" height="392" rx="22"></rect>
+        <text class="net__zone-label" x="524" y="48" text-anchor="end">
+          {h.diagramLan}
+        </text>
+
+        <!-- Internet -->
+        <g class="net__inet">
+          <circle cx="44" cy={cy} r="30"></circle>
+          <path d={`M14 ${cy}h60M44 ${cy - 30}a46 46 0 0 1 0 60M44 ${cy - 30}a46 46 0 0 0 0 60`}></path>
+          <text x="44" y={cy + 54} text-anchor="middle" class="net__cap">
+            {h.diagramInternet}
+          </text>
+          <text x="44" y={cy + 70} text-anchor="middle" class="net__sub">
+            {h.diagramMirror}
+          </text>
+        </g>
+
+        <!-- upstream line, used once -->
+        <path id="p-in" class="net__in" d={inPath}></path>
+        <text x="146" y={cy - 22} text-anchor="middle" class="net__once">
+          {h.diagramOnce}
+        </text>
+
+        <!-- delivery lines -->
+        {clients.map((c, i) => (
+          <path id={`p-out-${i}`} class="net__out" d={pathTo(c.y)} />
+        ))}
+
+        <!-- cache core -->
+        <circle cx={cx} cy={cy} r="86" fill="url(#g-core)" class="net__halo"></circle>
+        <circle cx={cx} cy={cy} r="34" class="net__core"></circle>
+        <g transform={`translate(${cx - 16} ${cy - 16}) scale(0.5)`} class="net__mark">
+          <path d="M7 13h8.5l5.2 29.5h31.3"></path>
+          <rect x="25" y="14.5" width="25" height="21.5" rx="4"></rect>
+          <path class="net__mark-arrow" d="M37.5 20v9.5m-4.7-4.3 4.7 4.7 4.7-4.7"></path>
+          <circle cx="26" cy="52" r="3.3"></circle>
+          <circle cx="46.5" cy="52" r="3.3"></circle>
+        </g>
+        <text x={cx} y={cy + 56} text-anchor="middle" class="net__cap">
+          {h.diagramCache}
+        </text>
+
+        <!-- clients -->
+        {clients.map((c) => (
+          <g class="net__client">
+            <rect x="420" y={c.y - 17} width="112" height="34" rx="9" />
+            <circle cx="436" cy={c.y} r="4" class="net__led" />
+            <text x="448" y={c.y + 4.5} class="net__name">
+              {c.name}
+            </text>
+          </g>
+        ))}
+
+        <!-- moving packets: one arrives from the Internet, then four leave for the clients -->
+        <g class="net__packets" aria-hidden="true">
+          <circle r="5" class="pk pk--in">
+            <animateMotion dur="6s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.25;1" calcMode="linear">
+              <mpath href="#p-in"></mpath>
+            </animateMotion>
+            <animate
+              attributeName="opacity"
+              dur="6s"
+              repeatCount="indefinite"
+              values="0;1;1;0;0"
+              keyTimes="0;0.03;0.24;0.26;1"
+            ></animate>
+          </circle>
+          {clients.map((_, i) => (
+            <circle r="4.5" class="pk pk--out">
+              <animateMotion
+                dur="6s"
+                repeatCount="indefinite"
+                keyPoints="0;0;1;1"
+                keyTimes={`0;${(0.27 + i * 0.07).toFixed(2)};${(0.55 + i * 0.07).toFixed(2)};1`}
+                calcMode="linear"
+              >
+                <mpath href={`#p-out-${i}`} />
+              </animateMotion>
+              <animate
+                attributeName="opacity"
+                dur="6s"
+                repeatCount="indefinite"
+                values="0;0;1;1;0;0"
+                keyTimes={`0;${(0.27 + i * 0.07).toFixed(2)};${(0.29 + i * 0.07).toFixed(2)};${(0.54 + i * 0.07).toFixed(2)};${(0.56 + i * 0.07).toFixed(2)};1`}
+              />
+            </circle>
+          ))}
+        </g>
+      </svg>
+      <figcaption class="hero__note">{h.diagramNote}</figcaption>
+    </figure>
+  </div>
+
+  <div class="container">
+    <ul role="list" class="facts">
+      {tr.facts.map((f) => (
+        <li class="facts__item">
+          <span class="facts__value">{f.value}</span>
+          <span class="facts__label">{f.label}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(3rem, 2rem + 5vw, 7rem) var(--s-12);
+  }
+  .hero__glow {
+    position: absolute;
+    inset: -20% -10% auto 30%;
+    height: 90%;
+    background:
+      radial-gradient(40% 50% at 60% 40%, rgb(52 211 153 / 0.16), transparent 70%),
+      radial-gradient(35% 40% at 85% 20%, rgb(91 140 255 / 0.14), transparent 70%),
+      radial-gradient(30% 35% at 70% 75%, rgb(167 139 250 / 0.1), transparent 70%);
+    pointer-events: none;
+  }
+  .hero__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(70% 60% at 65% 40%, #000, transparent 75%);
+    -webkit-mask-image: radial-gradient(70% 60% at 65% 40%, #000, transparent 75%);
+    pointer-events: none;
+  }
+  .hero__inner {
+    position: relative;
+    display: grid;
+    gap: var(--s-12);
+    align-items: center;
+  }
+  .hero__copy {
+    display: grid;
+    gap: var(--s-5);
+    justify-items: start;
+  }
+  .hero__eyebrow .num {
+    color: var(--gate);
+    animation: blink 2.4s ease-in-out infinite;
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0.35;
+    }
+  }
+  .hero__title {
+    font-size: var(--fs-hero);
+    line-height: 0.92;
+    letter-spacing: -0.025em;
+  }
+  .hero__title em {
+    color: var(--gate);
+    font-style: italic;
+  }
+  .hero__tagline {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.2rem + 1.3vw, 2.25rem);
+    font-style: italic;
+    line-height: 1.15;
+    background: linear-gradient(90deg, var(--text), var(--water-ink) 60%, var(--violet-ink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero__lead {
+    max-width: 34rem;
+  }
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-2);
+  }
+  .hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+  .hero__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 32px;
+    padding: 0 0.8rem;
+    border: 1px solid var(--line-2);
+    border-radius: var(--r-pill);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+  }
+  .hero__pill--link {
+    text-decoration: none;
+  }
+  .hero__pill--link:hover {
+    color: var(--text);
+    border-color: var(--line-3);
+  }
+  .hero__fig {
+    position: relative;
+    width: 100%;
+    max-width: 620px;
+    justify-self: center;
+  }
+  .hero__note {
+    margin-top: var(--s-2);
+    color: var(--faint);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  /* diagram */
+  .net {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .net__zone {
+    fill: rgb(103 232 249 / 0.025);
+    stroke: rgb(103 232 249 / 0.18);
+    stroke-dasharray: 4 6;
+  }
+  .net__zone-label {
+    fill: var(--water-ink);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+  }
+  .net__inet circle,
+  .net__inet path {
+    fill: none;
+    stroke: var(--in);
+    stroke-width: 1.6;
+  }
+  .net__inet circle {
+    fill: rgb(91 140 255 / 0.08);
+  }
+  .net__cap {
+    fill: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 560;
+  }
+  .net__sub {
+    fill: var(--faint);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .net__in {
+    fill: none;
+    stroke: url(#g-in);
+    stroke-width: 2;
+  }
+  .net__once {
+    fill: var(--in-ink);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+  .net__out {
+    fill: none;
+    stroke: url(#g-out);
+    stroke-width: 1.6;
+    stroke-dasharray: 3 5;
+    animation: flow 1.6s linear infinite;
+  }
+  @keyframes flow {
+    to {
+      stroke-dashoffset: -16;
+    }
+  }
+  .net__core {
+    fill: #0b1a14;
+    stroke: var(--gate);
+    stroke-width: 2;
+    filter: drop-shadow(0 0 18px rgb(52 211 153 / 0.45));
+  }
+  .net__halo {
+    animation: breathe 6s ease-in-out infinite;
+    transform-origin: 250px 220px;
+  }
+  @keyframes breathe {
+    50% {
+      opacity: 0.55;
+      transform: scale(0.92);
+    }
+  }
+  .net__mark path,
+  .net__mark rect {
+    fill: none;
+    stroke: var(--gate);
+    stroke-width: 4.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .net__mark .net__mark-arrow {
+    stroke: #f8fafc;
+    stroke-width: 3.6;
+  }
+  .net__mark circle {
+    fill: var(--gate);
+  }
+  .net__client rect {
+    fill: rgb(13 18 24 / 0.92);
+    stroke: var(--line-3);
+  }
+  .net__led {
+    fill: var(--gate);
+  }
+  .net__name {
+    fill: var(--soft);
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+  .pk--in {
+    fill: var(--in-ink);
+    filter: drop-shadow(0 0 6px rgb(91 140 255 / 0.9));
+  }
+  .pk--out {
+    fill: var(--gate-ink);
+    filter: drop-shadow(0 0 6px rgb(52 211 153 / 0.9));
+  }
+
+  /* facts */
+  .facts {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    margin-top: var(--s-16);
+    border: 1px solid var(--line);
+    border-radius: var(--r-lg);
+    background: var(--panel-glass);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    overflow: hidden;
+  }
+  .facts__item {
+    display: grid;
+    gap: var(--s-1);
+    padding: var(--s-6);
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin: 0 -1px -1px 0;
+  }
+  .facts__value {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.4rem + 1vw, 2.25rem);
+    line-height: 1.1;
+    color: var(--text);
+  }
+  .facts__label {
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 1000px) {
+    .hero__inner {
+      grid-template-columns: 1.05fr 1fr;
+    }
+    .hero__fig {
+      justify-self: end;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .net__packets {
+      display: none;
+    }
+    .net__out,
+    .net__halo,
+    .hero__eyebrow .num {
+      animation: none;
+    }
+  }
+</style>

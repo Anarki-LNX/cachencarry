@@ -1,0 +1,256 @@
+---
+import Icon, { type IconName } from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import { REPO, donateUrl } from '~/config/site';
+import { type Locale, t, anchors } from '~/i18n';
+
+// Open source block and, when a valid PayPal link is configured in
+// src/config/site.ts, the support block. No counters: no stars, users or downloads.
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const tr = t(locale);
+const o = tr.open;
+const d = tr.donate;
+const ext = { target: '_blank', rel: 'noopener noreferrer' } as const;
+const icons: Record<string, IconName> = {
+  url: 'code',
+  issues: 'alert',
+  contributing: 'git-branch',
+  security: 'shield',
+  roadmap: 'activity',
+  releases: 'download',
+};
+const hrefOf = (key: string) => REPO[key as keyof typeof REPO];
+---
+
+<section class="section" id={anchors.openSource} aria-labelledby="open-title">
+  <div class="container">
+    <div class="os">
+      <div class="os__intro">
+        <SectionHead num="07" label={o.label} title={o.title} lead={o.lead} id="open-title" />
+        <div class="os__license" data-reveal>
+          <p class="os__license-name">{o.license}</p>
+          <p class="muted">{o.licenseText}</p>
+        </div>
+        <a class="btn btn--primary" href={REPO.url} {...ext} data-reveal>
+          <Icon name="github" size={18} />
+          <span>{o.cta}</span>
+          <span class="visually-hidden">{tr.a11y.newTab}</span>
+        </a>
+        <p class="os__honest" data-reveal>
+          <Icon name="info" size={14} />
+          <a href={REPO.todo} {...ext}>
+            {o.honest}
+            <span class="visually-hidden"> {tr.a11y.newTab}</span>
+          </a>
+        </p>
+      </div>
+      <ul role="list" class="os__links">
+        {o.links.map((l) => (
+          <li data-reveal>
+            <a class="card os__link" href={hrefOf(l.key)} {...ext}>
+              <span class="os__icon">
+                <Icon name={icons[l.key] ?? 'arrow-up-right'} size={18} />
+              </span>
+              <span class="os__text">
+                <span class="os__title">{l.title}</span>
+                <span class="os__desc">{l.text}</span>
+              </span>
+              <Icon name="arrow-up-right" size={16} class="os__arrow" />
+              <span class="visually-hidden">{tr.a11y.newTab}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+{donateUrl && (
+  <section class="section donate" id={anchors.support} aria-labelledby="donate-title">
+    <div class="container">
+      <div class="donate__card" data-reveal>
+        <img class="donate__mark" src="/brand/mark-on-dark.svg" alt="" width="64" height="64" loading="lazy" />
+        <div class="donate__text">
+          <p class="label">
+            <span class="num">♥</span> · {d.label}
+          </p>
+          <h2 id="donate-title">{d.title}</h2>
+          <p class="donate__lead">{d.text}</p>
+          <p class="donate__other">{d.other}</p>
+        </div>
+        <div class="donate__action">
+          <a class="btn donate__btn" href={donateUrl} {...ext}>
+            <Icon name="heart" size={18} />
+            <span>{d.button}</span>
+            <Icon name="arrow-up-right" size={16} />
+            <span class="visually-hidden">{tr.a11y.newTab}</span>
+          </a>
+          <p class="donate__note">{d.note}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .os {
+    display: grid;
+    gap: var(--s-10);
+  }
+  .os__intro {
+    display: grid;
+    gap: var(--s-5);
+    justify-items: start;
+    align-content: start;
+  }
+  .os__intro :global(.shead) {
+    margin-bottom: 0;
+  }
+  .os__license {
+    padding-left: var(--s-4);
+    border-left: 2px solid var(--gate);
+  }
+  .os__license-name {
+    font-family: var(--font-mono);
+    color: var(--text);
+  }
+  .os__honest {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    color: var(--faint);
+    font-size: 0.875rem;
+  }
+  .os__honest a {
+    color: var(--muted);
+  }
+  .os__links {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: var(--s-3);
+    align-content: start;
+  }
+  .os__link {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--s-4);
+    align-items: center;
+    height: 100%;
+    padding: var(--s-5);
+    color: var(--text);
+    text-decoration: none;
+    transition:
+      border-color var(--t-med),
+      transform var(--t-med) var(--ease-out);
+  }
+  .os__link:hover {
+    border-color: rgb(52 211 153 / 0.35);
+    color: var(--text);
+  }
+  .os__link:focus-visible {
+    border-radius: var(--r-lg);
+  }
+  .os__icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--line-2);
+    border-radius: 12px;
+    color: var(--water-ink);
+  }
+  .os__text {
+    display: grid;
+    gap: 0.15rem;
+  }
+  .os__title {
+    font-weight: 560;
+  }
+  .os__desc {
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+  .os__link :global(.os__arrow) {
+    color: var(--faint);
+  }
+  @media (min-width: 1000px) {
+    .os {
+      grid-template-columns: 1fr 1.15fr;
+    }
+  }
+
+  .donate {
+    padding-top: 0;
+  }
+  .section + .donate {
+    border-top: 0;
+  }
+  .donate__card {
+    position: relative;
+    display: grid;
+    gap: var(--s-6);
+    align-items: center;
+    overflow: hidden;
+    padding: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+    border: 1px solid rgb(52 211 153 / 0.22);
+    border-radius: var(--r-lg);
+    background:
+      radial-gradient(70% 120% at 100% 0%, rgb(52 211 153 / 0.1), transparent 60%),
+      radial-gradient(60% 100% at 0% 100%, rgb(167 139 250 / 0.08), transparent 60%), var(--panel);
+  }
+  .donate__mark {
+    position: absolute;
+    right: -1.5rem;
+    bottom: -2rem;
+    width: 12rem;
+    height: 12rem;
+    opacity: 0.07;
+    pointer-events: none;
+  }
+  .donate__text {
+    position: relative;
+    display: grid;
+    gap: var(--s-3);
+  }
+  .donate__lead {
+    max-width: 38rem;
+    color: var(--soft);
+  }
+  .donate__other {
+    max-width: 38rem;
+    color: var(--muted);
+    font-size: var(--fs-small);
+  }
+  .donate__action {
+    position: relative;
+    display: grid;
+    gap: var(--s-2);
+    justify-items: start;
+  }
+  .donate__btn {
+    border-color: rgb(255 255 255 / 0.2);
+    background: #f4f1ea;
+    color: #07090d;
+  }
+  .donate__btn:hover {
+    background: #ffffff;
+    color: #07090d;
+  }
+  .donate__note {
+    max-width: 18rem;
+    color: var(--faint);
+    font-size: 0.8125rem;
+  }
+  @media (min-width: 860px) {
+    .donate__card {
+      grid-template-columns: 1fr auto;
+    }
+    .donate__action {
+      justify-items: end;
+      text-align: right;
+    }
+  }
+</style>

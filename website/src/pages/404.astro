@@ -1,0 +1,82 @@
+---
+// One 404 for both languages (static hosting serves a single file).
+import Base from '~/layouts/Base.astro';
+import { copy } from '~/i18n';
+---
+
+<Base
+  locale={null}
+  title={`404 · ${copy.de.notFound.title} · Cache & Carry`}
+  description={copy.de.notFound.text}
+  noindex
+  alternates={false}
+  chrome={false}
+>
+  <div class="nf">
+    <div class="container nf__inner">
+      <img src="/brand/logo-on-dark.svg" alt="Cache & Carry" width="373" height="80" class="nf__logo" />
+      <p class="nf__code">404 · MISS</p>
+      <div class="nf__cols">
+        <div lang="de">
+          <h1>{copy.de.notFound.title}</h1>
+          <p>{copy.de.notFound.text}</p>
+          <a class="btn btn--primary" href="/de/">
+            {copy.de.notFound.back}
+          </a>
+        </div>
+        <div lang="en">
+          <h2>{copy.en.notFound.title}</h2>
+          <p>{copy.en.notFound.text}</p>
+          <a class="btn btn--ghost" href="/en/">
+            {copy.en.notFound.back}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .nf {
+    display: grid;
+    min-height: 100dvh;
+    place-items: center;
+    padding-block: var(--s-16);
+  }
+  .nf__inner {
+    display: grid;
+    gap: var(--s-8);
+    justify-items: center;
+    text-align: center;
+  }
+  .nf__logo {
+    width: min(300px, 80vw);
+    height: auto;
+  }
+  .nf__code {
+    color: var(--in-ink);
+    font-family: var(--font-mono);
+    letter-spacing: 0.2em;
+  }
+  .nf__cols {
+    display: grid;
+    gap: var(--s-10);
+  }
+  .nf__cols > div {
+    display: grid;
+    gap: var(--s-4);
+    justify-items: center;
+  }
+  .nf__cols h1,
+  .nf__cols h2 {
+    font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+  }
+  .nf__cols p {
+    color: var(--muted);
+  }
+  @media (min-width: 760px) {
+    .nf__cols {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

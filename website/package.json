@@ -1,0 +1,35 @@
+{
+  "name": "cachencarry-website",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Public website for Cache & Carry (cachencarry.loopout.tech)",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/write-build-info.mjs",
+    "preview": "astro preview",
+    "check": "astro check",
+    "check:security": "node scripts/check-security.mjs",
+    "test": "vitest run",
+    "format": "prettier --write .",
+    "lint": "prettier --check ."
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.6",
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/geist-mono": "^5.3.0",
+    "@fontsource/instrument-serif": "^5.3.0",
+    "astro": "^7.4.13"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "prettier": "^3.10.1",
+    "prettier-plugin-astro": "^1.1.2",
+    "typescript": "^6.0.3",
+    "vitest": "^5.1.2"
+  }
+}

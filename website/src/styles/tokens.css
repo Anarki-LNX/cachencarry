@@ -1,0 +1,128 @@
+/*
+ * Cache & Carry website: design tokens.
+ * Ground and type follow loopout.tech (Geist, Geist Mono, Instrument Serif).
+ * Green is the product's brand and means "from the local cache".
+ */
+:root {
+  color-scheme: dark;
+
+  /* ground: the LOOP OUT TECH night (#07090d), panels one step lighter */
+  --bg: #07090d;
+  --bg-deep: #040508;
+  --ground: #0b0f15;
+  --panel: #0d1218;
+  --panel-2: #121a22;
+  --panel-glass: rgb(13 18 24 / 0.72);
+
+  /* text */
+  --text: #f4f1ea;
+  --soft: #cfd3da;
+  --muted: #a0a7b2;
+  --faint: #838b97; /* smallest allowed text tone: at least 4.5:1 on --panel-2 */
+
+  /* lines */
+  --line: rgb(255 255 255 / 0.07);
+  --line-2: rgb(255 255 255 / 0.13);
+  --line-3: rgb(255 255 255 / 0.22);
+
+  /* signals, with the product's meaning:
+   *   green = from the local cache (HIT), the brand colour
+   *   blue  = from the Internet (MISS, upstream)
+   *   cyan  = the LAN, depth and light only
+   *   violet = planned, not built yet */
+  --gate: #34d399;
+  --gate-ink: #86efc4;
+  --on-gate: #03140d;
+  --ok: #34d399;
+  --ok-ink: #86efc4;
+  --in: #5b8cff;
+  --in-ink: #a5bfff;
+  --no: #ff8fb1;
+  --no-ink: #ffb3ca;
+  --water: #67e8f9;
+  --water-ink: #a5f3fc;
+  --violet: #a78bfa;
+  --violet-ink: #c4b5fd;
+
+  /* washes */
+  --in-wash: rgb(91 140 255 / 0.12);
+  --gate-wash: rgb(52 211 153 / 0.1);
+  --ok-wash: rgb(52 211 153 / 0.12);
+  --no-wash: rgb(255 143 177 / 0.12);
+  --violet-wash: rgb(167 139 250 / 0.12);
+  --water-wash: rgb(103 232 249 / 0.08);
+
+  /* type */
+  --font-display: 'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-body: 'Geist Variable', 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  /* fluid type scale (min at 360px, max at 1440px) */
+  --fs-hero: clamp(3.25rem, 1.9rem + 6vw, 7.5rem);
+  --fs-h1: clamp(2.75rem, 1.9rem + 3.8vw, 5rem);
+  --fs-h2: clamp(2.125rem, 1.6rem + 2.3vw, 3.5rem);
+  --fs-h3: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem);
+  --fs-lead: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  --fs-body: 1.0625rem;
+  --fs-small: 0.9375rem;
+  --fs-label: 0.75rem;
+  --fs-code: 0.9rem;
+
+  --lh-tight: 1.02;
+  --lh-head: 1.15;
+  --lh-body: 1.65;
+  --track-label: 0.14em;
+
+  /* spacing, 4px steps */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.25rem;
+  --s-6: 1.5rem;
+  --s-8: 2rem;
+  --s-10: 2.5rem;
+  --s-12: 3rem;
+  --s-16: 4rem;
+  --s-20: 5rem;
+  --s-24: 6rem;
+  --section: clamp(4.5rem, 3rem + 6vw, 9rem);
+
+  /* layout */
+  --container: 76rem;
+  --container-narrow: 46rem;
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --header-h: 4.25rem;
+
+  /* shape */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-pill: 999px;
+
+  /* depth: light used sparingly */
+  --shadow-1: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 12px 32px -16px rgb(0 0 0 / 0.7);
+  --shadow-2: 0 1px 0 rgb(255 255 255 / 0.05) inset, 0 30px 80px -30px rgb(0 0 0 / 0.85);
+  --glow-water: 0 0 0 1px rgb(103 232 249 / 0.12), 0 20px 60px -20px rgb(103 232 249 / 0.25);
+
+  /* focus: brand green */
+  --focus: var(--gate);
+  --focus-ring: 0 0 0 3px var(--bg), 0 0 0 5px var(--focus);
+
+  /* motion */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --t-fast: 140ms;
+  --t-med: 260ms;
+  --t-slow: 700ms;
+
+  --tap: 44px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --t-fast: 0ms;
+    --t-med: 0ms;
+    --t-slow: 0ms;
+  }
+}

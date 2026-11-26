@@ -1,0 +1,144 @@
+---
+import SectionHead from './SectionHead.astro';
+import { REPO } from '~/config/site';
+import { type Locale, t } from '~/i18n';
+
+// The one measurement documented in the README. Bar widths are to scale
+// (9 / 959 of the full width), with a minimum of a few pixels so the bar is visible.
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const tr = t(locale);
+const b = tr.bench;
+const internetMs = 959;
+const cacheMs = 9;
+const ratio = Math.round(internetMs / cacheMs);
+---
+
+<section class="section bench" aria-labelledby="bench-title">
+  <div class="container">
+    <div class="bench__layout">
+      <SectionHead num="03" label={b.label} title={b.title} lead={b.lead} id="bench-title" />
+      <figure class="card bench__card" data-reveal>
+        <div class="bench__row">
+          <div class="bench__head">
+            <span>{b.internet}</span>
+            <span class="bench__ms bench__ms--in">{internetMs} ms</span>
+          </div>
+          <div class="bench__track">
+            <span class="bench__bar bench__bar--in"></span>
+          </div>
+        </div>
+        <div class="bench__row">
+          <div class="bench__head">
+            <span>{b.cache}</span>
+            <span class="bench__ms bench__ms--hit">{cacheMs} ms</span>
+          </div>
+          <div class="bench__track">
+            <span class="bench__bar bench__bar--hit"></span>
+          </div>
+        </div>
+        <p class="bench__ratio">
+          <span class="bench__x">≈ {ratio}×</span>
+          <span class="muted">extra.db · {locale === 'de' ? '8,6' : '8.6'} MiB</span>
+        </p>
+        <figcaption class="bench__note">
+          {b.disclaimer}
+          <a href={REPO.readme} target="_blank" rel="noopener noreferrer">
+            {b.source}
+            <span class="visually-hidden"> {tr.a11y.newTab}</span>
+          </a>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bench__layout {
+    display: grid;
+    gap: var(--s-8);
+    align-items: center;
+  }
+  .bench__card {
+    display: grid;
+    gap: var(--s-6);
+    padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  }
+  .bench__head {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-bottom: var(--s-2);
+    color: var(--soft);
+  }
+  .bench__ms {
+    font-family: var(--font-mono);
+    font-size: 1.125rem;
+  }
+  .bench__ms--in {
+    color: var(--in-ink);
+  }
+  .bench__ms--hit {
+    color: var(--gate-ink);
+  }
+  .bench__track {
+    height: 14px;
+    border-radius: var(--r-pill);
+    background: rgb(255 255 255 / 0.05);
+    overflow: hidden;
+  }
+  .bench__bar {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+  }
+  .bench__bar--in {
+    width: 100%;
+    background: linear-gradient(90deg, rgb(91 140 255 / 0.4), var(--in));
+  }
+  .bench__bar--hit {
+    width: max(0.94%, 6px);
+    background: var(--gate);
+    box-shadow: 0 0 14px rgb(52 211 153 / 0.8);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js-reveal) .bench__bar--in {
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 2.4s cubic-bezier(0.3, 0.1, 0.3, 1) 0.3s;
+    }
+    :global(.js-reveal) .bench__card:global(.is-visible) .bench__bar--in {
+      transform: scaleX(1);
+    }
+  }
+  .bench__ratio {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-4);
+  }
+  .bench__x {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+    line-height: 1;
+    color: var(--gate-ink);
+  }
+  .bench__note {
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--line);
+    color: var(--faint);
+    font-size: 0.875rem;
+  }
+  .bench__note a {
+    margin-left: 0.3rem;
+  }
+  @media (min-width: 1000px) {
+    .bench__layout {
+      grid-template-columns: 1fr 1.1fr;
+    }
+    .bench__layout :global(.shead) {
+      margin-bottom: 0;
+    }
+  }
+</style>

@@ -1,0 +1,341 @@
+---
+import { Picture, getImage } from 'astro:assets';
+import Icon from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import { type Locale, type ShotKey, t, anchors } from '~/i18n';
+
+import dashboard from '~/assets/screenshots/dashboard.png';
+import liveTraffic from '~/assets/screenshots/live-traffic.png';
+import downloads from '~/assets/screenshots/downloads.png';
+import storage from '~/assets/screenshots/storage.png';
+import modules from '~/assets/screenshots/modules.png';
+import clients from '~/assets/screenshots/clients.png';
+import settings from '~/assets/screenshots/settings.png';
+
+// Real screenshots from docs/screenshots, shown as tabs. Without JavaScript every
+// picture is listed one below the other and links to its full-size file; with
+// JavaScript one view shows at a time and a lightbox opens for zooming.
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const tr = t(locale);
+const s = tr.shots;
+const shots: { key: ShotKey; src: ImageMetadata }[] = [
+  { key: 'dashboard', src: dashboard },
+  { key: 'liveTraffic', src: liveTraffic },
+  { key: 'downloads', src: downloads },
+  { key: 'storage', src: storage },
+  { key: 'modules', src: modules },
+  { key: 'clients', src: clients },
+  { key: 'settings', src: settings },
+];
+const full = await Promise.all(shots.map((x) => getImage({ src: x.src, format: 'webp', width: 2000, quality: 84 })));
+---
+
+<section class="section" id={anchors.screenshots} aria-labelledby="shots-title">
+  <div class="container">
+    <SectionHead num="04" label={s.label} title={s.title} lead={s.lead} id="shots-title" />
+
+    <div class="shots" data-tabs data-gallery>
+      <div class="shots__tabs" role="tablist" aria-label={s.tabsLabel} data-tablist hidden>
+        {shots.map((x, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`shot-tab-${x.key}`}
+            aria-controls={`shot-panel-${x.key}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? 0 : -1}
+            data-tab
+          >
+            {s.items[x.key].tab}
+          </button>
+        ))}
+      </div>
+
+      <div class="shots__panels">
+        {shots.map((x, i) => (
+          <figure
+            class="shots__panel"
+            role="tabpanel"
+            id={`shot-panel-${x.key}`}
+            aria-labelledby={`shot-tab-${x.key}`}
+            data-panel
+          >
+            <div class="shots__frame">
+              <div class="shots__chrome" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+                <span>cachencarry · {s.items[x.key].tab}</span>
+              </div>
+              <a
+                class="shots__link"
+                href={full[i]?.src}
+                data-lb
+                data-lb-w={x.src.width}
+                data-lb-h={x.src.height}
+                data-lb-alt={s.items[x.key].alt}
+                data-lb-caption={s.items[x.key].caption}
+              >
+                <Picture
+                  src={x.src}
+                  alt={s.items[x.key].alt}
+                  formats={['avif', 'webp']}
+                  widths={[480, 800, 1200, 1600]}
+                  sizes="(min-width: 1240px) 1180px, 100vw"
+                  loading="lazy"
+                  class="shots__img"
+                />
+                <span class="shots__zoom">
+                  <Icon name="expand" size={16} />
+                  <span>{s.zoom}</span>
+                </span>
+              </a>
+            </div>
+            <figcaption class="shots__cap">
+              <span class="label">{s.note}</span>
+              <span>{s.items[x.key].caption}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <dialog class="lb" data-lb-dialog aria-label={s.label} data-label-of={locale === 'de' ? 'von' : 'of'}>
+        <div class="lb__inner">
+          <figure class="lb__fig">
+            <img class="lb__img" data-lb-img alt="" width="1440" height="960" decoding="async" />
+            <figcaption class="lb__cap">
+              <span data-lb-cap></span>
+              <span class="label" data-lb-count aria-live="polite"></span>
+            </figcaption>
+          </figure>
+          <button
+            type="button"
+            class="lb__btn lb__prev"
+            data-lb-prev
+            aria-label={locale === 'de' ? 'Vorheriges Bild' : 'Previous picture'}
+          >
+            <Icon name="chevron-left" size={22} />
+          </button>
+          <button
+            type="button"
+            class="lb__btn lb__next"
+            data-lb-next
+            aria-label={locale === 'de' ? 'Nächstes Bild' : 'Next picture'}
+          >
+            <Icon name="chevron-right" size={22} />
+          </button>
+          <button type="button" class="lb__btn lb__close" data-lb-close aria-label={s.close}>
+            <Icon name="close" size={22} />
+          </button>
+        </div>
+      </dialog>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '~/scripts/tabs';
+  import '~/scripts/lightbox';
+</script>
+
+<style>
+  .shots__tabs {
+    display: flex;
+    gap: var(--s-2);
+    margin-bottom: var(--s-5);
+    padding-bottom: var(--s-2);
+    overflow-x: auto;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+  .shots__tabs:not([hidden]) {
+    display: flex;
+  }
+  .shots__tabs button {
+    flex: none;
+    min-height: var(--tap);
+    padding: 0 1rem;
+    border: 1px solid var(--line-2);
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: var(--muted);
+    font-size: 0.9375rem;
+    white-space: nowrap;
+    transition:
+      color var(--t-fast),
+      border-color var(--t-fast),
+      background-color var(--t-fast);
+  }
+  .shots__tabs button:hover {
+    color: var(--text);
+    border-color: var(--line-3);
+  }
+  .shots__tabs button[aria-selected='true'] {
+    border-color: rgb(52 211 153 / 0.5);
+    background: var(--gate-wash);
+    color: var(--text);
+  }
+  .shots__tabs button:focus-visible {
+    border-radius: var(--r-pill);
+  }
+  .shots__panels {
+    display: grid;
+    gap: var(--s-10);
+  }
+  .shots__frame {
+    overflow: hidden;
+    border: 1px solid var(--line-2);
+    border-radius: var(--r-lg);
+    background: var(--ground);
+    box-shadow:
+      var(--shadow-2),
+      0 0 80px -30px rgb(52 211 153 / 0.25);
+  }
+  .shots__chrome {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 2.25rem;
+    padding: 0 var(--s-4);
+    border-bottom: 1px solid var(--line);
+    background: rgb(255 255 255 / 0.02);
+  }
+  .shots__chrome i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.14);
+  }
+  .shots__chrome span {
+    margin-left: var(--s-3);
+    color: var(--faint);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+  }
+  .shots__link {
+    position: relative;
+    display: block;
+    cursor: zoom-in;
+  }
+  .shots__link:focus-visible {
+    outline-offset: -4px;
+  }
+  .shots__img {
+    width: 100%;
+    height: auto;
+  }
+  .shots__link :global(img) {
+    width: 100%;
+    height: auto;
+  }
+  .shots__zoom {
+    position: absolute;
+    right: var(--s-4);
+    bottom: var(--s-4);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.85rem;
+    border: 1px solid var(--line-3);
+    border-radius: var(--r-pill);
+    background: rgb(7 9 13 / 0.8);
+    color: var(--text);
+    font-size: 0.8125rem;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .shots__cap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-4);
+    align-items: baseline;
+    margin-top: var(--s-3);
+    color: var(--soft);
+  }
+  :global(.has-tabs) .shots__panel[hidden] {
+    display: none;
+  }
+
+  /* lightbox */
+  .lb {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(4 5 8 / 0.94);
+    color: var(--text);
+  }
+  .lb::backdrop {
+    background: rgb(4 5 8 / 0.8);
+  }
+  .lb__inner {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    padding: clamp(3.5rem, 2rem + 4vw, 5rem) clamp(0.5rem, 4vw, 5rem);
+  }
+  .lb__fig {
+    display: grid;
+    gap: var(--s-3);
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .lb__img {
+    max-width: 100%;
+    max-height: calc(100dvh - 10rem);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border: 1px solid var(--line-2);
+    border-radius: var(--r-md);
+  }
+  .lb__cap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-2);
+    color: var(--soft);
+    font-size: var(--fs-small);
+  }
+  .lb__btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--line-3);
+    border-radius: 50%;
+    background: rgb(13 18 24 / 0.85);
+    color: var(--text);
+  }
+  .lb__btn:hover {
+    border-color: var(--gate);
+  }
+  .lb__btn:focus-visible {
+    border-radius: 50%;
+  }
+  .lb__close {
+    top: var(--s-3);
+    right: var(--s-3);
+  }
+  .lb__prev,
+  .lb__next {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .lb__prev {
+    left: var(--s-2);
+  }
+  .lb__next {
+    right: var(--s-2);
+  }
+</style>

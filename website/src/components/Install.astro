@@ -1,0 +1,283 @@
+---
+import Icon from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import CodeBlock from './CodeBlock.astro';
+import { REPO } from '~/config/site';
+import { type Locale, t, anchors } from '~/i18n';
+
+// Commands are copied from README.md and DEPLOYMENT.md of the repository
+// (checked against release v0.2.1 on 2026-11-26). Change them there first.
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const tr = t(locale);
+const s = tr.install;
+const ext = { target: '_blank', rel: 'noopener noreferrer' } as const;
+
+const cmd = {
+  release: `tar xzf cachencarry-*-linux-amd64.tar.gz
+cd cachencarry-*-linux-amd64
+sudo ./scripts/install.sh`,
+  token: `su -s /bin/sh cachencarry -c '/usr/local/bin/cachencarry setup-token'`,
+  docker: `git clone https://github.com/Anarki-LNX/cachencarry.git
+cd cachencarry
+cp .env.example .env
+# ${locale === 'de' ? 'in .env CACHENCARRY_ADMIN_PASSWORD setzen, mindestens 10 Zeichen' : 'set CACHENCARRY_ADMIN_PASSWORD in .env, at least 10 characters'}
+docker compose up -d --build`,
+  source: `git clone https://github.com/Anarki-LNX/cachencarry.git
+cd cachencarry
+make dist`,
+  arch: 'Server = http://<address>:8080/pacman/archlinux/$repo/os/$arch',
+  debian: `Types: deb
+URIs: http://<address>:8080/apt/debian
+Suites: trixie trixie-updates
+Components: main contrib non-free-firmware
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg`,
+};
+const methods = [
+  { key: 'release', icon: 'server' },
+  { key: 'docker', icon: 'package' },
+  { key: 'source', icon: 'code' },
+] as const;
+---
+
+<section class="section" id={anchors.install} aria-labelledby="install-title">
+  <div class="container">
+    <SectionHead num="06" label={s.label} title={s.title} lead={s.lead} id="install-title" />
+
+    <div class="inst" data-tabs data-tabs-key="install">
+      <div class="inst__tabs" role="tablist" aria-label={s.tabsLabel} data-tablist hidden>
+        {methods.map((m, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`inst-tab-${m.key}`}
+            aria-controls={`inst-panel-${m.key}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? 0 : -1}
+            data-tab
+          >
+            <Icon name={m.icon} size={16} />
+            {s.methods[m.key].tab}
+          </button>
+        ))}
+      </div>
+
+      <div class="inst__panels">
+        <div class="card inst__panel" role="tabpanel" id="inst-panel-release" aria-labelledby="inst-tab-release">
+          <h3>{s.methods.release.title}</h3>
+          <p class="muted">{s.methods.release.text}</p>
+          <a class="btn btn--primary inst__dl" href={REPO.latestRelease} {...ext}>
+            <Icon name="download" size={16} />
+            <span>{s.methods.release.download}</span>
+            <span class="visually-hidden">{tr.a11y.newTab}</span>
+          </a>
+          <CodeBlock code={cmd.release} lang="shell" locale={locale} />
+          <p class="muted">{s.methods.release.after}</p>
+          <CodeBlock code={cmd.token} lang="shell" locale={locale} />
+          <p class="inst__verified">
+            <Icon name="check" size={14} /> {s.methods.release.verified}
+          </p>
+        </div>
+
+        <div class="card inst__panel" role="tabpanel" id="inst-panel-docker" aria-labelledby="inst-tab-docker">
+          <h3>{s.methods.docker.title}</h3>
+          <p class="muted">{s.methods.docker.text}</p>
+          <CodeBlock code={cmd.docker} lang="shell" locale={locale} />
+          <p class="inst__verified inst__verified--open">
+            <Icon name="info" size={14} /> {s.methods.docker.verified}
+          </p>
+        </div>
+
+        <div class="card inst__panel" role="tabpanel" id="inst-panel-source" aria-labelledby="inst-tab-source">
+          <h3>{s.methods.source.title}</h3>
+          <p class="muted">{s.methods.source.text}</p>
+          <CodeBlock code={cmd.source} lang="shell" locale={locale} />
+          <p class="inst__verified">
+            <Icon name="info" size={14} /> {s.methods.source.verified}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="inst__grid">
+      <div class="inst__clients" data-reveal>
+        <h3>{s.clientsTitle}</h3>
+        <p class="muted">{s.clientsText}</p>
+        <CodeBlock code={cmd.arch} lang="ini" caption={s.archCaption} locale={locale} />
+        <CodeBlock code={cmd.debian} lang="deb822" caption={s.debianCaption} locale={locale} />
+        <a class="inst__more" href={REPO.clients} {...ext}>
+          {s.docsClients} <Icon name="arrow-up-right" size={14} />
+          <span class="visually-hidden">{tr.a11y.newTab}</span>
+        </a>
+      </div>
+
+      <aside class="card inst__req" data-reveal aria-labelledby="req-title">
+        <h3 id="req-title">{s.reqTitle}</h3>
+        <div>
+          <p class="label">{s.reqBinaryTitle}</p>
+          <ul>
+            {s.reqBinary.map((r) => (
+              <li>{r}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p class="label">{s.reqDockerTitle}</p>
+          <ul>
+            {s.reqDocker.map((r) => (
+              <li>{r}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p class="label">{s.reqSourceTitle}</p>
+          <ul>
+            {s.reqSource.map((r) => (
+              <li>{r}</li>
+            ))}
+          </ul>
+        </div>
+        <p class="inst__warn">
+          <Icon name="alert" size={16} /> {s.warn}
+        </p>
+        <ul role="list" class="inst__docs">
+          <li>
+            <a href={REPO.deployment} {...ext}>
+              {s.docsDeployment} <Icon name="arrow-up-right" size={14} />
+              <span class="visually-hidden">{tr.a11y.newTab}</span>
+            </a>
+          </li>
+          <li>
+            <a href={REPO.troubleshooting} {...ext}>
+              {s.docsTroubleshooting} <Icon name="arrow-up-right" size={14} />
+              <span class="visually-hidden">{tr.a11y.newTab}</span>
+            </a>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script>
+  import '~/scripts/tabs';
+</script>
+
+<style>
+  .inst__tabs {
+    display: flex;
+    gap: var(--s-2);
+    margin-bottom: var(--s-5);
+    padding-bottom: var(--s-2);
+    overflow-x: auto;
+  }
+  .inst__tabs button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: none;
+    min-height: var(--tap);
+    padding: 0 1.1rem;
+    border: 1px solid var(--line-2);
+    border-radius: var(--r-pill);
+    background: transparent;
+    color: var(--muted);
+    font-size: 0.9375rem;
+    white-space: nowrap;
+  }
+  .inst__tabs button:hover {
+    color: var(--text);
+    border-color: var(--line-3);
+  }
+  .inst__tabs button[aria-selected='true'] {
+    border-color: rgb(52 211 153 / 0.5);
+    background: var(--gate-wash);
+    color: var(--text);
+  }
+  .inst__tabs button:focus-visible {
+    border-radius: var(--r-pill);
+  }
+  .inst__panels {
+    display: grid;
+    gap: var(--s-6);
+  }
+  .inst__panel {
+    display: grid;
+    gap: var(--s-4);
+    padding: clamp(1.25rem, 1rem + 2vw, 2.25rem);
+    min-width: 0;
+  }
+  .inst__panel[hidden] {
+    display: none;
+  }
+  .inst__dl {
+    justify-self: start;
+  }
+  .inst__verified {
+    display: flex;
+    gap: 0.5rem;
+    align-items: baseline;
+    color: var(--gate-ink);
+    font-size: 0.875rem;
+  }
+  .inst__verified--open {
+    color: var(--muted);
+  }
+  .inst__grid {
+    display: grid;
+    gap: var(--s-8);
+    margin-top: var(--s-12);
+  }
+  .inst__clients {
+    display: grid;
+    gap: var(--s-4);
+    min-width: 0;
+  }
+  .inst__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    justify-self: start;
+  }
+  .inst__req {
+    display: grid;
+    align-content: start;
+    gap: var(--s-5);
+    padding: var(--s-6);
+  }
+  .inst__req ul:not([role]) {
+    margin: var(--s-2) 0 0;
+    padding-left: 1.1rem;
+    color: var(--soft);
+    font-size: var(--fs-small);
+  }
+  .inst__req li::marker {
+    color: var(--gate);
+  }
+  .inst__warn {
+    display: flex;
+    gap: 0.5rem;
+    padding: var(--s-3) var(--s-4);
+    border: 1px solid rgb(255 143 177 / 0.3);
+    border-radius: var(--r-sm);
+    background: var(--no-wash);
+    color: var(--no-ink);
+    font-size: 0.875rem;
+  }
+  .inst__docs {
+    display: grid;
+    gap: var(--s-2);
+  }
+  .inst__docs a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  @media (min-width: 1000px) {
+    .inst__grid {
+      grid-template-columns: 1.4fr 1fr;
+    }
+  }
+</style>

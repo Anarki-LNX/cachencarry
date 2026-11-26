@@ -1,0 +1,259 @@
+---
+import SectionHead from './SectionHead.astro';
+import { type Locale, t, anchors } from '~/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const tr = t(locale);
+const h = tr.how;
+const ys = [70, 160, 250];
+---
+
+<section class="section how" id={anchors.how} aria-labelledby="how-title">
+  <div class="container">
+    <SectionHead num="02" label={h.label} title={h.title} lead={h.lead} id="how-title" />
+
+    <div class="how__layout">
+      <ol class="how__steps" role="list">
+        {h.steps.map((s, i) => (
+          <li class:list={['how__step', { 'how__step--miss': i === 2, 'how__step--hit': i === 5 }]} data-reveal>
+            <span class="how__num">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <figure class="card how__fig" data-reveal>
+        <svg viewBox="0 0 520 320" role="img" aria-labelledby="flow-title" class="flow">
+          <title id="flow-title">{h.diagramLabel}</title>
+          {ys.map((y) => (
+            <g>
+              <path class="flow__req" d={`M128 ${y} C 180 ${y}, 190 160, 226 160`} />
+              <path class="flow__hit" d={`M226 172 C 190 172, 180 ${y + 12}, 128 ${y + 12}`} />
+            </g>
+          ))}
+          <path class="flow__miss" d="M310 152 L 402 152"></path>
+          <path class="flow__back" d="M402 172 L 310 172"></path>
+          <text class="flow__tag flow__tag--miss" x="356" y="140" text-anchor="middle">
+            MISS · 1×
+          </text>
+          <text class="flow__tag flow__tag--hit" x="176" y="300" text-anchor="middle">
+            HIT · LAN
+          </text>
+
+          {ys.map((y, i) => (
+            <g class="flow__client">
+              <rect x="16" y={y - 16} width="112" height="40" rx="10" />
+              <text x="30" y={y + 9}>
+                {h.clients[i]}
+              </text>
+            </g>
+          ))}
+          <g class="flow__cache">
+            <rect x="226" y="122" width="84" height="76" rx="16"></rect>
+            <text x="268" y="158" text-anchor="middle" class="flow__big">
+              C&amp;C
+            </text>
+            <text x="268" y="178" text-anchor="middle" class="flow__small">
+              SHA-256
+            </text>
+          </g>
+          <g class="flow__mirror">
+            <rect x="402" y="122" width="102" height="76" rx="16"></rect>
+            <text x="453" y="158" text-anchor="middle" class="flow__big">
+              Mirror
+            </text>
+            <text x="453" y="178" text-anchor="middle" class="flow__small">
+              Internet
+            </text>
+          </g>
+        </svg>
+      </figure>
+    </div>
+
+    <div class="how__gloss" data-reveal>
+      <h3 class="label">{h.glossaryTitle}</h3>
+      <dl class="gloss">
+        {h.glossary.map((g) => (
+          <div class="gloss__item">
+            <dt>
+              <code>{g.term}</code>
+            </dt>
+            <dd>{g.text}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .how__layout {
+    display: grid;
+    gap: var(--s-10);
+    align-items: start;
+  }
+  .how__steps {
+    display: grid;
+    gap: var(--s-2);
+    counter-reset: none;
+  }
+  .how__step {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--s-4);
+    padding: var(--s-4) var(--s-5);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    background: rgb(255 255 255 / 0.015);
+  }
+  .how__step h3 {
+    font-size: 1.0625rem;
+  }
+  .how__step p {
+    margin-top: var(--s-1);
+    color: var(--muted);
+    font-size: var(--fs-small);
+  }
+  .how__num {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--water-ink);
+    padding-top: 0.15rem;
+  }
+  .how__step--miss {
+    border-color: rgb(91 140 255 / 0.35);
+    background: var(--in-wash);
+  }
+  .how__step--miss .how__num {
+    color: var(--in-ink);
+  }
+  .how__step--hit {
+    border-color: rgb(52 211 153 / 0.35);
+    background: var(--gate-wash);
+  }
+  .how__step--hit .how__num {
+    color: var(--gate-ink);
+  }
+  .how__fig {
+    padding: var(--s-6);
+  }
+  .flow {
+    width: 100%;
+    height: auto;
+  }
+  .flow path {
+    fill: none;
+    stroke-width: 1.8;
+  }
+  .flow__req {
+    stroke: rgb(103 232 249 / 0.55);
+    stroke-dasharray: 2 6;
+  }
+  .flow__hit {
+    stroke: var(--gate);
+    stroke-dasharray: 6 6;
+    animation: dash 1.4s linear infinite;
+  }
+  .flow__miss {
+    stroke: var(--in);
+    stroke-dasharray: 6 6;
+    animation: dash 1.4s linear infinite;
+  }
+  .flow__back {
+    stroke: rgb(91 140 255 / 0.5);
+  }
+  @keyframes dash {
+    to {
+      stroke-dashoffset: -24;
+    }
+  }
+  .flow__tag {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+  .flow__tag--miss {
+    fill: var(--in-ink);
+  }
+  .flow__tag--hit {
+    fill: var(--gate-ink);
+  }
+  .flow__client rect {
+    fill: var(--panel-2);
+    stroke: var(--line-3);
+  }
+  .flow__client text {
+    fill: var(--soft);
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+  }
+  .flow__cache rect {
+    fill: #0b1a14;
+    stroke: var(--gate);
+    stroke-width: 2;
+  }
+  .flow__mirror rect {
+    fill: rgb(91 140 255 / 0.08);
+    stroke: var(--in);
+    stroke-width: 1.6;
+  }
+  .flow__big {
+    fill: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .flow__small {
+    fill: var(--faint);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+  }
+  .how__gloss {
+    margin-top: var(--s-12);
+  }
+  .how__gloss > .label {
+    margin-bottom: var(--s-4);
+  }
+  .gloss {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: var(--s-3);
+  }
+  .gloss__item {
+    padding: var(--s-5);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+  }
+  .gloss dt code {
+    color: var(--water-ink);
+    font-size: 0.875rem;
+  }
+  .gloss dd {
+    margin: var(--s-2) 0 0;
+    color: var(--muted);
+    font-size: var(--fs-small);
+  }
+  @media (min-width: 1000px) {
+    .how__layout {
+      grid-template-columns: 1fr 1.1fr;
+    }
+    .how__fig {
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flow__hit,
+    .flow__miss {
+      animation: none;
+    }
+  }
+</style>
