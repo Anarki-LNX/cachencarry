@@ -21,10 +21,50 @@ const clients = [
   { y: 250, name: 'Arch Linux' },
   { y: 340, name: 'CachyOS' },
 ];
-const cx = 250;
+const cx = 260;
 const cy = 220;
-const pathTo = (y: number) => `M${cx + 34} ${cy} C ${cx + 110} ${cy}, ${cx + 120} ${y}, 420 ${y}`;
-const inPath = `M74 ${cy} L ${cx - 34} ${cy}`;
+const inetX = 58;
+const divider = 178;
+const pathTo = (y: number) => `M${cx + 34} ${cy} C ${cx + 105} ${cy}, ${cx + 115} ${y}, 420 ${y}`;
+const inPath = `M${inetX + 30} ${cy} L ${cx - 34} ${cy}`;
+
+// One loop of the story, as fractions of DUR: the first client asks, the cache misses,
+// fetches the file once from the Internet and hands it over. Then the other clients ask
+// and are served straight from the cache (HIT).
+const DUR = '12s';
+type Kind = 'req' | 'in' | 'hit';
+interface Move {
+  path: string;
+  t0: number;
+  t1: number;
+  reverse: boolean;
+  kind: Kind;
+}
+const moves: Move[] = [
+  { path: 'p-out-0', t0: 0.02, t1: 0.09, reverse: true, kind: 'req' },
+  { path: 'p-in', t0: 0.1, t1: 0.16, reverse: true, kind: 'req' },
+  { path: 'p-in', t0: 0.18, t1: 0.3, reverse: false, kind: 'in' },
+  { path: 'p-out-0', t0: 0.31, t1: 0.39, reverse: false, kind: 'hit' },
+  { path: 'p-out-1', t0: 0.44, t1: 0.5, reverse: true, kind: 'req' },
+  { path: 'p-out-1', t0: 0.51, t1: 0.57, reverse: false, kind: 'hit' },
+  { path: 'p-out-2', t0: 0.59, t1: 0.65, reverse: true, kind: 'req' },
+  { path: 'p-out-2', t0: 0.66, t1: 0.72, reverse: false, kind: 'hit' },
+  { path: 'p-out-3', t0: 0.74, t1: 0.8, reverse: true, kind: 'req' },
+  { path: 'p-out-3', t0: 0.81, t1: 0.87, reverse: false, kind: 'hit' },
+];
+const f = (n: number) => n.toFixed(3);
+const motion = (m: Move) => ({
+  keyPoints: m.reverse ? '1;1;0;0' : '0;0;1;1',
+  keyTimes: `0;${f(m.t0)};${f(m.t1)};1`,
+});
+const fade = (t0: number, t1: number) => ({
+  values: '0;0;1;1;0;0',
+  keyTimes: `0;${f(t0)};${f(t0 + 0.01)};${f(t1 - 0.01)};${f(t1)};1`,
+});
+// a client's LED lights up when its file arrives
+const served = moves.filter((m) => m.kind === 'hit').map((m) => ({ i: Number(m.path.slice(-1)), t: m.t1 }));
+const missWindow = fade(0.1, 0.31);
+const hitWindow = fade(0.5, 0.9);
 ---
 
 <section class="hero" id={anchors.overview} aria-labelledby="hero-title">
@@ -68,7 +108,7 @@ const inPath = `M74 ${cy} L ${cx - 34} ${cy}`;
         <title id="net-title">{h.diagramLabel}</title>
         <defs>
           <linearGradient id="g-in" x1="0" x2="1">
-            <stop offset="0" stop-color="#5b8cff" stop-opacity="0.15"></stop>
+            <stop offset="0" stop-color="#5b8cff" stop-opacity="0.25"></stop>
             <stop offset="1" stop-color="#5b8cff" stop-opacity="0.8"></stop>
           </linearGradient>
           <linearGradient id="g-out" x1="0" x2="1">
@@ -81,33 +121,36 @@ const inPath = `M74 ${cy} L ${cx - 34} ${cy}`;
           </radialGradient>
         </defs>
 
-        <!-- LAN zone -->
-        <rect class="net__zone" x="180" y="24" width="364" height="392" rx="22"></rect>
-        <text class="net__zone-label" x="524" y="48" text-anchor="end">
+        <!-- frame around the whole picture, split into Internet and LAN -->
+        <rect class="net__zone" x="6" y="24" width="546" height="392" rx="22"></rect>
+        <path class="net__divider" d={`M${divider} 40 V 400`}></path>
+        <text class="net__zone-label net__zone-label--inet" x="26" y="48">
+          {h.diagramInternet}
+        </text>
+        <text class="net__zone-label" x="532" y="48" text-anchor="end">
           {h.diagramLan}
         </text>
 
         <!-- Internet -->
         <g class="net__inet">
-          <circle cx="44" cy={cy} r="30"></circle>
-          <path d={`M14 ${cy}h60M44 ${cy - 30}a46 46 0 0 1 0 60M44 ${cy - 30}a46 46 0 0 0 0 60`}></path>
-          <text x="44" y={cy + 54} text-anchor="middle" class="net__cap">
-            {h.diagramInternet}
-          </text>
-          <text x="44" y={cy + 70} text-anchor="middle" class="net__sub">
+          <circle cx={inetX} cy={cy} r="30"></circle>
+          <path
+            d={`M${inetX - 30} ${cy}h60M${inetX} ${cy - 30}a46 46 0 0 1 0 60M${inetX} ${cy - 30}a46 46 0 0 0 0 60`}
+          ></path>
+          <text x={inetX} y={cy + 54} text-anchor="middle" class="net__cap">
             {h.diagramMirror}
           </text>
         </g>
 
         <!-- upstream line, used once -->
         <path id="p-in" class="net__in" d={inPath}></path>
-        <text x="146" y={cy - 22} text-anchor="middle" class="net__once">
+        <text x={(inetX + 30 + divider) / 2 + 2} y={cy - 22} text-anchor="middle" class="net__once">
           {h.diagramOnce}
         </text>
 
         <!-- delivery lines -->
-        {clients.map((c, i) => (
-          <path id={`p-out-${i}`} class="net__out" d={pathTo(c.y)} />
+        {clients.map((_, i) => (
+          <path id={`p-out-${i}`} class="net__out" d={pathTo(clients[i]!.y)} />
         ))}
 
         <!-- cache core -->
@@ -124,53 +167,71 @@ const inPath = `M74 ${cy} L ${cx - 34} ${cy}`;
           {h.diagramCache}
         </text>
 
+        <!-- MISS / HIT badge above the cache, shown in step with the packets -->
+        <g class="net__badge net__badge--miss" opacity="0" aria-hidden="true">
+          <rect x={cx - 26} y={cy - 66} width="52" height="20" rx="10"></rect>
+          <text x={cx} y={cy - 52} text-anchor="middle">
+            MISS
+          </text>
+          <animate attributeName="opacity" dur={DUR} repeatCount="indefinite" {...missWindow} />
+        </g>
+        <g class="net__badge net__badge--hit" opacity="0" aria-hidden="true">
+          <rect x={cx - 22} y={cy - 66} width="44" height="20" rx="10"></rect>
+          <text x={cx} y={cy - 52} text-anchor="middle">
+            HIT
+          </text>
+          <animate attributeName="opacity" dur={DUR} repeatCount="indefinite" {...hitWindow} />
+        </g>
+
         <!-- clients -->
-        {clients.map((c) => (
+        {clients.map((c, i) => (
           <g class="net__client">
             <rect x="420" y={c.y - 17} width="112" height="34" rx="9" />
-            <circle cx="436" cy={c.y} r="4" class="net__led" />
+            <circle cx="436" cy={c.y} r="4" class="net__led">
+              {served
+                .filter((s) => s.i === i)
+                .map((s) => (
+                  <animate
+                    attributeName="r"
+                    dur={DUR}
+                    repeatCount="indefinite"
+                    values="4;4;7;4;4"
+                    keyTimes={`0;${f(s.t)};${f(s.t + 0.02)};${f(s.t + 0.05)};1`}
+                  />
+                ))}
+            </circle>
             <text x="448" y={c.y + 4.5} class="net__name">
               {c.name}
             </text>
           </g>
         ))}
 
-        <!-- moving packets: one arrives from the Internet, then four leave for the clients -->
+        <!-- moving packets: violet = request, blue = from the Internet, green = from the cache -->
         <g class="net__packets" aria-hidden="true">
-          <circle r="5" class="pk pk--in">
-            <animateMotion dur="6s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.25;1" calcMode="linear">
-              <mpath href="#p-in"></mpath>
-            </animateMotion>
-            <animate
-              attributeName="opacity"
-              dur="6s"
-              repeatCount="indefinite"
-              values="0;1;1;0;0"
-              keyTimes="0;0.03;0.24;0.26;1"
-            ></animate>
-          </circle>
-          {clients.map((_, i) => (
-            <circle r="4.5" class="pk pk--out">
-              <animateMotion
-                dur="6s"
-                repeatCount="indefinite"
-                keyPoints="0;0;1;1"
-                keyTimes={`0;${(0.27 + i * 0.07).toFixed(2)};${(0.55 + i * 0.07).toFixed(2)};1`}
-                calcMode="linear"
-              >
-                <mpath href={`#p-out-${i}`} />
+          {moves.map((m) => (
+            <circle r={m.kind === 'req' ? 4 : 5} class={`pk pk--${m.kind}`} opacity="0">
+              <animateMotion dur={DUR} repeatCount="indefinite" calcMode="linear" {...motion(m)}>
+                <mpath href={`#${m.path}`} />
               </animateMotion>
-              <animate
-                attributeName="opacity"
-                dur="6s"
-                repeatCount="indefinite"
-                values="0;0;1;1;0;0"
-                keyTimes={`0;${(0.27 + i * 0.07).toFixed(2)};${(0.29 + i * 0.07).toFixed(2)};${(0.54 + i * 0.07).toFixed(2)};${(0.56 + i * 0.07).toFixed(2)};1`}
-              />
+              <animate attributeName="opacity" dur={DUR} repeatCount="indefinite" {...fade(m.t0, m.t1)} />
             </circle>
           ))}
         </g>
       </svg>
+      <ul role="list" class="net__legend">
+        <li>
+          <span class="dot dot--req"></span>
+          {h.legendRequest}
+        </li>
+        <li>
+          <span class="dot dot--in"></span>
+          {h.legendInternet}
+        </li>
+        <li>
+          <span class="dot dot--hit"></span>
+          {h.legendCache}
+        </li>
+      </ul>
       <figcaption class="hero__note">{h.diagramNote}</figcaption>
     </figure>
   </div>
@@ -314,6 +375,14 @@ const inPath = `M74 ${cy} L ${cx - 34} ${cy}`;
     stroke: rgb(103 232 249 / 0.18);
     stroke-dasharray: 4 6;
   }
+  .net__divider {
+    fill: none;
+    stroke: rgb(103 232 249 / 0.22);
+    stroke-dasharray: 2 6;
+  }
+  .net__zone-label--inet {
+    fill: var(--in-ink) !important;
+  }
   .net__zone-label {
     fill: var(--water-ink);
     font-family: var(--font-mono);
@@ -373,7 +442,7 @@ const inPath = `M74 ${cy} L ${cx - 34} ${cy}`;
   }
   .net__halo {
     animation: breathe 6s ease-in-out infinite;
-    transform-origin: 250px 220px;
+    transform-origin: 260px 220px;
   }
   @keyframes breathe {
     50% {
@@ -408,11 +477,63 @@ const inPath = `M74 ${cy} L ${cx - 34} ${cy}`;
     font-family: var(--font-mono);
     font-size: 12px;
   }
+  .pk--req {
+    fill: var(--violet-ink);
+    filter: drop-shadow(0 0 6px rgb(167 139 250 / 0.9));
+  }
+  .net__badge text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+  }
+  .net__badge--miss rect {
+    fill: rgb(91 140 255 / 0.18);
+    stroke: var(--in);
+  }
+  .net__badge--miss text {
+    fill: var(--in-ink);
+  }
+  .net__badge--hit rect {
+    fill: rgb(52 211 153 / 0.16);
+    stroke: var(--gate);
+  }
+  .net__badge--hit text {
+    fill: var(--gate-ink);
+  }
+  .net__legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--s-2) var(--s-5);
+    margin-top: var(--s-2);
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+  .net__legend li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+  .dot--req {
+    background: var(--violet-ink);
+  }
+  .dot--in {
+    background: var(--in-ink);
+  }
+  .dot--hit {
+    background: var(--gate-ink);
+  }
   .pk--in {
     fill: var(--in-ink);
     filter: drop-shadow(0 0 6px rgb(91 140 255 / 0.9));
   }
-  .pk--out {
+  .pk--hit {
     fill: var(--gate-ink);
     filter: drop-shadow(0 0 6px rgb(52 211 153 / 0.9));
   }
@@ -458,7 +579,8 @@ const inPath = `M74 ${cy} L ${cx - 34} ${cy}`;
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .net__packets {
+    .net__packets,
+    .net__badge {
       display: none;
     }
     .net__out,

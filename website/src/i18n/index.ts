@@ -64,13 +64,16 @@ const de = {
     license: 'Apache 2.0 · kostenlos für alle',
     release: 'Aktuelle Version',
     diagramLabel:
-      'Schema: Ein Paket kommt einmal aus dem Internet in Cache & Carry und geht von dort an mehrere Linux-Rechner im LAN.',
+      'Schema: Ein Rechner im LAN fragt ein Paket an. Cache & Carry holt es einmal aus dem Internet und liefert es aus. Die nächsten Rechner bekommen dasselbe Paket direkt aus dem Cache.',
     diagramInternet: 'Internet',
     diagramMirror: 'Mirror',
     diagramCache: 'Cache & Carry',
     diagramLan: 'LAN',
     diagramOnce: '1 × geladen',
     diagramNote: 'Schematische Darstellung, keine Live-Daten',
+    legendRequest: 'Anfrage',
+    legendInternet: 'Aus dem Internet',
+    legendCache: 'Aus dem Cache',
   },
   facts: [
     { value: '959 → 9 ms', label: 'Paketindex 8,6 MiB, Beispielmessung' },
@@ -474,13 +477,16 @@ const en: Copy = {
     license: 'Apache 2.0 · free for everyone',
     release: 'Latest version',
     diagramLabel:
-      'Diagram: a package comes from the Internet into Cache & Carry once and goes from there to several Linux machines on the LAN.',
+      'Diagram: a machine on the LAN asks for a package. Cache & Carry fetches it once from the Internet and hands it over. The next machines get the same package straight from the cache.',
     diagramInternet: 'Internet',
     diagramMirror: 'Mirror',
     diagramCache: 'Cache & Carry',
     diagramLan: 'LAN',
     diagramOnce: 'fetched 1 ×',
     diagramNote: 'Schematic illustration, not live data',
+    legendRequest: 'Request',
+    legendInternet: 'From the Internet',
+    legendCache: 'From the cache',
   },
   facts: [
     {
