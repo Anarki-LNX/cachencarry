@@ -22,12 +22,20 @@ Cloud-Sprachdienste verwendet.
 | Was | Herkunft | Lizenz / Rechte |
 |---|---|---|
 | Sprecher (Deutsch) | lokal erzeugt mit Piper TTS 1.8.0 (`piper-tts`, OHF-Voice/piper1-gpl) | Programm: GPL-3.0-or-later. Die erzeugten Audiodateien sind Ausgaben des Programms und fallen nicht unter die GPL |
-| Stimme | `de_DE-thorsten-medium` aus `rhasspy/piper-voices` (Hugging Face), SHA-256 `fd270eb3d1ebf91d763f8a0f949b1b1bebdfefaea18c3aaf8577dd34536e064f` | Modellkarte: Datensatz Thorsten-Voice, **CC0**; feinabgestimmt vom Basismodell „rdh“ (nl_BE), ebenfalls **CC0** |
+| Stimme | `de_DE-thorsten-high` aus `rhasspy/piper-voices` (Hugging Face), auf Wunsch des Nutzers | Modellkarte: Datensatz Thorsten-Voice, **CC0**. Training: feinabgestimmt vom englischen Modell „lessac“ (high), siehe Hinweis unten |
 | Musik und Soundeffekte | synthetisiert mit numpy/scipy in `pipeline/music.py` (Pad, Bass, Arpeggio, Drums, Whoosh, Impact, HIT-Klang, MISS-Klang, Tastenklicks) | eigene Komposition, keine Samples |
 
-Bewusst **nicht** verwendet: `de_DE-thorsten-high`. Diese Variante ist laut
-Modellkarte vom englischen „lessac“-Modell abgeleitet, dessen Datensatz eine
-eingeschränkte Lizenz hat. Die Kette der Medium-Variante ist vollständig CC0.
+Hinweis zur Stimme: Die erste Fassung nutzte `de_DE-thorsten-medium`, deren
+Kette laut Modellkarte vollständig CC0 ist (Thorsten-Voice, Basismodell „rdh“).
+Der Nutzer hat danach ausdrücklich `de_DE-thorsten-high` gewählt. Deren
+Datensatz ist ebenfalls CC0, das Modell ist aber laut Modellkarte vom
+englischen „lessac“-Modell abgeleitet. Der lessac-Datensatz hat eigene
+Lizenzbedingungen. Vor einer kommerziellen Nutzung diese Kette prüfen. Die
+Medium-Stimme liegt weiter in `tools/voices/`, ein Wechsel ist eine Zeile in
+`pipeline/voice.py` (`MODEL`).
+
+Im Video steht auf jeder Endkarte „Sprecherstimme synthetisch (Piper TTS)“,
+in allen Beschreibungen ebenfalls.
 
 ## Werkzeuge
 

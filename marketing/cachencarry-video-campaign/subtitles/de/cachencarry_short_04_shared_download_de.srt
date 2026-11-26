@@ -1,23 +1,23 @@
 1
-00:00:00,250 --> 00:00:04,598
-Zehn Rechner. Dieselbe Datei.
-Nur ein Upstream-Download.
+00:00:00,250 --> 00:00:03,607
+Zehn Rechner. Dieselbe
+Datei. Nur ein Download.
 
 2
-00:00:05,248 --> 00:00:09,899
-Wenn mehrere Clients gleichzeitig dieselbe
+00:00:04,330 --> 00:00:08,933
+Wenn mehrere Rechner gleichzeitig dieselbe
 Datei anfordern, die noch nicht im Cache liegt,
 
 3
-00:00:09,949 --> 00:00:13,613
+00:00:08,983 --> 00:00:12,174
 muss Cache & Carry sie nicht
 zehnmal aus dem Internet laden.
 
 4
-00:00:13,713 --> 00:00:17,202
-Ein Upstream-Download versorgt
-alle wartenden Clients.
+00:00:12,274 --> 00:00:16,289
+Ein einziger Download aus dem Internet
+versorgt alle wartenden Rechner.
 
 5
-00:00:17,852 --> 00:00:20,842
+00:00:16,939 --> 00:00:19,093
 Für dein Homelab. Open Source auf GitHub.

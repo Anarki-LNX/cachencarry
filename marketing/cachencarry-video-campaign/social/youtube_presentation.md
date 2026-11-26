@@ -1,6 +1,6 @@
 # YouTube: Präsentationsvideo
 
-**Datei:** `final/cachencarry_presentation_16x9.mp4`
+**Datei:** `final/de/cachencarry_presentation_de.mp4`
 **Untertitel:** `subtitles/de/cachencarry_presentation_de.srt` (Deutsch), `subtitles/en/cachencarry_presentation_en.srt` (Englisch)
 **Thumbnail:** `thumbnails/cachencarry_presentation_thumbnail.png`
 
@@ -35,6 +35,8 @@ Die Zahlen im Video (Paketindex mit 8,6 MiB: 959 ms aus dem Internet, 9 ms aus d
 
 Lizenz: Apache License 2.0. Die Software ist kostenlos. Hardware, Strom und Speicherplatz für deinen Server bringst du selbst mit.
 
+Die Sprecherstimme ist synthetisch (lokal erzeugt mit Piper TTS, Stimme Thorsten). Untertitel auf Deutsch zum Hochladen bei YouTube liegen bei.
+
 Wenn du es ausprobierst: Lass einen Stern auf GitHub da, teile das Projekt und schreib in die Kommentare, wie du es einsetzt.
 
 #CacheAndCarry #Homelab #Linux #SelfHosted #Proxmox #OpenSource
@@ -46,8 +48,8 @@ Wenn du es ausprobierst: Lass einen Stern auf GitHub da, teile das Projekt und s
 0:24 Das ist Cache & Carry
 0:39 HIT und MISS
 0:56 Ein Download für mehrere Rechner
-1:13 Für dein Homelab
-1:28 Open Source auf GitHub
+1:12 Für dein Homelab
+1:27 Open Source auf GitHub
 
 ## Schlagwörter (Tags)
 

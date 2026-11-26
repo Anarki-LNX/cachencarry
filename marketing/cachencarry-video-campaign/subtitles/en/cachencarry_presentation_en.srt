@@ -1,86 +1,86 @@
 1
-00:00:01,200 --> 00:00:02,379
+00:00:01,200 --> 00:00:02,196
 Sound familiar?
 
 2
-00:00:02,479 --> 00:00:05,922
+00:00:02,296 --> 00:00:05,549
 Three Linux machines on your
 network. Three updates.
 
 3
-00:00:06,022 --> 00:00:09,952
+00:00:05,649 --> 00:00:09,173
 And the same packages are downloaded
 from the Internet again and again.
 
 4
-00:00:12,600 --> 00:00:16,217
+00:00:11,100 --> 00:00:14,311
 What if your network had
 its own package warehouse?
 
 5
-00:00:16,317 --> 00:00:20,816
+00:00:14,411 --> 00:00:18,365
 Download once. Store it locally.
 Use it again and again.
 
 6
-00:00:25,400 --> 00:00:27,299
+00:00:21,400 --> 00:00:22,988
 This is Cache & Carry.
 
 7
-00:00:27,399 --> 00:00:31,039
+00:00:23,088 --> 00:00:26,510
 A lean, self-hosted package
 cache for your network.
 
 8
-00:00:31,139 --> 00:00:36,857
+00:00:26,610 --> 00:00:32,260
 The dashboard shows every request, every stored
 package and how much bandwidth you save.
 
 9
-00:00:39,800 --> 00:00:42,744
+00:00:34,000 --> 00:00:36,967
 On the first request, the
 package comes from the mirror.
 
 10
-00:00:42,844 --> 00:00:44,742
+00:00:37,067 --> 00:00:38,634
 After that, it is in the cache.
 
 11
-00:00:44,842 --> 00:00:48,122
+00:00:38,734 --> 00:00:41,810
 The next machine gets it
 straight from your network.
 
 12
-00:00:56,600 --> 00:01:03,177
+00:00:44,600 --> 00:00:50,888
 And when several machines need the same file at the same
 time, a single upstream download can serve them all.
 
 13
-00:01:03,277 --> 00:01:13,524
+00:00:50,988 --> 00:01:00,232
 In our test network, an 8.6 MiB package index took
 959 ms from the Internet. From the cache, 9 ms.
 
 14
-00:01:14,624 --> 00:01:18,567
+00:01:01,332 --> 00:01:05,222
 Whether Proxmox, Debian,
 Ubuntu, Arch or CachyOS:
 
 15
-00:01:18,617 --> 00:01:23,592
+00:01:05,272 --> 00:01:09,673
 Cache & Carry brings your supported
 package sources under one roof.
 
 16
-00:01:23,692 --> 00:01:28,121
+00:01:09,773 --> 00:01:13,945
 As a lean systemd service, for
 example in a Proxmox container.
 
 17
-00:01:29,624 --> 00:01:35,690
+00:01:15,332 --> 00:01:20,964
 Cache & Carry is free on GitHub, open
 source and ready for your homelab.
 
 18
-00:01:35,790 --> 00:01:42,031
+00:01:21,064 --> 00:01:27,401
 If you try it, leave a star, share the project
 and tell me in the comments how you use it.

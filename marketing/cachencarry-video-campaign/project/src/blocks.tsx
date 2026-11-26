@@ -8,9 +8,9 @@ export const FlowStrip = ({ y, frame, missAt, hitAt, portrait = false }: { y: nu
   const steps = [
     { t: "MISS", c: C.amber, at: missAt },
     { t: "INTERNET", c: C.amber, at: missAt + 10 },
-    { t: "LOCAL CACHE", c: C.cyan, at: missAt + 22 },
+    { t: "LOKALER CACHE", c: C.cyan, at: missAt + 22 },
     { t: "HIT", c: C.green, at: hitAt },
-    { t: "CLIENT", c: C.green, at: hitAt + 10 },
+    { t: "RECHNER", c: C.green, at: hitAt + 10 },
   ];
   const size = portrait ? 30 : 30;
   return (
@@ -94,6 +94,7 @@ export const EndCard = ({ landscape = false, lines, badge, top }: { landscape?: 
         {badge && <Pill delay={52} color={C.green} border={`${C.green}aa`} size={landscape ? 28 : 34}>{badge}</Pill>}
         <Pill delay={60} color={C.soft} size={landscape ? 28 : 34}>Open Source • Apache 2.0</Pill>
       </div>
+      <div style={{ marginTop: landscape ? 22 : 36, fontSize: landscape ? 22 : 28, color: C.soft, opacity: 0.75 * ramp(frame, 70, 14) }}>Sprecherstimme synthetisch (Piper TTS)</div>
     </AbsoluteFill>
   );
 };

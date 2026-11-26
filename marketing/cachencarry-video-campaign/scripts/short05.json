@@ -1,15 +1,60 @@
 {
- "id": "short05", "file": "cachencarry_short_05_open_source",
+ "id": "short05",
+ "file": "cachencarry_short_05_open_source",
  "scenes": [
-  {"id": "hook", "lead": 0.25, "min": 3.0, "lines": [
-   {"de": "Und was kostet das?", "en": "And what does it cost?"}]},
-  {"id": "free", "lead": 0.5, "min": 8, "lines": [
-   {"de": "Die Software? Kostenlos auf GitHub.", "en": "The software? Free on GitHub."},
-   {"de": "Open Source unter Apache 2.0.", "say": "Open Source unter Äpätschi zwei Punkt null.", "en": "Open source under Apache 2.0."}]},
-  {"id": "control", "lead": 0.3, "min": 9, "lines": [
-   {"de": "Du betreibst sie selbst in deinem Netzwerk und behältst die Kontrolle.", "en": "You run it yourself on your network and stay in control."},
-   {"de": "Nur Hardware und Strom für deinen Server bringst du selbst mit.", "en": "You only bring the hardware and power for your server."}]},
-  {"id": "end", "lead": 0.3, "min": 5, "tail": 2.0, "lines": [
-   {"de": "Gib dem Repository einen Stern und probier es aus.", "en": "Star the repository and try it out."}]}
+  {
+   "id": "hook",
+   "lead": 0.25,
+   "min": 2.1,
+   "lines": [
+    {
+     "de": "Und was kostet das?",
+     "en": "And what does it cost?"
+    }
+   ]
+  },
+  {
+   "id": "free",
+   "lead": 0.5,
+   "min": 6.0,
+   "lines": [
+    {
+     "de": "Die Software? Kostenlos auf GitHub.",
+     "en": "The software? Free on GitHub."
+    },
+    {
+     "de": "Open Source unter Apache 2.0.",
+     "say": "Open Source unter Äpätschi zwei Punkt null.",
+     "en": "Open source under Apache 2.0."
+    }
+   ]
+  },
+  {
+   "id": "control",
+   "lead": 0.3,
+   "min": 7.8,
+   "lines": [
+    {
+     "de": "Du betreibst sie selbst in deinem Netzwerk und behältst die Kontrolle.",
+     "en": "You run it yourself on your network and stay in control."
+    },
+    {
+     "de": "Nur Hardware und Strom für deinen Server bringst du selbst mit.",
+     "en": "You only bring the hardware and power for your server."
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "lead": 0.3,
+   "min": 5,
+   "tail": 2.0,
+   "lines": [
+    {
+     "de": "Gib dem Repository einen Stern und probier es aus.",
+     "en": "Star the repository and try it out."
+    }
+   ]
+  }
  ]
 }

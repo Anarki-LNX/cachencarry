@@ -5,7 +5,7 @@
   {
    "id": "problem",
    "lead": 1.2,
-   "min": 12,
+   "min": 10.5,
    "lines": [
     {
      "de": "Kennst du das?",
@@ -24,7 +24,7 @@
   {
    "id": "idea",
    "lead": 0.6,
-   "min": 12,
+   "min": 9.5,
    "lines": [
     {
      "de": "Was wäre, wenn dein Netzwerk ein eigenes Paketlager hätte?",
@@ -41,7 +41,7 @@
   {
    "id": "meet",
    "lead": 1.4,
-   "min": 15,
+   "min": 13.2,
    "lines": [
     {
      "de": "Das ist Cache & Carry.",
@@ -60,10 +60,10 @@
   {
    "id": "hitmiss",
    "lead": 0.8,
-   "min": 17,
+   "min": 10.8,
    "lines": [
     {
-     "de": "Beim ersten Abruf kommt das Paket vom Mirror.",
+     "de": "Beim ersten Abruf kommt das Paket aus dem Internet.",
      "en": "On the first request, the package comes from the mirror."
     },
     {
@@ -82,7 +82,7 @@
    "min": 15,
    "lines": [
     {
-     "de": "Und wenn mehrere Rechner gleichzeitig dieselbe Datei brauchen, kann ein einziger Upstream-Download alle versorgen.",
+     "de": "Und wenn mehrere Rechner gleichzeitig dieselbe Datei brauchen, reicht ein einziger Download aus dem Internet für alle.",
      "en": "And when several machines need the same file at the same time, a single upstream download can serve them all."
     },
     {
@@ -96,7 +96,7 @@
   {
    "id": "homelab",
    "lead": 0.6,
-   "min": 15,
+   "min": 14,
    "lines": [
     {
      "de": "Ob Proxmox, Debian, Ubuntu, Arch oder CachyOS:",
@@ -116,7 +116,7 @@
   {
    "id": "cta",
    "lead": 0.6,
-   "min": 17,
+   "min": 16,
    "tail": 3.2,
    "lines": [
     {

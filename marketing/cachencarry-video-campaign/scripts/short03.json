@@ -1,12 +1,48 @@
 {
- "id": "short03", "file": "cachencarry_short_03_speed",
+ "id": "short03",
+ "file": "cachencarry_short_03_speed",
  "scenes": [
-  {"id": "hook", "lead": 0.25, "min": 5, "lines": [
-   {"de": "959 Millisekunden. 9 Millisekunden. Was ist passiert?", "say": "Neunhundertneunundfünfzig Millisekunden. Neun Millisekunden. Was ist passiert?", "en": "959 milliseconds. 9 milliseconds. What happened?"}]},
-  {"id": "compare", "lead": 0.3, "min": 13, "lines": [
-   {"de": "Im dokumentierten Testnetzwerk brauchte ein Paketindex mit 8,6 MiB 959 Millisekunden aus dem Internet.", "say": "Im dokumentierten Testnetzwerk brauchte ein Paketindex mit acht Komma sechs Mebibeit neunhundertneunundfünfzig Millisekunden aus dem Internet.", "en": "In the documented test network, an 8.6 MiB package index took 959 milliseconds from the Internet."},
-   {"de": "Aus dem Cache waren es nur 9.", "say": "Aus dem Käsch waren es nur neun.", "en": "From the cache, it took just 9."}]},
-  {"id": "end", "lead": 0.3, "min": 6, "tail": 2.0, "lines": [
-   {"de": "Genau dafür gibt es Cache & Carry. Mehr im GitHub-Repository.", "say": "Genau dafür gibt es Käsch änd Kärri. Mehr im Gitt Habb Ripositorie.", "en": "That is exactly what Cache & Carry is for. More in the GitHub repository."}]}
+  {
+   "id": "hook",
+   "lead": 0.25,
+   "min": 5,
+   "lines": [
+    {
+     "de": "959 Millisekunden. 9 Millisekunden. Was ist passiert?",
+     "say": "Neunhundertneunundfünfzig Millisekunden. Neun Millisekunden. Was ist passiert?",
+     "en": "959 milliseconds. 9 milliseconds. What happened?"
+    }
+   ]
+  },
+  {
+   "id": "compare",
+   "lead": 0.3,
+   "min": 11.13,
+   "lines": [
+    {
+     "de": "Im dokumentierten Testnetzwerk brauchte ein Paketindex mit 8,6 MiB 959 Millisekunden aus dem Internet.",
+     "say": "Im dokumentierten Testnetzwerk brauchte ein Paketindex mit acht Komma sechs Mebibeit neunhundertneunundfünfzig Millisekunden aus dem Internet.",
+     "en": "In the documented test network, an 8.6 MiB package index took 959 milliseconds from the Internet."
+    },
+    {
+     "de": "Aus dem Cache waren es nur 9.",
+     "say": "Aus dem Käsch waren es nur neun.",
+     "en": "From the cache, it took just 9."
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "lead": 0.3,
+   "min": 6,
+   "tail": 2.0,
+   "lines": [
+    {
+     "de": "Genau dafür gibt es Cache & Carry. Mehr im GitHub-Repository.",
+     "say": "Genau dafür gibt es Käsch änd Kärri. Mehr im Gitt Habb Ripositorie.",
+     "en": "That is exactly what Cache & Carry is for. More in the GitHub repository."
+    }
+   ]
+  }
  ]
 }

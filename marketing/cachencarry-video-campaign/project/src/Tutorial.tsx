@@ -24,7 +24,7 @@ const cast = (c: unknown) => c as Cast;
 type S = Scene & { chapter?: number };
 
 const CHAPTERS = ["Was bauen wir?", "Server vorbereiten", "Herunterladen und installieren", "Ersteinrichtung", "Ersten Client einrichten", "Cache testen", "Ergebnis"];
-const LEAD = Math.round(2.4 * FPS); // chapter title time at the start of a chapter
+const LEAD = Math.round(2.0 * FPS); // chapter title time at the start of a chapter
 const LIVE = { client1: 1.001, client2: 49.722, frames: 605 }; // tut-live.json marks
 
 const isChapterStart = (s: S) => {
@@ -76,7 +76,7 @@ const TermPart = ({ s, c, from, to, title, start = 0, x = 268, y = 64, w = 1384,
         <Terminal cast={c} t={t} fontSize={font} highlight />
       </Win>
       {rate > 1.3 && frame > begin && (
-        <div style={{ position: "absolute", left: x + w - 190, top: y + 6, fontFamily: FONT, fontSize: 18, fontWeight: 700, color: C.amber }}>{`${Math.round(rate)}× schneller`}</div>
+        <div style={{ position: "absolute", left: x + w - 190, top: y + 6, fontFamily: FONT, fontSize: 18, fontWeight: 700, color: C.amber }}>{`${rate < 2.75 ? (Math.round(rate * 2) / 2).toString().replace(".", ",") : Math.round(rate)}× schneller`}</div>
       )}
       <Sequence from={begin} layout="none"><KeySounds cast={c} offset={from} rate={rate} until={Math.round(((to - from) / rate) * FPS)} volume={0.22} /></Sequence>
     </>
@@ -114,7 +114,7 @@ const ClientSplit = ({ s, c, from, to, title, liveStart }: { s: S; c: Cast; from
         <Terminal cast={c} t={t} fontSize={14.6} highlight />
       </Win>
       <Win x={1000} y={64} w={880} h={500 + 38} title="Dashboard  ·  Live-Traffic" delay={4} accent={C.green}>
-        <Shot src={seqFrame("tut-live", T, LIVE.frames)} srcW={1600} w={880} h={500} view={{ x: 244, y: 228, w: 1336, h: 759 }} />
+        <Shot src={seqFrame("tut-live", T, LIVE.frames)} srcW={1600} w={880} h={500} view={{ x: 640, y: 228, w: 940, h: 534 }} />
       </Win>
       <Sequence from={begin} layout="none"><KeySounds cast={c} offset={from} rate={rate} volume={0.22} /></Sequence>
     </>
@@ -147,8 +147,8 @@ const Title1 = () => {
 const Diagram = () => {
   const frame = useCurrentFrame();
   const s = sceneOf(tl, "diagram");
-  const cloud = { x: 520, y: 200 }, server = { x: 520, y: 500 };
-  const pcs = [{ x: 300, y: 790 }, { x: 740, y: 790 }];
+  const cloud = { x: 520, y: 150 }, server = { x: 520, y: 420 };
+  const pcs = [{ x: 300, y: 670 }, { x: 740, y: 670 }];
   const req = lineAt(s, 2);
   const rows: [string, string, string][] = [["CPU", "1 Kern", "2 Kerne"], ["RAM", "256 MB", "1 GB"], ["Speicher", "was du cachen willst, plus 10 % frei", ""], ["Netzwerk", "ein TCP Port (8080) im LAN", "1 Gbit/s"]];
   return (
@@ -156,7 +156,7 @@ const Diagram = () => {
       <svg width={1920} height={1080} style={{ position: "absolute" }}>
         <Flow a={cloud} b={server} color={C.amber} on={ramp(frame, 20, 14)} count={2} width={5} size={12} speed={0.6} />
         {pcs.map((p, i) => <Flow key={i} a={server} b={p} color={C.green} on={ramp(frame, 60 + i * 10, 14)} speed={1.3} />)}
-        <Node x={cloud.x} y={cloud.y} label="Internet" sub="Mirror" kind="cloud" color={C.amber} glow={0.5} appear={ramp(frame, 4, 12)} />
+        <Node x={cloud.x} y={cloud.y} label="Internet" sub="Paketserver" kind="cloud" color={C.amber} glow={0.5} appear={ramp(frame, 4, 12)} />
         <Node x={server.x} y={server.y} label="Cache & Carry" sub="192.168.1.41:8080" kind="server" color={C.cyan} glow={1} appear={ramp(frame, 12, 12)} size={140} />
         {pcs.map((p, i) => <Node key={i} x={p.x} y={p.y} label={`Debian Client ${i + 1}`} glow={0.5} color={C.green} appear={ramp(frame, 50 + i * 10, 12)} />)}
       </svg>
@@ -240,7 +240,14 @@ const SCENES: Record<string, () => ReactElement> = {
   ),
   curl: () => <TermPart s={sc("curl")} c={cast(c07)} from={41.8} to={48.6} title="Debian Client 2" />,
   stats: () => (
-    <ShotPart s={sc("stats")} src="footage/tut-statistics.png" from={{ x: 236, y: 60, w: 1360, h: 765 }} to={{ x: 236, y: 300, w: 1100, h: 619 }} title="Dashboard  ·  Statistik" />
+    <ShotPart s={sc("stats")} src="footage/tut-dash.png" from={{ x: 236, y: 60, w: 1364, h: 767 }} to={{ x: 880, y: 120, w: 740, h: 416 }} title="Dashboard">
+      {(map) => (
+        <>
+          <Mark style={map({ x: 920, y: 150, w: 322, h: 122 })} color={C.green} at={30} label="GESPART" labelSide="bottom" />
+          <Mark style={map({ x: 1256, y: 150, w: 316, h: 122 })} color={C.amber} at={60} label="AUS DEM INTERNET" labelSide="bottom" />
+        </>
+      )}
+    </ShotPart>
   ),
   files: () => <TermPart s={sc("files")} c={cast(c08)} from={0} to={16.8} title="root@cc-tutorial" />,
   tour: () => {

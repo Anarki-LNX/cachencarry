@@ -1,14 +1,10 @@
 #!/bin/bash
-# Renders all seven videos plus the clean version, normalizes them and writes final/.
+# Renders the German versions (German text, German voice, no burned-in subtitles),
+# normalizes them to -14 LUFS and writes final/de/.
 set -eu
 cd "$(dirname "$0")"
-r() { ./render.sh "$1" "out/$1.mp4"; ./finish.sh "project/out/$1.mp4" "final/$2.mp4" "${3:--14}"; }
-r Presentation cachencarry_presentation_16x9
-r PresentationClean cachencarry_presentation_16x9_clean
-r Tutorial cachencarry_installation_tutorial -15
-r Short01 cachencarry_short_01_problem
-r Short02 cachencarry_short_02_hit_vs_miss
-r Short03 cachencarry_short_03_speed
-r Short04 cachencarry_short_04_shared_download
-r Short05 cachencarry_short_05_open_source
+mkdir -p final/de
+r() { ./render.sh "$1" "out/$1.mp4"; ./finish.sh "project/out/$1.mp4" "final/de/$2_de.mp4" -14; }
+ALL="Presentation:cachencarry_presentation Tutorial:cachencarry_installation_tutorial Short01:cachencarry_short_01_problem Short02:cachencarry_short_02_hit_vs_miss Short03:cachencarry_short_03_speed Short04:cachencarry_short_04_shared_download Short05:cachencarry_short_05_open_source"
+for pair in ${ONLY:-$ALL}; do r "${pair%%:*}" "${pair#*:}"; done
 ./stills.sh

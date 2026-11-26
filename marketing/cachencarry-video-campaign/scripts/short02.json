@@ -1,14 +1,55 @@
 {
- "id": "short02", "file": "cachencarry_short_02_hit_vs_miss",
+ "id": "short02",
+ "file": "cachencarry_short_02_hit_vs_miss",
  "scenes": [
-  {"id": "hook", "lead": 0.25, "min": 3.4, "lines": [
-   {"de": "Zwei Wörter. Ein ganzes Netzwerk schneller.", "en": "Two words. A whole network, faster."}]},
-  {"id": "miss", "lead": 0.3, "min": 7.5, "lines": [
-   {"de": "MISS bedeutet: Das Paket muss noch vom Mirror kommen.", "en": "MISS means the package still has to come from the mirror."}]},
-  {"id": "hit", "lead": 0.3, "min": 7.5, "lines": [
-   {"de": "HIT bedeutet: Es liegt bereits in deinem Cache.", "en": "HIT means it is already in your cache."},
-   {"de": "Und genau das macht Cache & Carry so praktisch.", "en": "And that is exactly what makes Cache & Carry so handy."}]},
-  {"id": "end", "lead": 0.3, "min": 5.5, "tail": 2.0, "lines": [
-   {"de": "Probier es selbst. Open Source auf GitHub.", "en": "Try it yourself. Open source on GitHub."}]}
+  {
+   "id": "hook",
+   "lead": 0.25,
+   "min": 3.4,
+   "lines": [
+    {
+     "de": "Zwei Wörter. Ein ganzes Netzwerk schneller.",
+     "en": "Two words. A whole network, faster."
+    }
+   ]
+  },
+  {
+   "id": "miss",
+   "lead": 0.3,
+   "min": 6.0,
+   "lines": [
+    {
+     "de": "MISS bedeutet: Das Paket muss noch aus dem Internet kommen.",
+     "en": "MISS means the package still has to come from the mirror."
+    }
+   ]
+  },
+  {
+   "id": "hit",
+   "lead": 0.3,
+   "min": 6.37,
+   "lines": [
+    {
+     "de": "HIT bedeutet: Es liegt bereits in deinem Cache.",
+     "en": "HIT means it is already in your cache."
+    },
+    {
+     "de": "Und genau das macht Cache & Carry so praktisch.",
+     "en": "And that is exactly what makes Cache & Carry so handy."
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "lead": 0.3,
+   "min": 4.33,
+   "tail": 1.7,
+   "lines": [
+    {
+     "de": "Probier es selbst. Open Source auf GitHub.",
+     "en": "Try it yourself. Open source on GitHub."
+    }
+   ]
+  }
  ]
 }

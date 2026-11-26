@@ -6,9 +6,9 @@ import { Tutorial, TUTORIAL_FRAMES } from "./Tutorial";
 
 export const Root = () => (
   <>
-    <Composition id="Presentation" component={Presentation} durationInFrames={PRESENTATION_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ subtitles: true }} />
+    <Composition id="Presentation" component={Presentation} durationInFrames={PRESENTATION_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ subtitles: false }} />
     <Composition id="PresentationClean" component={Presentation} durationInFrames={PRESENTATION_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ subtitles: false }} />
-    <Composition id="Tutorial" component={Tutorial} durationInFrames={TUTORIAL_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ subtitles: true }} />
+    <Composition id="Tutorial" component={Tutorial} durationInFrames={TUTORIAL_FRAMES} fps={30} width={1920} height={1080} defaultProps={{ subtitles: false }} />
     {SHORTS.map((s) => <Composition key={s.id} id={s.id} component={s.comp} durationInFrames={s.frames} fps={30} width={1080} height={1920} />)}
     <Still id="ThumbMain" component={ThumbMain} width={1280} height={720} />
     <Still id="ThumbTutorial" component={ThumbTutorial} width={1280} height={720} />

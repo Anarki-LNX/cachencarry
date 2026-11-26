@@ -47,7 +47,7 @@
   {
    "id": "proxmox",
    "chapter": 2,
-   "lead": 2.4,
+   "lead": 2.0,
    "min": 24,
    "lines": [
     {
@@ -93,7 +93,7 @@
   {
    "id": "download",
    "chapter": 3,
-   "lead": 2.4,
+   "lead": 2.0,
    "min": 21,
    "lines": [
     {
@@ -135,7 +135,7 @@
    "id": "status",
    "chapter": 3,
    "lead": 0.4,
-   "min": 10,
+   "min": 7.83,
    "lines": [
     {
      "de": "systemctl zeigt: Der Dienst cachencarry ist aktiv und läuft. Der Healthcheck antwortet mit ok.",
@@ -147,7 +147,7 @@
   {
    "id": "browser",
    "chapter": 4,
-   "lead": 2.4,
+   "lead": 2.0,
    "min": 10,
    "lines": [
     {
@@ -166,7 +166,7 @@
    "id": "token",
    "chapter": 4,
    "lead": 0.4,
-   "min": 8,
+   "min": 6.2,
    "lines": [
     {
      "de": "Das Token liest du auf dem Server mit diesem Befehl aus. Im Video ist es unkenntlich gemacht.",
@@ -196,8 +196,8 @@
   {
    "id": "client",
    "chapter": 5,
-   "lead": 2.4,
-   "min": 9,
+   "lead": 2.0,
+   "min": 8.43,
    "lines": [
     {
      "de": "Jetzt der erste Client, ein Debian 13 Rechner. Hier siehst du seine originale Paketquelle.",
@@ -210,7 +210,7 @@
    "id": "sources",
    "chapter": 5,
    "lead": 0.3,
-   "min": 22,
+   "min": 19.63,
    "lines": [
     {
      "de": "Wir sichern die Datei und ersetzen sie durch die Variante aus der Dokumentation. Statt deb.debian.org steht dort der Cache mit Port 8080 und dem Pfad apt/debian.",
@@ -228,7 +228,7 @@
    "id": "dialog",
    "chapter": 5,
    "lead": 0.3,
-   "min": 7,
+   "min": 6.4,
    "lines": [
     {
      "de": "Die passende Konfiguration für jedes Repository zeigt dir auch das Dashboard unter Cache-Module.",
@@ -240,7 +240,7 @@
    "id": "apt1",
    "chapter": 5,
    "lead": 0.3,
-   "min": 16,
+   "min": 13.57,
    "lines": [
     {
      "de": "Jetzt apt update. Die Paketlisten kommen schon über den Cache.",
@@ -248,8 +248,7 @@
      "en": "Now apt update. The package lists already come through the cache."
     },
     {
-     "de": "Dann installieren wir curl. Der Cache ist noch leer, also holt Cache & Carry jedes Paket einmal vom Debian-Mirror. Das sind die MISS-Einträge.",
-     "say": "Dann installieren wir Körl. Der Käsch ist noch leer, also holt Käsch änd Kärri jedes Paket einmal vom Debbian Mirrer. Das sind die Miss Einträge.",
+     "de": "Dann installieren wir curl. Der Cache ist noch leer, also holt Cache & Carry jedes Paket einmal vom Debian-Server im Internet. Das sind die MISS-Einträge.",
      "en": "Then we install curl. The cache is still empty, so Cache & Carry fetches every package once from the Debian mirror. Those are the MISS entries."
     }
    ]
@@ -270,7 +269,7 @@
   {
    "id": "client2",
    "chapter": 6,
-   "lead": 2.4,
+   "lead": 2.0,
    "min": 9,
    "lines": [
     {
@@ -284,7 +283,7 @@
    "id": "apt2",
    "chapter": 6,
    "lead": 0.3,
-   "min": 14,
+   "min": 13.53,
    "lines": [
     {
      "de": "apt update und dieselbe Installation.",
@@ -302,7 +301,7 @@
    "id": "traffic",
    "chapter": 6,
    "lead": 0.3,
-   "min": 8,
+   "min": 7.67,
    "lines": [
     {
      "de": "Im Live-Traffic siehst du den Unterschied: oben die HIT-Einträge des zweiten Clients, darunter die MISS-Einträge des ersten.",
@@ -331,8 +330,7 @@
    "min": 7,
    "lines": [
     {
-     "de": "Die Statistik zählt die Bytes, die wirklich übertragen wurden: was vom Upstream kam und was der Cache eingespart hat.",
-     "say": "Die Statistik zählt die Beits, die wirklich übertragen wurden: was vom Appstriem kam und was der Käsch eingespart hat.",
+     "de": "Die Statistik zählt die Bytes, die wirklich übertragen wurden: was aus dem Internet kam und was der Cache eingespart hat.",
      "en": "Statistics count the bytes that were really transferred: what came from upstream and what the cache saved."
     }
    ]
@@ -340,8 +338,8 @@
   {
    "id": "files",
    "chapter": 7,
-   "lead": 2.4,
-   "min": 17,
+   "lead": 2.0,
+   "min": 13.6,
    "lines": [
     {
      "de": "Damit läuft dein Cache. Hier findest du alles Wichtige.",
@@ -359,7 +357,7 @@
    "id": "tour",
    "chapter": 7,
    "lead": 0.3,
-   "min": 14,
+   "min": 13.67,
    "lines": [
     {
      "de": "Im Dashboard findest du gespeicherte Pakete unter Speicher. Unter Einstellungen begrenzt du Cachegröße und Bandbreite, ohne Neustart.",
@@ -376,8 +374,8 @@
    "id": "outro",
    "chapter": 7,
    "lead": 0.6,
-   "min": 14,
-   "tail": 3.0,
+   "min": 12.73,
+   "tail": 2.4,
    "lines": [
     {
      "de": "Und das war's. Dein eigenes Paketlager im Netzwerk.",

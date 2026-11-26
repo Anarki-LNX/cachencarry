@@ -233,13 +233,12 @@ export const Subtitles = ({ tl, portrait = false, bottom }: { tl: Timeline; port
   if (!cur) return null;
   const local = frame - cur.from;
   const o = Math.min(interpolate(local, [-2, 4], [0, 1], clamp), interpolate(local, [cur.line.frames + 2, cur.line.frames + 8], [1, 0], clamp));
-  const de = portrait ? 46 : 40;
-  const en = portrait ? 32 : 27;
+  // Burned in: English only. The German text is spoken, both languages also ship as .srt.
+  const size = portrait ? 48 : 42;
   const shadow = "0 2px 4px rgba(0,0,0,0.9), 0 0 18px rgba(0,0,0,0.85), 0 0 2px rgba(0,0,0,1)";
   return (
-    <div style={{ position: "absolute", left: portrait ? 70 : 220, right: portrait ? 70 : 220, bottom: bottom ?? (portrait ? 330 : 54), textAlign: "center", opacity: o, fontFamily: FONT }}>
-      <div style={{ fontSize: de, lineHeight: 1.22, fontWeight: 650, color: "#ffffff", textShadow: shadow, textWrap: "balance" } as CSSProperties}>{cur.line.de}</div>
-      <div style={{ marginTop: portrait ? 10 : 6, fontSize: en, lineHeight: 1.25, fontWeight: 450, color: "rgba(226,232,240,0.78)", textShadow: shadow, textWrap: "balance" } as CSSProperties}>{cur.line.en}</div>
+    <div style={{ position: "absolute", left: portrait ? 70 : 220, right: portrait ? 70 : 220, bottom: bottom ?? (portrait ? 330 : 60), textAlign: "center", opacity: o, fontFamily: FONT }}>
+      <div style={{ fontSize: size, lineHeight: 1.22, fontWeight: 650, color: "#ffffff", textShadow: shadow, textWrap: "balance" } as CSSProperties}>{cur.line.en}</div>
     </div>
   );
 };

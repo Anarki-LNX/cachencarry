@@ -1,208 +1,208 @@
 1
-00:00:01,600 --> 00:00:06,819
+00:00:01,600 --> 00:00:06,648
 In diesem Tutorial installieren wir Cache & Carry
 auf einem frischen Server, Schritt für Schritt.
 
 2
-00:00:06,919 --> 00:00:11,140
+00:00:06,748 --> 00:00:10,196
 Cache & Carry ist ein Paketcache
 für dein lokales Netzwerk.
 
 3
-00:00:11,990 --> 00:00:19,821
+00:00:11,046 --> 00:00:18,280
 Der erste Rechner lädt ein Paket aus dem Internet. Cache & Carry
 speichert es, und jeder weitere Rechner bekommt es direkt aus dem LAN.
 
 4
-00:00:19,921 --> 00:00:27,741
+00:00:18,380 --> 00:00:26,357
 Unterstützt werden heute APT für Debian, Ubuntu und
 Proxmox sowie Pacman für Arch Linux und CachyOS.
 
 5
-00:00:27,841 --> 00:00:40,119
+00:00:26,457 --> 00:00:39,112
 Die Hardware darf klein sein: Ein Kern und 256 MB RAM sind das Minimum, mit zwei Kernen
 und einem GB läuft es komfortabel. Dazu Speicherplatz für alles, was im Cache landen soll.
 
 6
-00:00:40,219 --> 00:00:47,191
+00:00:39,212 --> 00:00:46,115
 Am Ende hast du einen laufenden Dienst, ein Dashboard und
 zwei Debian-Clients, die ihre Pakete aus deinem Cache holen.
 
 7
-00:00:49,941 --> 00:01:00,500
+00:00:48,465 --> 00:00:58,780
 Wir nehmen den empfohlenen Weg: einen unprivilegierten Debian 13 Container auf
 Proxmox. Ein normaler Server mit Debian oder Ubuntu und systemd funktioniert genauso.
 
 8
-00:01:00,600 --> 00:01:09,163
+00:00:58,880 --> 00:01:06,656
 Auf dem Proxmox-Host legen wir den Container an: zwei Kerne,
 ein GB RAM, acht GB Speicher und eine feste IP-Adresse.
 
 9
-00:01:09,263 --> 00:01:19,718
+00:01:06,756 --> 00:01:17,179
 Proxmox warnt, dass systemd 257 eventuell Nesting braucht. Für Cache &
 Carry ist das nicht nötig: Der Dienst wurde genau so ohne Nesting getestet.
 
 10
-00:01:20,468 --> 00:01:30,018
+00:01:17,929 --> 00:01:26,587
 In der Konsole des Containers prüfen wir das System: Debian
 13, Architektur amd64. Danach richtet sich das Release-Archiv.
 
 11
-00:01:30,118 --> 00:01:43,418
+00:01:26,687 --> 00:01:39,656
 Die Adresse 192.168.1.41 brauchen wir später für die Clients. Zwei
 Kerne, ein GB RAM, und unter /var/lib ist genug Platz für den Cache.
 
 12
-00:01:43,518 --> 00:01:49,909
+00:01:39,756 --> 00:01:45,537
 Wir arbeiten hier als root. Auf einem normalen Server
 stellst du den Installationsbefehlen sudo voran.
 
 13
-00:01:52,659 --> 00:02:00,270
+00:01:47,887 --> 00:01:54,580
 Jetzt laden wir das offizielle Release 0.2.1 von
 GitHub herunter und dazu die Datei mit den Prüfsummen.
 
 14
-00:02:00,370 --> 00:02:05,577
+00:01:54,680 --> 00:01:59,795
 sha256sum bestätigt: Das
 Archiv ist unverändert.
 
 15
-00:02:05,677 --> 00:02:13,160
+00:01:59,895 --> 00:02:07,337
 Wir entpacken es. Darin sind das Programm, die systemd-Unit,
 eine Beispielkonfiguration und das Installationsskript.
 
 16
-00:02:13,910 --> 00:02:22,427
+00:02:08,087 --> 00:02:16,908
 Das Skript legt den Systembenutzer cachencarry an, installiert das Programm
 nach /usr/local/bin und erzeugt /etc/cachencarry und /var/lib/cachencarry.
 
 17
-00:02:22,527 --> 00:02:27,107
+00:02:17,008 --> 00:02:21,116
 Dann prüft es die Konfiguration und
 startet den gehärteten systemd-Dienst.
 
 18
-00:02:27,910 --> 00:02:35,138
+00:02:22,087 --> 00:02:29,419
 systemctl zeigt: Der Dienst cachencarry ist aktiv
 und läuft. Der Healthcheck antwortet mit ok.
 
 19
-00:02:39,910 --> 00:02:44,410
+00:02:31,769 --> 00:02:36,213
 Öffne jetzt im Browser die
 Adresse des Servers mit Port 8080.
 
 20
-00:02:44,510 --> 00:02:54,663
+00:02:36,313 --> 00:02:45,106
 Beim ersten Aufruf legst du das Administratorkonto an. Damit das nur kann, wer
 Zugriff auf den Server hat, fragt die Einrichtung nach einem einmaligen Setup-Token.
 
 21
-00:02:55,413 --> 00:03:00,922
+00:02:45,856 --> 00:02:51,086
 Das Token liest du auf dem Server mit diesem
 Befehl aus. Im Video ist es unkenntlich gemacht.
 
 22
-00:03:03,413 --> 00:03:09,398
+00:02:52,056 --> 00:02:57,884
 Benutzername, ein Passwort mit mindestens zehn
 Zeichen, das Token einfügen, und Konto anlegen.
 
 23
-00:03:13,513 --> 00:03:18,059
+00:03:02,156 --> 00:03:06,623
 Fertig. Das Dashboard ist noch leer,
 weil noch kein Client den Cache nutzt.
 
 24
-00:03:20,809 --> 00:03:26,562
+00:03:08,973 --> 00:03:14,567
 Jetzt der erste Client, ein Debian 13 Rechner.
 Hier siehst du seine originale Paketquelle.
 
 25
-00:03:27,709 --> 00:03:39,511
+00:03:15,703 --> 00:03:27,164
 Wir sichern die Datei und ersetzen sie durch die Variante aus der Dokumentation.
 Statt deb.debian.org steht dort der Cache mit Port 8080 und dem Pfad apt/debian.
 
 26
-00:03:39,611 --> 00:03:47,964
+00:03:27,264 --> 00:03:35,070
 Die Zeile Signed-By bleibt. apt prüft die Signaturen weiterhin
 selbst. Cache & Carry reicht die Dateien nur unverändert durch.
 
 27
-00:03:49,709 --> 00:03:55,891
+00:03:35,720 --> 00:03:41,201
 Die passende Konfiguration für jedes Repository
 zeigt dir auch das Dashboard unter Cache-Module.
 
 28
-00:03:56,709 --> 00:04:01,220
+00:03:42,120 --> 00:03:45,720
 Jetzt apt update. Die Paketlisten
 kommen schon über den Cache.
 
 29
-00:04:01,320 --> 00:04:10,115
-Dann installieren wir curl. Der Cache ist noch leer, also holt Cache &
-Carry jedes Paket einmal vom Debian-Mirror. Das sind die MISS-Einträge.
+00:03:45,820 --> 00:03:54,710
+Dann installieren wir curl. Der Cache ist noch leer, also holt Cache & Carry
+jedes Paket einmal vom Debian-Server im Internet. Das sind die MISS-Einträge.
 
 30
-00:04:12,709 --> 00:04:21,434
+00:03:55,690 --> 00:04:04,597
 Für Arch Linux und CachyOS geht es genauso über die
 Mirrorlist. Die Zeilen dafür stehen in docs/CLIENTS.md.
 
 31
-00:04:24,184 --> 00:04:33,281
+00:04:06,947 --> 00:04:16,012
 Jetzt der spannende Teil: ein zweiter Client mit derselben Konfiguration. Er
 läuft hier auf demselben PC, deshalb zeigt das Dashboard dieselbe Adresse.
 
 32
-00:04:33,931 --> 00:04:37,257
+00:04:16,662 --> 00:04:19,458
 apt update und dieselbe Installation.
 
 33
-00:04:37,357 --> 00:04:47,441
+00:04:19,558 --> 00:04:29,090
 Diesmal kommt alles aus dem Cache. Beim ersten Client dauerte der
 Download drei Sekunden, jetzt null Sekunden, mit 252 MB pro Sekunde.
 
 34
-00:04:48,091 --> 00:04:55,040
+00:04:30,192 --> 00:04:37,091
 Im Live-Traffic siehst du den Unterschied: oben die HIT-Einträge
 des zweiten Clients, darunter die MISS-Einträge des ersten.
 
 35
-00:04:56,091 --> 00:05:03,446
+00:04:37,862 --> 00:04:44,666
 Auf der Kommandozeile prüfst du es mit curl und dem Header
 X-Cache. Beim allerersten Abruf steht dort MISS, danach HIT.
 
 36
-00:05:04,096 --> 00:05:10,616
-Die Statistik zählt die Bytes, die wirklich übertragen
-wurden: was vom Upstream kam und was der Cache eingespart hat.
+00:04:45,316 --> 00:04:51,946
+Die Statistik zählt die Bytes, die wirklich übertragen wurden:
+was aus dem Internet kam und was der Cache eingespart hat.
 
 37
-00:05:13,366 --> 00:05:16,843
+00:04:54,296 --> 00:04:57,292
 Damit läuft dein Cache. Hier
 findest du alles Wichtige.
 
 38
-00:05:16,943 --> 00:05:25,378
+00:04:57,392 --> 00:05:05,167
 Die Konfiguration liegt in /etc/cachencarry/config.yaml, der
 Cache in /var/lib/cachencarry, und die Logs zeigt journalctl.
 
 39
-00:05:28,266 --> 00:05:36,434
+00:05:06,196 --> 00:05:13,697
 Im Dashboard findest du gespeicherte Pakete unter Speicher. Unter
 Einstellungen begrenzt du Cachegröße und Bandbreite, ohne Neustart.
 
 40
-00:05:36,534 --> 00:05:42,090
+00:05:13,797 --> 00:05:19,121
 Die Anleitungen für Clients findest du unter
 Cache-Module und in der Dokumentation auf GitHub.
 
 41
-00:05:43,040 --> 00:05:46,877
+00:05:20,166 --> 00:05:23,572
 Und das war's. Dein eigenes
 Paketlager im Netzwerk.
 
 42
-00:05:46,977 --> 00:05:54,216
+00:05:23,672 --> 00:05:30,335
 Den vollständigen Quellcode findest du kostenlos auf GitHub.
 Wenn dir Cache & Carry gefällt, lass gerne einen Stern da.

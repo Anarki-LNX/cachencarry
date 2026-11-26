@@ -4,7 +4,8 @@
     tools/venv/bin/python pipeline/voice.py scripts/presentation.json
 
 For every line of the script, Piper (local, offline) speaks the German text
-with the Thorsten voice. The measured length of each recording decides the
+with the Thorsten voice (high), trims
+the silence and normalizes the peak. The measured length of each recording decides the
 timing of the scenes, so the burned-in subtitles and the .srt files are in
 sync with the voice by construction.
 
@@ -13,16 +14,18 @@ Writes
     project/src/timelines/<id>.json         scene and line timing for Remotion
     subtitles/de/<file>_de.srt, subtitles/en/<file>_en.srt
 """
-import json, re, sys, wave, textwrap
+import io, json, re, sys, wave, textwrap
+import numpy as np
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-MODEL = ROOT / "tools/voices/de_DE-thorsten-medium.onnx"
+MODEL = ROOT / "tools/voices/de_DE-thorsten-high.onnx"
 FPS = 30
 
 # How Piper should pronounce words it would otherwise read as German.
 # Applied in this order, only to the spoken text, never to subtitles.
 LEXICON = [
+    (r"Claude", "Klohd"),
     (r"Cache & Carry", "Käsch änd Kärri"),
     (r"CachyOS", "Kätschi O S"),
     (r"Cache", "Käsch"),
@@ -87,13 +90,32 @@ def ts(sec: float) -> str:
     return f"{h:02}:{m:02}:{s:02},{ms:03}"
 
 
+def synth(voice, cfg, text: str, path: Path) -> float:
+    """One line: synthesize, trim silence to 30 ms before and 100 ms after,
+    normalize the peak to 0.89. Returns the length in seconds."""
+    b = io.BytesIO()
+    with wave.open(b, "wb") as w:
+        voice.synthesize_wav(text, w, syn_config=cfg)
+    b.seek(0)
+    with wave.open(b) as r:
+        sr = r.getframerate()
+        x = np.frombuffer(r.readframes(r.getnframes()), "<i2").astype(np.float32) / 32768
+    idx = np.where(np.abs(x) > 0.004)[0]
+    x = x[max(0, idx[0] - int(0.03 * sr)): idx[-1] + int(0.1 * sr)]
+    x = x / max(1e-6, np.abs(x).max()) * 0.89
+    with wave.open(str(path), "wb") as w:
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(sr)
+        w.writeframes((x * 32767).astype("<i2").tobytes())
+    return len(x) / sr
+
+
 def main(script_path: str) -> None:
     from piper import PiperVoice, SynthesisConfig
 
     script = json.loads(Path(script_path).read_text())
     vid = script["id"]
     voice = PiperVoice.load(str(MODEL))
-    cfg = SynthesisConfig(length_scale=script.get("length_scale", 1.0), noise_scale=0.6, noise_w_scale=0.75)
+    cfg = SynthesisConfig(length_scale=script.get("length_scale", 1.0))
     out_dir = ROOT / "project/public/vo" / vid
     out_dir.mkdir(parents=True, exist_ok=True)
     for old in out_dir.glob("*.wav"):
@@ -111,10 +133,7 @@ def main(script_path: str) -> None:
             if "at" in ln:  # absolute offset inside the scene, for lines tied to footage
                 cursor = max(cursor, start + ln["at"])
             name = f"{n:02}.wav"
-            with wave.open(str(out_dir / name), "wb") as w:
-                voice.synthesize_wav(ln.get("say") or spoken(ln["de"]), w, syn_config=cfg)
-            with wave.open(str(out_dir / name)) as w:
-                dur = w.getnframes() / w.getframerate()
+            dur = synth(voice, cfg, ln.get("say") or spoken(ln["de"]), out_dir / name)
             lines.append({"file": f"vo/{vid}/{name}", "start": round((cursor - start) * FPS), "frames": round(dur * FPS),
                           "de": ln["de"], "en": ln["en"]})
             cues.append((cursor, cursor + dur, ln["de"], ln["en"]))

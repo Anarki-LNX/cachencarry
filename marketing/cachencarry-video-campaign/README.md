@@ -1,6 +1,6 @@
 # Cache & Carry: Videokampagne
 
-Sieben Videos auf Deutsch mit englischen Untertiteln, dazu Thumbnails, Cover,
+Sieben Videos auf Deutsch (deutscher Bildtext, synthetische deutsche Stimme Piper Thorsten High, ohne eingebrannte Untertitel), dazu Thumbnails, Cover,
 Texte und alles, um die Kampagne lokal und kostenlos neu zu erzeugen.
 Der Auftrag steht wörtlich in [research/MASTER_PROMPT.md](research/MASTER_PROMPT.md).
 
@@ -8,7 +8,7 @@ Der Auftrag steht wörtlich in [research/MASTER_PROMPT.md](research/MASTER_PROMP
 
 | Ordner | Inhalt |
 |---|---|
-| `final/` | fertige MP4s (nicht in git, siehe unten) |
+| `final/de/` | fertige deutsche MP4s (nicht in git, siehe unten) |
 | `subtitles/de`, `subtitles/en` | `<video>_de.srt` und `<video>_en.srt` für alle sieben Videos |
 | `thumbnails/` | Thumbnail Präsentation, Thumbnail Tutorial, fünf Shorts-Cover |
 | `social/` | YouTube-Beschreibungen, Shorts-Texte, angepinnter Kommentar |
@@ -22,20 +22,24 @@ Der Auftrag steht wörtlich in [research/MASTER_PROMPT.md](research/MASTER_PROMP
 | `LICENSES.md` | Herkunft und Lizenz jedes verwendeten Bausteins |
 | `PRODUCTION.md` | wie die Videos entstanden sind, was geprüft wurde, was nicht |
 
-### Fertige Dateien in `final/`
+### Fertige Dateien in `final/de/` (deutsche Fassung)
+
+Deutscher Bildtext, deutsche Stimme, keine eingebrannten Untertitel.
+Deutsche und englische SRT-Dateien liegen in `subtitles/` (zum Hochladen bei YouTube).
+Englische Fassungen mit englischem Text und englischer Stimme folgen getrennt.
 
 | Datei | Format | Länge |
 |---|---|---|
-| `cachencarry_presentation_16x9.mp4` | 1920 × 1080, Untertitel DE und EN eingebrannt | ca. 1:46 |
-| `cachencarry_presentation_16x9_clean.mp4` | dasselbe ohne Untertitel (Clean-Version) | ca. 1:46 |
-| `cachencarry_installation_tutorial.mp4` | 1920 × 1080, Untertitel eingebrannt | ca. 5:57 |
-| `cachencarry_short_01_problem.mp4` | 1080 × 1920 | ca. 26 s |
-| `cachencarry_short_02_hit_vs_miss.mp4` | 1080 × 1920 | ca. 24 s |
-| `cachencarry_short_03_speed.mp4` | 1080 × 1920 | ca. 26 s |
-| `cachencarry_short_04_shared_download.mp4` | 1080 × 1920 | ca. 23 s |
-| `cachencarry_short_05_open_source.mp4` | 1080 × 1920 | ca. 26 s |
+| `cachencarry_presentation_de.mp4` | 1920 × 1080 | 1:31 |
+| `cachencarry_installation_tutorial_de.mp4` | 1920 × 1080 | 5:33 |
+| `cachencarry_short_01_problem_de.mp4` | 1080 × 1920 | 20 s |
+| `cachencarry_short_02_hit_vs_miss_de.mp4` | 1080 × 1920 | 20 s |
+| `cachencarry_short_03_speed_de.mp4` | 1080 × 1920 | 23 s |
+| `cachencarry_short_04_shared_download_de.mp4` | 1080 × 1920 | 21 s |
+| `cachencarry_short_05_open_source_de.mp4` | 1080 × 1920 | 21 s |
 
-Alle mit 30 fps, H.264, AAC 48 kHz, Lautheit um −14 LUFS.
+Alle mit 30 fps, H.264, AAC 48 kHz, Lautheit −14 LUFS. Die Sprecherstimme ist
+synthetisch (Piper, Thorsten High), das steht auf jeder Endkarte.
 Die MP4s sind wegen ihrer Größe nicht im Repository; sie entstehen mit den
 Befehlen unten neu.
 
@@ -51,8 +55,8 @@ cd marketing/cachencarry-video-campaign
 # 1. Einmalig: Werkzeuge
 (cd project && npm install)
 uv venv tools/venv && uv pip install --python tools/venv/bin/python piper-tts
-mkdir -p tools/voices && cd tools/voices && for f in de_DE-thorsten-medium.onnx de_DE-thorsten-medium.onnx.json MODEL_CARD; do
-  curl -LO "https://huggingface.co/rhasspy/piper-voices/resolve/main/de/de_DE/thorsten/medium/$f"; done; cd ../..
+mkdir -p tools/voices && cd tools/voices && for f in de_DE-thorsten-high.onnx de_DE-thorsten-high.onnx.json MODEL_CARD; do
+  curl -LO "https://huggingface.co/rhasspy/piper-voices/resolve/main/de/de_DE/thorsten/high/$f"; done; cd ../..
 
 # 2. Sprecher, Timing und Untertitel aus den Skripten
 tools/venv/bin/python pipeline/voice.py scripts/*.json
@@ -60,8 +64,9 @@ tools/venv/bin/python pipeline/voice.py scripts/*.json
 # 3. Musik und Soundeffekte (nach jeder Timing-Änderung)
 python3 pipeline/music.py
 
-# 4. Rendern: alle Videos, Lautheit normalisieren, nach final/ kopieren
+# 4. Rendern: alle Videos, Lautheit normalisieren, nach final/de/ kopieren
 ./build-all.sh
+# nur einzelne: ONLY="Short01:cachencarry_short_01_problem" ./build-all.sh
 ```
 
 `./render.sh KOMPOSITION DATEI` rendert eine einzelne Komposition,

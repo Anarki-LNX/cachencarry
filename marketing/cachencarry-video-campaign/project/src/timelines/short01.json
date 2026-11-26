@@ -1,7 +1,7 @@
 {
  "id": "short01",
  "fps": 30,
- "frames": 778,
+ "frames": 608,
  "scenes": [
   {
    "id": "hook",
@@ -11,7 +11,7 @@
     {
      "file": "vo/short01/01.wav",
      "start": 8,
-     "frames": 60,
+     "frames": 57,
      "de": "Dein Netzwerk lädt das alles mehrfach?",
      "en": "Is your network downloading all of this several times?"
     }
@@ -20,12 +20,12 @@
   {
    "id": "problem",
    "start": 96,
-   "frames": 225,
+   "frames": 130,
    "lines": [
     {
      "file": "vo/short01/02.wav",
      "start": 9,
-     "frames": 107,
+     "frames": 103,
      "de": "Warum soll jeder Rechner dieselben Pakete aus dem Internet laden?",
      "en": "Why should every machine download the same packages from the Internet?"
     }
@@ -33,20 +33,20 @@
   },
   {
    "id": "solution",
-   "start": 321,
-   "frames": 270,
+   "start": 226,
+   "frames": 200,
    "lines": [
     {
      "file": "vo/short01/03.wav",
      "start": 9,
-     "frames": 100,
+     "frames": 87,
      "de": "Cache & Carry speichert sie zentral in deinem Netzwerk.",
      "en": "Cache & Carry stores them centrally on your network."
     },
     {
      "file": "vo/short01/04.wav",
-     "start": 119,
-     "frames": 96,
+     "start": 107,
+     "frames": 75,
      "de": "Einmal herunterladen. Danach lokal nutzen.",
      "en": "Download once. Then use it locally."
     }
@@ -54,13 +54,13 @@
   },
   {
    "id": "end",
-   "start": 591,
-   "frames": 187,
+   "start": 426,
+   "frames": 182,
    "lines": [
     {
      "file": "vo/short01/05.wav",
      "start": 9,
-     "frames": 118,
+     "frames": 101,
      "de": "Dein eigener LAN-Cache. Open Source und kostenlos auf GitHub.",
      "en": "Your own LAN cache. Open source and free on GitHub."
     }

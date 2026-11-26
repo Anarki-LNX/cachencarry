@@ -7,6 +7,6 @@ project/public/term/
 project/public/vo/
 project/out/
 work/
-final/*.mp4
+final/**/*.mp4
 *.onnx
 project/public/audio/

@@ -1,26 +1,26 @@
 1
-00:00:00,250 --> 00:00:01,847
+00:00:00,250 --> 00:00:01,653
 Und was kostet das?
 
 2
-00:00:03,500 --> 00:00:06,339
+00:00:02,600 --> 00:00:04,807
 Die Software? Kostenlos auf GitHub.
 
 3
-00:00:06,439 --> 00:00:09,313
+00:00:04,907 --> 00:00:07,422
 Open Source unter Apache 2.0.
 
 4
-00:00:11,300 --> 00:00:15,288
+00:00:08,400 --> 00:00:11,996
 Du betreibst sie selbst in deinem
 Netzwerk und behältst die Kontrolle.
 
 5
-00:00:15,388 --> 00:00:18,854
+00:00:12,096 --> 00:00:15,105
 Nur Hardware und Strom für deinen
 Server bringst du selbst mit.
 
 6
-00:00:20,300 --> 00:00:23,812
+00:00:16,200 --> 00:00:19,419
 Gib dem Repository einen
 Stern und probier es aus.

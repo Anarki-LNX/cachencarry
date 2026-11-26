@@ -39,7 +39,7 @@ const ShortFrame = ({ tl, scenes, music, children }: { tl: Timeline; scenes: Sce
     {children}
     <Voice tl={tl} />
     <Music tl={tl} src={`audio/music_${music}.wav`} base={0.6} duck={0.24} />
-    <Subtitles tl={tl} portrait />
+    {/* German version: no burned-in subtitles (SRT files ship separately) */}
   </AbsoluteFill>
 );
 
@@ -134,7 +134,7 @@ export const Short01 = () => <ShortFrame tl={S1} scenes={s1} music="short01" />;
 // ================================================================ Short 2: HIT or MISS
 const S2 = t2 as Timeline;
 const HM = { missAt: 5.35, hitAt: 11.3, pc1: 1.501, pc2: 8.676 };
-const HMOFF = 3.6; // footage second shown at the start of the "miss" scene
+const HMOFF = 5.1; // footage second shown at the start of the "miss" scene
 /** Real pacman and the real Live-Traffic page, running across the "miss" and "hit" scenes without a cut. */
 const HitMissView = () => {
   const frame = useCurrentFrame(); // 0 = start of the "miss" scene
@@ -220,7 +220,7 @@ const Race = ({ slow = 3, start = 0 }: { slow?: number; start?: number }) => {
   );
   return (
     <>
-      {lane(300, "AUS DEM INTERNET", net, 959, C.amber, "Mirror im Internet")}
+      {lane(300, "AUS DEM INTERNET", net, 959, C.amber, "Paketserver im Internet")}
       {lane(770, "AUS DEM CACHE", cache, 9, C.green, "Cache & Carry im LAN")}
       <div style={{ position: "absolute", left: 0, right: 0, top: 1222, textAlign: "center", fontFamily: FONT, fontSize: 28, color: C.muted }}>Animation in {slow}facher Zeitlupe</div>
     </>
@@ -268,7 +268,7 @@ const s4 = {
   hook: () => {
     const frame = useCurrentFrame();
     return (
-      <Hook text="ZEHN RECHNER. DIESELBE DATEI. NUR EIN UPSTREAM-DOWNLOAD." accent={["EIN", "UPSTREAM-DOWNLOAD."]} len={sceneOf(S4, "hook").frames}>
+      <Hook text="ZEHN RECHNER. DIESELBE DATEI. NUR EIN DOWNLOAD." accent={["EIN", "DOWNLOAD."]} len={sceneOf(S4, "hook").frames}>
         <svg width={1080} height={1920} style={{ position: "absolute", opacity: 0.5 }}>
           {TEN.map((p, i) => <Node key={i} x={p.x} y={p.y + 120} label="" size={70} appear={ramp(frame, i * 3, 10)} />)}
         </svg>
@@ -281,12 +281,12 @@ const s4 = {
     const T = 1.6 + frame / FPS;
     const server = { x: 540, y: 900 }, cloud = { x: 540, y: 700 };
     const fan = ramp(frame, 50, 16);
-    const pills = ["ONE DOWNLOAD", "MULTIPLE CLIENTS", "LOCAL DELIVERY"];
+    const pills = ["EIN DOWNLOAD", "VIELE RECHNER", "LOKAL VERTEILT"];
     return (
       <AbsoluteFill style={{ opacity: fade(frame, s.frames, 8) }}>
         <Win x={40} y={200} w={1000} h={400 + 38} title="Downloads im Dashboard" accent={C.amber} glow={0.2}>
           <Shot src={seqFrame("ten", T, 96)} srcW={1600} w={1000} h={400} view={{ x: 240, y: 168, w: 700, h: 280 }}>
-            {(map) => <Mark style={map({ x: 296, y: 224, w: 260, h: 28 })} color={C.cyan} at={30} label="10 WARTENDE CLIENTS" labelSide="bottom" />}
+            {(map) => <Mark style={map({ x: 296, y: 224, w: 260, h: 28 })} color={C.cyan} at={30} label="10 WARTENDE RECHNER" labelSide="bottom" />}
           </Shot>
         </Win>
         <svg width={1080} height={1920} style={{ position: "absolute" }}>
@@ -328,7 +328,7 @@ const s5 = {
     return (
       <AbsoluteFill style={{ opacity: fade(frame, s.frames, 8) }}>
         <div style={{ position: "absolute", left: 70, right: 110, top: 200 }}>
-          <Title text="FREE & OPEN SOURCE" size={92} accent={["FREE"]} />
+          <Title text="KOSTENLOS & OPEN SOURCE" size={92} accent={["KOSTENLOS"]} />
         </div>
         <Win x={40} y={400} w={1000} h={820 + 38} title={lic ? "github.com  ·  LICENSE" : "github.com/Anarki-LNX/cachencarry"} accent={C.cyan}>
           {!lic ? (
@@ -355,12 +355,12 @@ const s5 = {
     return (
       <AbsoluteFill style={{ opacity: fade(frame, s.frames, 8) }}>
         <div style={{ position: "absolute", left: 70, right: 110, top: 200 }}>
-          <Title text="SELF-HOSTED" size={92} accent={["SELF-HOSTED"]} />
+          <Title text="SELBST BETRIEBEN" size={92} accent={["SELBST", "BETRIEBEN"]} />
         </div>
         <Win x={40} y={400} w={1000} h={600 + 38} title="Dein Dashboard  ·  http://cachencarry.lan:8080" accent={C.green}>
           <Shot src="footage/dash-portrait.png" srcW={720} w={1000} h={600} view={{ x: 0, y: 60 + ramp(frame, 0, s.frames) * 500, w: 720, h: 432 }} />
         </Win>
-        <Win x={140} y={1040} w={880} h={220} title="Rechner 2  ·  Linux Client" delay={20} accent={C.cyan}>
+        <Win x={140} y={1040} w={880} h={220} title="Rechner 2  ·  Linux" delay={20} accent={C.cyan}>
           <Terminal cast={cast(h2)} t={20} fontSize={12} firstRow={8} cursor={false} />
         </Win>
         <div style={{ position: "absolute", left: 60, right: 60, top: 1282, display: "flex", justifyContent: "center", opacity: ramp(frame, note, 12) }}>
@@ -371,7 +371,7 @@ const s5 = {
       </AbsoluteFill>
     );
   },
-  end: () => <Ending tl={S5} lines={["YOUR NETWORK. YOUR CACHE.", "STAR DAS REPOSITORY UND PROBIER ES AUS."]} badge="APACHE 2.0" />,
+  end: () => <Ending tl={S5} lines={["DEIN NETZWERK. DEIN CACHE.", "GIB DEM PROJEKT EINEN STERN"]} badge="APACHE 2.0" />,
 };
 export const Short05 = () => <ShortFrame tl={S5} scenes={s5} music="short05" />;
 

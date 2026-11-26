@@ -1,13 +1,49 @@
 {
- "id": "short04", "file": "cachencarry_short_04_shared_download",
+ "id": "short04",
+ "file": "cachencarry_short_04_shared_download",
  "scenes": [
-  {"id": "hook", "lead": 0.25, "min": 4.4, "lines": [
-   {"de": "Zehn Rechner. Dieselbe Datei. Nur ein Upstream-Download.", "en": "Ten machines. The same file. Only one upstream download."}]},
-  {"id": "demo", "lead": 0.3, "min": 12, "lines": [
-   {"de": "Wenn mehrere Clients gleichzeitig dieselbe Datei anfordern, die noch nicht im Cache liegt,", "en": "When several clients request the same file at once and it is not cached yet,", "gap": 0.15},
-   {"de": "muss Cache & Carry sie nicht zehnmal aus dem Internet laden.", "en": "Cache & Carry does not have to download it ten times."},
-   {"de": "Ein Upstream-Download versorgt alle wartenden Clients.", "en": "One upstream download serves every waiting client."}]},
-  {"id": "end", "lead": 0.3, "min": 5, "tail": 2.0, "lines": [
-   {"de": "Für dein Homelab. Open Source auf GitHub.", "en": "For your homelab. Open source on GitHub."}]}
+  {
+   "id": "hook",
+   "lead": 0.25,
+   "min": 4.03,
+   "lines": [
+    {
+     "de": "Zehn Rechner. Dieselbe Datei. Nur ein Download.",
+     "en": "Ten machines. The same file. Only one upstream download."
+    }
+   ]
+  },
+  {
+   "id": "demo",
+   "lead": 0.3,
+   "min": 12,
+   "lines": [
+    {
+     "de": "Wenn mehrere Rechner gleichzeitig dieselbe Datei anfordern, die noch nicht im Cache liegt,",
+     "en": "When several clients request the same file at once and it is not cached yet,",
+     "gap": 0.15
+    },
+    {
+     "de": "muss Cache & Carry sie nicht zehnmal aus dem Internet laden.",
+     "en": "Cache & Carry does not have to download it ten times."
+    },
+    {
+     "de": "Ein einziger Download aus dem Internet versorgt alle wartenden Rechner.",
+     "en": "One upstream download serves every waiting client."
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "lead": 0.3,
+   "min": 4.37,
+   "tail": 1.7,
+   "lines": [
+    {
+     "de": "Für dein Homelab. Open Source auf GitHub.",
+     "en": "For your homelab. Open source on GitHub."
+    }
+   ]
+  }
  ]
 }

@@ -78,7 +78,7 @@ const Idea = () => {
       <div style={{ position: "absolute", left: 1400 + 110, top: 330, fontFamily: MONO, fontSize: 24, color: C.amber, opacity: one }}>1 × 29,9 MiB</div>
       <div style={{ position: "absolute", left: 110, top: 290, width: 860 }}>
         <Kicker color={C.cyan} delay={lineAt(s, 0)}>DIE IDEE</Kicker>
-        <Title text="DOWNLOAD ONCE. | USE EVERYWHERE." size={86} delay={lineAt(s, 1)} accent={["EVERYWHERE"]} style={{ marginTop: 24 }} />
+        <Title text="EINMAL LADEN. | ÜBERALL NUTZEN." size={86} delay={lineAt(s, 1)} accent={["ÜBERALL"]} style={{ marginTop: 24 }} />
         <div style={{ marginTop: 34, fontFamily: FONT, fontSize: 32, fontWeight: 600, color: C.soft, lineHeight: 1.4, opacity: ramp(frame, lineAt(s, 1) + 30, 16) }}>
           Einmal laden. Lokal speichern.<br />Immer wieder verwenden.
         </div>
@@ -109,7 +109,7 @@ const Meet = () => {
       const p = ramp(live, 0, liveLen);
       content = (
         <Shot src={seqFrame("dash-live", 1 + live / FPS, 72)} srcW={1600} w={1360} h={765} view={lerpRect({ x: 0, y: 0, w: 1600, h: 900 }, { x: 230, y: 130, w: 1360, h: 765 }, p)}>
-          {(map) => <Mark style={map({ x: 246, y: 150, w: 324, h: 252 })} at={50} color={C.green} label="HIT-RATE LIVE" labelSide="bottom" />}
+          {(map) => <Mark style={map({ x: 246, y: 150, w: 324, h: 252 })} at={50} color={C.green} label="TREFFERQUOTE LIVE" labelSide="bottom" />}
         </Shot>
       );
     } else {
@@ -143,7 +143,7 @@ const Meet = () => {
 };
 
 // ------------------------------------------------------------------ 4 hit and miss
-const HM = { missAt: 5.35, hitAt: 11.3, pc2: 8.676, pc1: 1.501, offset: 3.0 };
+const HM = { missAt: 5.35, hitAt: 11.3, pc2: 8.676, pc1: 1.501, offset: 4.0 };
 const HitMiss = () => {
   const frame = useCurrentFrame();
   const s = sceneOf(tl, "hitmiss");
@@ -171,8 +171,8 @@ const HitMiss = () => {
         </Shot>
       </Win>
       <div style={{ position: "absolute", left: 0, right: 0, top: 690, display: "flex", justifyContent: "center", gap: 30 }}>
-        {frame >= missF && <Pill color="#0a0e17" border={C.amber} size={30} style={{ background: C.amber, fontWeight: 800, letterSpacing: 1 }}>MISS = UPSTREAM DOWNLOAD</Pill>}
-        {frame >= hitF && <Pill color="#0a0e17" border={C.green} size={30} style={{ background: C.green, fontWeight: 800, letterSpacing: 1 }}>HIT = LOCAL CACHE</Pill>}
+        {frame >= missF && <Pill color="#0a0e17" border={C.amber} size={30} style={{ background: C.amber, fontWeight: 800, letterSpacing: 1 }}>MISS = DOWNLOAD AUS DEM INTERNET</Pill>}
+        {frame >= hitF && <Pill color="#0a0e17" border={C.green} size={30} style={{ background: C.green, fontWeight: 800, letterSpacing: 1 }}>HIT = AUS DEM LOKALEN CACHE</Pill>}
       </div>
       <FlowStrip y={790} frame={frame} missAt={missF - 20} hitAt={hitF - 10} />
       <Sfx at={missF} src="fx_miss" volume={0.5} />
@@ -273,7 +273,7 @@ const Cta = () => {
       </AbsoluteFill>
       {frame >= endAt - 2 && (
         <Sequence from={endAt} layout="none">
-          <EndCard landscape lines={["DEIN NETZWERK. DEIN PAKETLAGER.", "JETZT AUF GITHUB ENTDECKEN"]} badge="STAR • FORK • TRY IT" />
+          <EndCard landscape lines={["DEIN NETZWERK. DEIN PAKETLAGER.", "JETZT AUF GITHUB ENTDECKEN"]} badge="STERN GEBEN • AUSPROBIEREN" />
         </Sequence>
       )}
       <Sfx at={endAt} src="fx_logo" volume={0.55} />
