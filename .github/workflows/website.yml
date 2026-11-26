@@ -1,0 +1,54 @@
+# Website (cachencarry.loopout.tech): type check, unit tests, format check, build and
+# security check of the built site. Never deploys and uses no secrets: publishing is
+# done by hand with website/deploy/deploy.sh (see website/DEPLOYMENT.md).
+
+name: Website
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'website/**'
+      - '.github/workflows/website.yml'
+  pull_request:
+    paths:
+      - 'website/**'
+      - '.github/workflows/website.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  website:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: website
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - name: Type check
+        run: npm run check
+      - name: Unit tests
+        run: npm test
+      - name: Format
+        run: npm run lint
+      - name: Build
+        run: npm run build
+      - name: Security check of dist/
+        run: npm run check:security
+      - name: Dependency audit
+        run: npm audit --omit=dev --audit-level=high

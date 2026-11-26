@@ -70,6 +70,10 @@ Honest record of what was actually executed for v0.1 and what was not.
   not start the stack there. The image and its runtime options were tested
   with `docker run --network host` instead (see above); the Compose file's
   port publishing and bridge networking are untested.
+  The CI job `compose` (`.github/workflows/ci.yml`) now runs the shipped
+  `docker-compose.yml` with `docker compose up -d --build` on GitHub and waits
+  for the container to report healthy. Move this item to the verified list
+  once that job has passed on GitHub.
 - The systemd unit on Ubuntu and on bare-metal Debian (only tested in the
   Proxmox LXC above).
 - Installing or upgrading packages through the cache on the APT clients
