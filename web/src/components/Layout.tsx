@@ -29,6 +29,7 @@ import { useTheme } from "../state/theme";
 import { loadFlag, saveFlag } from "../lib/theme";
 import { IconButton } from "./Controls";
 import { LanguageSwitch } from "./LanguageSwitch";
+import { Credit, DonateLink } from "./Credit";
 
 export const NAV: { to: string; label: Key; icon: typeof LayoutDashboard }[] = [
   { to: "/", label: "nav.dashboard", icon: LayoutDashboard },
@@ -143,7 +144,10 @@ export function Layout({ children }: { children: ReactNode }) {
       <aside className={`hidden shrink-0 flex-col border-r border-line bg-panel transition-[width] duration-200 md:flex ${expanded ? "w-56" : "w-14"}`}>
         <Brand expanded={expanded} />
         <Sidebar expanded={expanded} />
-        <div className={`flex items-center border-t border-line p-2 ${expanded ? "justify-between" : "justify-center"}`}>
+        <div className={`border-t border-line px-2 pt-2 ${expanded ? "" : "flex justify-center"}`}>
+          {expanded ? <Credit stacked className="px-1" /> : <DonateLink compact />}
+        </div>
+        <div className={`flex items-center p-2 ${expanded ? "justify-between" : "justify-center"}`}>
           {expanded && <span className="num truncate px-1 text-[11px] text-dim">{version ? (/^\d/.test(version) ? `v${version}` : version) : ""}</span>}
           <IconButton
             label={expanded ? t("layout.collapseSidebar") : t("layout.expandSidebar")}
@@ -170,6 +174,9 @@ export function Layout({ children }: { children: ReactNode }) {
               </IconButton>
             </div>
             <Sidebar expanded onNavigate={() => setMobileOpen(false)} />
+            <div className="border-t border-line p-3">
+              <Credit stacked />
+            </div>
           </aside>
         </div>
       )}

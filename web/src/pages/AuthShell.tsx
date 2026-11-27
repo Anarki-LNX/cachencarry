@@ -3,6 +3,7 @@ import { Moon, Sun } from "lucide-react";
 import { IconButton } from "../components/Controls";
 import { LanguageSwitch } from "../components/LanguageSwitch";
 import { LogoMark, Wordmark } from "../components/Logo";
+import { Credit } from "../components/Credit";
 import { useT } from "../i18n";
 import { useAuth } from "../state/auth";
 import { useTheme } from "../state/theme";
@@ -43,6 +44,7 @@ export function AuthShell({ title, subtitle, children, wide }: { title: string; 
         </div>
 
         {version && <p className="num mt-6 text-center text-xs text-dim">Cache & Carry {version}</p>}
+        <Credit className="mt-2 justify-center" />
       </main>
     </div>
   );

@@ -90,6 +90,11 @@ export const de: typeof en = {
   "layout.darkMode": "Zum dunklen Design wechseln",
   "layout.signOut": "{user} abmelden",
 
+  "credit.by": "Ein Projekt von {author}",
+  "credit.donate": "Unterstützen",
+  "credit.donateLabel": "Cache & Carry mit einer Spende über PayPal unterstützen (öffnet in neuem Tab)",
+  "credit.authorLabel": "Website von {author} (öffnet in neuem Tab)",
+
   "app.connecting": "Verbinde mit Cache & Carry…",
   "app.unreachableTitle": "Server nicht erreichbar",
   "app.unreachableText": "Der Cache & Carry-Server hat nicht geantwortet.",

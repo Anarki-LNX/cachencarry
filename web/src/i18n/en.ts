@@ -92,6 +92,11 @@ export const en = {
   "layout.darkMode": "Switch to dark mode",
   "layout.signOut": "Sign out {user}",
 
+  "credit.by": "A project by {author}",
+  "credit.donate": "Support",
+  "credit.donateLabel": "Support Cache & Carry with a donation via PayPal (opens in a new tab)",
+  "credit.authorLabel": "{author} website (opens in a new tab)",
+
   "app.connecting": "Connecting to Cache & Carry…",
   "app.unreachableTitle": "Server unreachable",
   "app.unreachableText": "The Cache & Carry server did not answer.",
