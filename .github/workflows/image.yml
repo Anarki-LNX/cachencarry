@@ -83,7 +83,14 @@ jobs:
           build-args: VERSION=${{ steps.tag.outputs.version }}
 
       - name: Smoke test
+        env:
+          VERSION: ${{ steps.tag.outputs.version }}
         run: |
+          got="$(docker run --rm cachencarry:smoke version | awk '{print $2}')"
+          if [ "$got" != "$VERSION" ]; then
+            echo "image reports $got, expected $VERSION" >&2
+            exit 1
+          fi
           docker run -d --name cc -p 8080:8080 \
             -e CACHENCARRY_SECURITY_ADMIN_PASSWORD=ci-smoke-test-pw cachencarry:smoke
           for i in $(seq 1 30); do

@@ -63,3 +63,23 @@ Security issues: see [SECURITY.md](SECURITY.md).
 
 By contributing you agree that your contribution is licensed under the
 Apache License 2.0.
+
+## Releases
+
+One tag `vX.Y.Z` on `main` releases everything with the same version:
+
+```sh
+git tag -a v0.2.3 -m "Cache & Carry 0.2.3"
+git push origin v0.2.3
+```
+
+- `.github/workflows/release.yml` builds the tarballs for amd64 and arm64 and
+  attaches them with `SHA256SUMS` to the GitHub release.
+- `.github/workflows/image.yml` builds and pushes `ghcr.io/anarki-lnx/cachencarry`
+  with the tags `X.Y.Z`, `X.Y` and `latest`.
+- `scripts/proxmox-lxc.sh` installs the latest GitHub release, so the Proxmox
+  way follows automatically.
+
+Both workflows stop if the built binary does not report exactly `X.Y.Z`.
+Do not build or upload release files by hand. Afterwards, update `RELEASE` in
+`website/src/config/site.ts` and deploy the website.

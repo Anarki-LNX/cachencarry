@@ -1,0 +1,104 @@
+# Release packages: on every tag vX.Y.Z, builds the tarballs for linux/amd64
+# and linux/arm64 and attaches them with SHA256SUMS to the GitHub release.
+#
+# The same tag also starts image.yml (container image), and the Proxmox script
+# installs the latest GitHub release. So all three ways to install always carry
+# the version of that one tag. Both workflows check that the built binary
+# reports exactly that version.
+#
+# If the release does not exist yet it is created with generated notes (as a
+# draft, published once the files are attached). If it exists, only the files
+# are attached or replaced.
+
+name: Release
+
+on:
+  push:
+    tags: ['v*.*.*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to build, for example v0.2.3'
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.event.inputs.tag || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  packages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - name: Resolve tag
+        id: tag
+        env:
+          INPUT_TAG: ${{ github.event.inputs.tag }}
+        run: |
+          tag="${INPUT_TAG:-$GITHUB_REF_NAME}"
+          if ! printf '%s' "$tag" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "not a release tag: $tag" >&2
+            exit 1
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ steps.tag.outputs.tag }}
+          persist-credentials: false
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Tests
+        run: go test -count=1 ./...
+
+      - name: Build tarballs
+        run: make dist VERSION=${{ steps.tag.outputs.version }}
+
+      - name: Check version and checksums
+        env:
+          VERSION: ${{ steps.tag.outputs.version }}
+        run: |
+          mkdir -p out
+          cp dist/cachencarry-"$VERSION"-linux-amd64.tar.gz dist/cachencarry-"$VERSION"-linux-arm64.tar.gz out/
+          cd out
+          sha256sum cachencarry-"$VERSION"-*.tar.gz > SHA256SUMS
+          cat SHA256SUMS
+          tar -xzf cachencarry-"$VERSION"-linux-amd64.tar.gz
+          got="$(./cachencarry-"$VERSION"-linux-amd64/bin/cachencarry version | awk '{print $2}')"
+          if [ "$got" != "$VERSION" ]; then
+            echo "binary reports $got, expected $VERSION" >&2
+            exit 1
+          fi
+          rm -rf cachencarry-"$VERSION"-linux-amd64
+
+      - name: Create or update the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ steps.tag.outputs.tag }}
+          VERSION: ${{ steps.tag.outputs.version }}
+        run: |
+          # A new release stays a draft until its files are attached, so
+          # "latest" (used by the Proxmox script) never points to a release
+          # without packages.
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --verify-tag --draft --generate-notes --title "Cache & Carry $VERSION"
+          fi
+          gh release upload "$TAG" --clobber out/*.tar.gz out/SHA256SUMS
+          if [ "$(gh release view "$TAG" --json isDraft -q .isDraft)" = true ]; then
+            gh release edit "$TAG" --draft=false --latest
+          fi
