@@ -1,17 +1,17 @@
 {
  "id": "short04",
  "fps": 30,
- "frames": 621,
+ "frames": 636,
  "scenes": [
   {
    "id": "hook",
    "start": 0,
-   "frames": 126,
+   "frames": 124,
    "lines": [
     {
      "file": "vo/short04/01.wav",
      "start": 8,
-     "frames": 101,
+     "frames": 98,
      "de": "Zehn Rechner. Dieselbe Datei. Nur ein Download.",
      "en": "Ten machines. The same file. Only one upstream download."
     }
@@ -19,27 +19,27 @@
   },
   {
    "id": "demo",
-   "start": 126,
-   "frames": 360,
+   "start": 124,
+   "frames": 381,
    "lines": [
     {
      "file": "vo/short04/02.wav",
      "start": 9,
-     "frames": 118,
+     "frames": 136,
      "de": "Wenn mehrere Rechner gleichzeitig dieselbe Datei anfordern, die noch nicht im Cache liegt,",
      "en": "When several clients request the same file at once and it is not cached yet,"
     },
     {
      "file": "vo/short04/03.wav",
-     "start": 132,
-     "frames": 85,
+     "start": 149,
+     "frames": 89,
      "de": "muss Cache & Carry sie nicht zehnmal aus dem Internet laden.",
      "en": "Cache & Carry does not have to download it ten times."
     },
     {
      "file": "vo/short04/04.wav",
-     "start": 227,
-     "frames": 107,
+     "start": 248,
+     "frames": 115,
      "de": "Ein einziger Download aus dem Internet versorgt alle wartenden Rechner.",
      "en": "One upstream download serves every waiting client."
     }
@@ -47,13 +47,13 @@
   },
   {
    "id": "end",
-   "start": 486,
-   "frames": 135,
+   "start": 505,
+   "frames": 131,
    "lines": [
     {
      "file": "vo/short04/05.wav",
      "start": 9,
-     "frames": 75,
+     "frames": 62,
      "de": "Für dein Homelab. Open Source auf GitHub.",
      "en": "For your homelab. Open source on GitHub."
     }

@@ -19,12 +19,12 @@ Alle Befehle zum Kopieren: https://github.com/Anarki-LNX/cachencarry/blob/main/m
 
 Kapitel
 0:00 Was bauen wir?
-0:43 Server vorbereiten
-1:41 Herunterladen und installieren
-2:22 Ersteinrichtung
-2:58 Ersten Client einrichten
-3:55 Cache testen
-4:40 Ergebnis
+0:46 Server vorbereiten
+1:46 Herunterladen und installieren
+2:29 Ersteinrichtung
+3:06 Ersten Client einrichten
+4:04 Cache testen
+4:51 Ergebnis
 
 Was du brauchst
 • Debian oder Ubuntu mit systemd, z. B. ein Proxmox-LXC (unprivilegiert, ohne Nesting getestet)

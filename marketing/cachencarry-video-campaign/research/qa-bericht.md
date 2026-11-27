@@ -1,22 +1,39 @@
 # QA-Bericht: deutsche Fassung
 
-## Testvideo Thorsten High mit neuer Sprecher-Pipeline (27.11.2026)
+## Alle 7 Videos mit Thorsten High und neuer Sprecher-Pipeline (27.11.2026)
 
-Auf Wunsch des Nutzers Thorsten High mit verbesserter Qualität
-([VOICE_MASTER_PROMPT.md](VOICE_MASTER_PROMPT.md)). Nur ein Testvideo, die
-übrigen sechs werden erst nach der Abnahme durch den Nutzer neu vertont.
+Short02 als Testvorlage vom Nutzer abgenommen („passt, die anderen videos auch
+so rendern“), danach die übrigen sechs mit derselben Ausspracheliste und
+Verarbeitung. Dateien in `final/de/`.
 
-| Datei | Länge | Lautheit | True Peak | LRA | Schwarzbilder |
-|---|---|---|---|---|---|
-| final/de/cachencarry_short_02_hit_vs_miss_de.mp4 | 20,7 s | −14,1 LUFS | −1,3 dBTP | 2,5 LU | keine |
+| Datei | Länge | Lautheit | True Peak | Schwarzbilder |
+|---|---|---|---|---|
+| cachencarry_presentation_de.mp4 | 1:29 | −14,1 LUFS | −1,3 dBTP | keine |
+| cachencarry_installation_tutorial_de.mp4 | 5:32 | −14,1 LUFS | −1,2 dBTP | keine |
+| cachencarry_short_01_problem_de.mp4 | 20,1 s | −13,9 LUFS | −1,2 dBTP | keine |
+| cachencarry_short_02_hit_vs_miss_de.mp4 | 20,7 s | −14,1 LUFS | −1,3 dBTP | keine |
+| cachencarry_short_03_speed_de.mp4 | 22,8 s | −14,0 LUFS | −1,1 dBTP | keine |
+| cachencarry_short_04_shared_download_de.mp4 | 21,3 s | −14,0 LUFS | −1,0 dBTP | keine |
+| cachencarry_short_05_open_source_de.mp4 | 20,9 s | −14,1 LUFS | −1,2 dBTP | keine |
 
 - Prüfung vor dem Render (`pipeline/voice_qa.py`): 0 Fehler, 0 Warnungen.
-- Je Satz fünf Aufnahmen, die verständlichste gewählt (whisper small),
-  Protokoll in `voice/takes/short02.md`. Alle Fachbegriffe (MISS, HIT, Cache,
-  Cache & Carry, Open Source, GitHub) werden in der gewählten Aufnahme erkannt.
-- Kontaktbogen: nur deutscher Bildtext, keine Untertitel, Endkarte mit
+  Keine Lautschrift und keine Pausenmarken in Untertiteln, Bildtexten und
+  `social/`.
+- Je Satz die verständlichste von fünf Aufnahmen (whisper small), bei
+  schwachen Sätzen von zehn. Protokolle in `voice/takes/`.
+- whisper-Gegenprobe aller 85 Sätze: 108 von 130 Fachbegriffen erkannt. Die
+  Ausfälle sind überwiegend Grenzen der Erkennung, zum Beispiel „Kleint“ für
+  Client oder Zahlen als Ziffern. Short03 bekam einen neuen Schluss
+  („Mehr dazu auf GitHub“), weil „GitHub-Repository“ auf der Kippe lag.
+- Kontaktbögen: nur deutscher Bildtext, keine Untertitel, Endkarten mit
   „Sprecherstimme synthetisch (Piper TTS)“.
-- Die Aussprache hat noch kein Mensch angehört.
+- Kapitelmarken in `social/youtube_*.md` an die neuen Längen angepasst.
+
+Bitte anhören, hier ist whisper unsicher:
+- Tutorial: „sudo“ (whisper hört „zu du“), „SHA-256-Summe“, „systemd-Dienst“,
+  „systemctl zeigt“, „Signed-By“.
+- Präsentation: „systemd-Dienst“, „Ubuntu“ in der Aufzählung.
+- Die Aussprache hat noch kein Mensch komplett angehört.
 
 Archiv: `final/de-thorsten-high/` (erste High-Fassung, 26.11.),
 `final/de-thorsten-medium/` (Medium, 27.11., das Tutorial dort noch mit der

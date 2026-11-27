@@ -164,8 +164,8 @@ Dieser Text darf nie in Untertitel, Bildtexte oder Beschreibungen gelangen.
   `Im dokumentierten Testnetzwerk brauchte ein Paketindex mit acht Komma sechs [[mˈeːbibaɪt]] neunhundertneunundfünfzig Millisekunden aus dem Internet.`
 - **compare** (tech) Aus dem Cache waren es nur neun.  
   `Aus dem Käsch waren es nur neun.`
-- **end** (cta) Genau dafür gibt es Cache & Carry. Mehr im GitHub Repository.  
-  `Genau dafür gibt es Käsch and Kärri. Mehr im Gitt-Hab Repository.`
+- **end** (cta) Genau dafür gibt es Cache & Carry. Mehr dazu auf GitHub.  
+  `Genau dafür gibt es Käsch and Kärri. Mehr dazu auf Gitt-Hab.`
 
 ## short04
 

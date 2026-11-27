@@ -287,7 +287,7 @@
    "id": "apt2",
    "chapter": 6,
    "lead": 0.3,
-   "min": 13.53,
+   "min": 13.37,
    "lines": [
     {
      "de": "apt update und dieselbe Installation.",
@@ -362,7 +362,7 @@
    "id": "tour",
    "chapter": 7,
    "lead": 0.3,
-   "min": 13.67,
+   "min": 13.37,
    "lines": [
     {
      "de": "Im Dashboard findest du gespeicherte Pakete unter Speicher. Unter Einstellungen begrenzt du Cachegröße und Bandbreite, ohne Neustart.",

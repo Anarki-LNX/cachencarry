@@ -1,7 +1,7 @@
 {
  "id": "presentation",
  "fps": 30,
- "frames": 2643,
+ "frames": 2668,
  "scenes": [
   {
    "id": "problem",
@@ -11,21 +11,21 @@
     {
      "file": "vo/presentation/01.wav",
      "start": 36,
-     "frames": 21,
+     "frames": 20,
      "de": "Kennst du das?",
      "en": "Sound familiar?"
     },
     {
      "file": "vo/presentation/02.wav",
-     "start": 68,
-     "frames": 92,
+     "start": 67,
+     "frames": 88,
      "de": "Drei Linux-Rechner im Netzwerk. Drei Updates.",
      "en": "Three Linux machines on your network. Three updates."
     },
     {
      "file": "vo/presentation/03.wav",
-     "start": 170,
-     "frames": 99,
+     "start": 165,
+     "frames": 102,
      "de": "Und dieselben Pakete werden immer wieder aus dem Internet geladen.",
      "en": "And the same packages are downloaded from the Internet again and again."
     }
@@ -39,14 +39,14 @@
     {
      "file": "vo/presentation/04.wav",
      "start": 18,
-     "frames": 87,
+     "frames": 92,
      "de": "Was wäre, wenn dein Netzwerk ein eigenes Paketlager hätte?",
      "en": "What if your network had its own package warehouse?"
     },
     {
      "file": "vo/presentation/05.wav",
-     "start": 116,
-     "frames": 122,
+     "start": 121,
+     "frames": 117,
      "de": "Einmal herunterladen. Lokal speichern. Immer wieder verwenden.",
      "en": "Download once. Store it locally. Use it again and again."
     }
@@ -55,7 +55,7 @@
   {
    "id": "meet",
    "start": 600,
-   "frames": 384,
+   "frames": 386,
    "lines": [
     {
      "file": "vo/presentation/06.wav",
@@ -66,15 +66,15 @@
     },
     {
      "file": "vo/presentation/07.wav",
-     "start": 91,
-     "frames": 94,
+     "start": 92,
+     "frames": 98,
      "de": "Ein schlanker, selbst gehosteter Paketcache für dein Netzwerk.",
      "en": "A lean, self-hosted package cache for your network."
     },
     {
      "file": "vo/presentation/08.wav",
-     "start": 196,
-     "frames": 152,
+     "start": 200,
+     "frames": 168,
      "de": "Im Dashboard siehst du jede Anfrage, jedes gespeicherte Paket und wie viel Bandbreite du sparst.",
      "en": "The dashboard shows every request, every stored package and how much bandwidth you save."
     }
@@ -82,26 +82,26 @@
   },
   {
    "id": "hitmiss",
-   "start": 984,
+   "start": 986,
    "frames": 324,
    "lines": [
     {
      "file": "vo/presentation/09.wav",
      "start": 24,
-     "frames": 77,
+     "frames": 79,
      "de": "Beim ersten Abruf kommt das Paket aus dem Internet.",
      "en": "On the first request, the package comes from the mirror."
     },
     {
      "file": "vo/presentation/10.wav",
-     "start": 112,
-     "frames": 40,
+     "start": 114,
+     "frames": 38,
      "de": "Danach liegt es im Cache.",
      "en": "After that, it is in the cache."
     },
     {
      "file": "vo/presentation/11.wav",
-     "start": 163,
+     "start": 162,
      "frames": 80,
      "de": "Der nächste Rechner bekommt es direkt aus deinem Netzwerk.",
      "en": "The next machine gets it straight from your network."
@@ -110,20 +110,20 @@
   },
   {
    "id": "shared",
-   "start": 1308,
-   "frames": 489,
+   "start": 1310,
+   "frames": 528,
    "lines": [
     {
      "file": "vo/presentation/12.wav",
      "start": 18,
-     "frames": 169,
+     "frames": 205,
      "de": "Und wenn mehrere Rechner gleichzeitig dieselbe Datei brauchen, reicht ein einziger Download aus dem Internet für alle.",
      "en": "And when several machines need the same file at the same time, a single upstream download can serve them all."
     },
     {
      "file": "vo/presentation/13.wav",
-     "start": 198,
-     "frames": 269,
+     "start": 234,
+     "frames": 272,
      "de": "In unserem Testnetzwerk kam ein Paketindex mit 8,6 MiB in 959 ms aus dem Internet. Aus dem Cache in 9 ms.",
      "en": "In our test network, an 8.6 MiB package index took 959 ms from the Internet. From the cache, 9 ms."
     }
@@ -131,27 +131,27 @@
   },
   {
    "id": "homelab",
-   "start": 1797,
-   "frames": 395,
+   "start": 1838,
+   "frames": 399,
    "lines": [
     {
      "file": "vo/presentation/14.wav",
      "start": 18,
-     "frames": 96,
+     "frames": 111,
      "de": "Ob Proxmox, Debian, Ubuntu, Arch oder CachyOS:",
      "en": "Whether Proxmox, Debian, Ubuntu, Arch or CachyOS:"
     },
     {
      "file": "vo/presentation/15.wav",
-     "start": 119,
-     "frames": 125,
+     "start": 134,
+     "frames": 121,
      "de": "Cache & Carry bringt deine unterstützten Paketquellen unter ein gemeinsames Dach.",
      "en": "Cache & Carry brings your supported package sources under one roof."
     },
     {
      "file": "vo/presentation/16.wav",
-     "start": 254,
-     "frames": 110,
+     "start": 266,
+     "frames": 115,
      "de": "Als schlanker systemd-Dienst, zum Beispiel in einem Proxmox-Container.",
      "en": "As a lean systemd service, for example in a Proxmox container."
     }
@@ -159,20 +159,20 @@
   },
   {
    "id": "cta",
-   "start": 2192,
-   "frames": 451,
+   "start": 2237,
+   "frames": 431,
    "lines": [
     {
      "file": "vo/presentation/17.wav",
      "start": 18,
-     "frames": 158,
+     "frames": 125,
      "de": "Cache & Carry ist kostenlos auf GitHub verfügbar, Open Source und bereit für dein Homelab.",
      "en": "Cache & Carry is free on GitHub, open source and ready for your homelab."
     },
     {
      "file": "vo/presentation/18.wav",
-     "start": 186,
-     "frames": 158,
+     "start": 153,
+     "frames": 171,
      "de": "Wenn du es ausprobierst, lass einen Stern da, teile das Projekt und sag mir in den Kommentaren, wie du es einsetzt.",
      "en": "If you try it, leave a star, share the project and tell me in the comments how you use it."
     }

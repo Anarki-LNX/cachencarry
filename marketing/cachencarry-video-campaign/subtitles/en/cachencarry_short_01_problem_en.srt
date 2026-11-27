@@ -1,23 +1,23 @@
 1
-00:00:00,250 --> 00:00:02,190
+00:00:00,250 --> 00:00:02,561
 Is your network downloading
 all of this several times?
 
 2
-00:00:03,500 --> 00:00:06,849
+00:00:03,500 --> 00:00:06,964
 Why should every machine download
 the same packages from the Internet?
 
 3
-00:00:07,499 --> 00:00:10,585
+00:00:07,614 --> 00:00:10,649
 Cache & Carry stores them
 centrally on your network.
 
 4
-00:00:10,685 --> 00:00:13,741
+00:00:10,749 --> 00:00:13,560
 Download once. Then use it locally.
 
 5
-00:00:14,391 --> 00:00:18,457
+00:00:14,284 --> 00:00:17,939
 Your own LAN cache. Open
 source and free on GitHub.

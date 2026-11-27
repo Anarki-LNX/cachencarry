@@ -48,8 +48,8 @@ Wenn du es ausprobierst: Lass einen Stern auf GitHub da, teile das Projekt und s
 0:20 Das ist Cache & Carry
 0:32 HIT und MISS
 0:43 Ein Download für mehrere Rechner
-1:00 Für dein Homelab
-1:13 Open Source auf GitHub
+1:01 Für dein Homelab
+1:14 Open Source auf GitHub
 
 ## Schlagwörter (Tags)
 
