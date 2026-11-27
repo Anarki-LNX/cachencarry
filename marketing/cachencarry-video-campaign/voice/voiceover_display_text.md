@@ -108,3 +108,19 @@ Erzeugt von `pipeline/voice_qa.py` aus `scripts/*.json` (Feld `de`). Richtige Sc
 - **control** Nur Hardware und Strom für deinen Server bringst du selbst mit.
 - **end** Gib dem Repository einen Stern und probier es aus.
 
+## short06
+
+- **hook** Cache & Carry installieren?
+- **hook** Drei Wege, eine Version.
+- **proxmox** Erstens: Proxmox.
+- **proxmox** Ein Befehl auf dem Host legt einen fertigen Container an.
+- **proxmox** Der schnellste Weg, nichts von Hand.
+- **docker** Zweitens: Docker.
+- **docker** Ein schlankes Image unter 16 Megabyte.
+- **docker** Läuft auf jedem Docker-Host.
+- **debian** Drittens: Debian oder Ubuntu.
+- **debian** Paket laden, Installationsskript starten, fertig.
+- **debian** Als Systemdienst, auch auf dem Raspberry Pi.
+- **end** Überall dieselbe Version. Kostenlos und Open Source.
+- **end** Link in der Beschreibung.
+

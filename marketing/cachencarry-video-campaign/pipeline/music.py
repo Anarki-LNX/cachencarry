@@ -396,6 +396,6 @@ if __name__ == "__main__":
     if "tutorial" in what:
         track_tutorial()
     if "shorts" in what:
-        for vid, drop in (("short01", 2), ("short02", 1), ("short03", 1), ("short04", 1), ("short05", 1)):
+        for vid, drop in (("short01", 2), ("short02", 1), ("short03", 1), ("short04", 1), ("short05", 1), ("short06", 1)):
             if (ROOT / "project/src/timelines" / f"{vid}.json").exists():
                 track_short(vid, drop)

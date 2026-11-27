@@ -1,0 +1,133 @@
+{
+ "id": "short06",
+ "fps": 30,
+ "frames": 1035,
+ "scenes": [
+  {
+   "id": "hook",
+   "start": 0,
+   "frames": 126,
+   "lines": [
+    {
+     "file": "vo/short06/01.wav",
+     "start": 8,
+     "frames": 46,
+     "de": "Cache & Carry installieren?",
+     "en": "Installing Cache & Carry?"
+    },
+    {
+     "file": "vo/short06/02.wav",
+     "start": 64,
+     "frames": 44,
+     "de": "Drei Wege, eine Version.",
+     "en": "Three ways, one version."
+    }
+   ]
+  },
+  {
+   "id": "proxmox",
+   "start": 126,
+   "frames": 233,
+   "lines": [
+    {
+     "file": "vo/short06/03.wav",
+     "start": 9,
+     "frames": 36,
+     "de": "Erstens: Proxmox.",
+     "en": "One: Proxmox."
+    },
+    {
+     "file": "vo/short06/04.wav",
+     "start": 55,
+     "frames": 91,
+     "de": "Ein Befehl auf dem Host legt einen fertigen Container an.",
+     "en": "One command on the host creates a ready container."
+    },
+    {
+     "file": "vo/short06/05.wav",
+     "start": 157,
+     "frames": 58,
+     "de": "Der schnellste Weg, nichts von Hand.",
+     "en": "The fastest way, nothing by hand."
+    }
+   ]
+  },
+  {
+   "id": "docker",
+   "start": 359,
+   "frames": 186,
+   "lines": [
+    {
+     "file": "vo/short06/06.wav",
+     "start": 9,
+     "frames": 33,
+     "de": "Zweitens: Docker.",
+     "en": "Two: Docker."
+    },
+    {
+     "file": "vo/short06/07.wav",
+     "start": 53,
+     "frames": 63,
+     "de": "Ein schlankes Image unter 16 Megabyte.",
+     "en": "A lean image under 16 megabytes."
+    },
+    {
+     "file": "vo/short06/08.wav",
+     "start": 126,
+     "frames": 42,
+     "de": "Läuft auf jedem Docker-Host.",
+     "en": "Runs on any Docker host."
+    }
+   ]
+  },
+  {
+   "id": "debian",
+   "start": 545,
+   "frames": 277,
+   "lines": [
+    {
+     "file": "vo/short06/09.wav",
+     "start": 9,
+     "frames": 61,
+     "de": "Drittens: Debian oder Ubuntu.",
+     "en": "Three: Debian or Ubuntu."
+    },
+    {
+     "file": "vo/short06/10.wav",
+     "start": 81,
+     "frames": 91,
+     "de": "Paket laden, Installationsskript starten, fertig.",
+     "en": "Download the package, run the install script, done."
+    },
+    {
+     "file": "vo/short06/11.wav",
+     "start": 183,
+     "frames": 76,
+     "de": "Als Systemdienst, auch auf dem Raspberry Pi.",
+     "en": "As a system service, also on a Raspberry Pi."
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "start": 822,
+   "frames": 213,
+   "lines": [
+    {
+     "file": "vo/short06/12.wav",
+     "start": 9,
+     "frames": 96,
+     "de": "Überall dieselbe Version. Kostenlos und Open Source.",
+     "en": "The same version everywhere. Free and open source."
+    },
+    {
+     "file": "vo/short06/13.wav",
+     "start": 115,
+     "frames": 37,
+     "de": "Link in der Beschreibung.",
+     "en": "Link in the description."
+    }
+   ]
+  }
+ ]
+}

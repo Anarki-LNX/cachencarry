@@ -1,0 +1,60 @@
+{
+ "id": "short06",
+ "file": "cachencarry_short_06_install",
+ "scenes": [
+  {
+   "id": "hook",
+   "style": "intro",
+   "lead": 0.25,
+   "min": 3.2,
+   "lines": [
+    {"de": "Cache & Carry installieren?", "en": "Installing Cache & Carry?"},
+    {"de": "Drei Wege, eine Version.", "en": "Three ways, one version."}
+   ]
+  },
+  {
+   "id": "proxmox",
+   "style": "product",
+   "lead": 0.3,
+   "min": 6.0,
+   "lines": [
+    {"de": "Erstens: Proxmox.", "en": "One: Proxmox."},
+    {"de": "Ein Befehl auf dem Host legt einen fertigen Container an.", "en": "One command on the host creates a ready container."},
+    {"de": "Der schnellste Weg, nichts von Hand.", "en": "The fastest way, nothing by hand."}
+   ]
+  },
+  {
+   "id": "docker",
+   "style": "product",
+   "lead": 0.3,
+   "min": 5.5,
+   "lines": [
+    {"de": "Zweitens: Docker.", "en": "Two: Docker."},
+    {"de": "Ein schlankes Image unter 16 Megabyte.", "tts": "Ein schlankes Image unter sechzehn Megabyte.", "en": "A lean image under 16 megabytes."},
+    {"de": "Läuft auf jedem Docker-Host.", "en": "Runs on any Docker host."}
+   ]
+  },
+  {
+   "id": "debian",
+   "style": "product",
+   "lead": 0.3,
+   "min": 6.0,
+   "lines": [
+    {"de": "Drittens: Debian oder Ubuntu.", "en": "Three: Debian or Ubuntu."},
+    {"de": "Paket laden, Installationsskript starten, fertig.", "en": "Download the package, run the install script, done."},
+    {"de": "Als Systemdienst, auch auf dem Raspberry Pi.", "en": "As a system service, also on a Raspberry Pi."}
+   ]
+  },
+  {
+   "id": "end",
+   "style": "cta",
+   "lead": 0.3,
+   "min": 5,
+   "tail": 2.0,
+   "lines": [
+    {"de": "Überall dieselbe Version. Kostenlos und Open Source.", "en": "The same version everywhere. Free and open source."},
+    {"de": "Link in der Beschreibung.", "en": "Link in the description."}
+   ]
+  }
+ ]
+}

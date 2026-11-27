@@ -117,3 +117,16 @@ export const Cover5 = () => (
     </Win>
   </Cover>
 );
+const Way6 = ({ n, label, color, y }: { n: number; label: string; color: string; y: number }) => (
+  <div style={{ position: "absolute", left: 70, right: 130, top: y, height: 110, display: "flex", alignItems: "center", gap: 28, padding: "0 30px", borderRadius: 26, background: "rgba(13,20,36,0.92)", border: `2px solid ${color}`, boxShadow: `0 0 40px ${color}44` }}>
+    <div style={{ width: 74, height: 74, borderRadius: 20, background: color, color: "#0a0e17", fontFamily: FONT, fontSize: 54, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center" }}>{n}</div>
+    <div style={{ fontFamily: FONT, fontSize: 52, fontWeight: 850, color: C.fg }}>{label}</div>
+  </div>
+);
+export const Cover6 = () => (
+  <Cover kicker="INSTALLATION" title={<>DREI WEGE.<br /><span style={{ color: C.green }}>EINE</span><br /><span style={{ color: C.green }}>VERSION.</span></>} color={C.green}>
+    <Way6 n={1} label="Proxmox VE" color={C.green} y={800} />
+    <Way6 n={2} label="Docker" color={C.cyan} y={940} />
+    <Way6 n={3} label="Debian / Ubuntu" color={C.amber} y={1080} />
+  </Cover>
+);

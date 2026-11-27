@@ -1,0 +1,55 @@
+1
+00:00:00,250 --> 00:00:02,031
+Cache & Carry installieren?
+
+2
+00:00:02,131 --> 00:00:03,860
+Drei Wege, eine Version.
+
+3
+00:00:04,510 --> 00:00:05,948
+Erstens: Proxmox.
+
+4
+00:00:06,048 --> 00:00:09,340
+Ein Befehl auf dem Host legt
+einen fertigen Container an.
+
+5
+00:00:09,440 --> 00:00:11,625
+Der schnellste Weg, nichts von Hand.
+
+6
+00:00:12,275 --> 00:00:13,627
+Zweitens: Docker.
+
+7
+00:00:13,727 --> 00:00:16,081
+Ein schlankes Image unter 16 Megabyte.
+
+8
+00:00:16,181 --> 00:00:17,831
+Läuft auf jedem Docker-Host.
+
+9
+00:00:18,481 --> 00:00:20,777
+Drittens: Debian oder Ubuntu.
+
+10
+00:00:20,876 --> 00:00:24,172
+Paket laden, Installationsskript
+starten, fertig.
+
+11
+00:00:24,272 --> 00:00:27,054
+Als Systemdienst, auch
+auf dem Raspberry Pi.
+
+12
+00:00:27,704 --> 00:00:31,147
+Überall dieselbe Version.
+Kostenlos und Open Source.
+
+13
+00:00:31,247 --> 00:00:32,735
+Link in der Beschreibung.

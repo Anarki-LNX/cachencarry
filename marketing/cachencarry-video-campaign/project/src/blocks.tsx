@@ -77,7 +77,7 @@ export const BenchmarkCard = ({ landscape = false, compact = false }: { landscap
 };
 
 /** Logo, message and GitHub address. */
-export const EndCard = ({ landscape = false, lines, badge, top }: { landscape?: boolean; lines: string[]; badge?: string; top?: number }) => {
+export const EndCard = ({ landscape = false, lines, badge, top, url = "github.com/Anarki-LNX/cachencarry" }: { landscape?: boolean; lines: string[]; badge?: string; top?: number; url?: string }) => {
   const frame = useCurrentFrame();
   const glow = 0.5 + 0.5 * Math.sin(frame / 18);
   return (
@@ -89,7 +89,7 @@ export const EndCard = ({ landscape = false, lines, badge, top }: { landscape?: 
           <Title key={l} text={l} size={landscape ? (i === 0 ? 58 : 34) : i === 0 ? 64 : 42} align="center" delay={14 + i * 14} color={i === 0 ? C.fg : C.cyan} />
         ))}
       </div>
-      <div style={{ marginTop: landscape ? 30 : 50, fontFamily: MONO, fontSize: landscape ? 30 : 36, color: C.soft, opacity: ramp(frame, 40, 14) }}>github.com/Anarki-LNX/cachencarry</div>
+      <div style={{ marginTop: landscape ? 30 : 50, fontFamily: MONO, fontSize: landscape ? 30 : 36, color: C.soft, opacity: ramp(frame, 40, 14) }}>{url}</div>
       <div style={{ marginTop: landscape ? 28 : 46, display: "flex", gap: 16, flexWrap: "wrap", justifyContent: "center" }}>
         {badge && <Pill delay={52} color={C.green} border={`${C.green}aa`} size={landscape ? 28 : 34}>{badge}</Pill>}
         <Pill delay={60} color={C.soft} size={landscape ? 28 : 34}>Open Source • Apache 2.0</Pill>

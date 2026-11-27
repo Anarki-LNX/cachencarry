@@ -195,3 +195,32 @@ Dieser Text darf nie in Untertitel, Bildtexte oder Beschreibungen gelangen.
 - **end** (cta) Gib dem Repository einen Stern und probier es aus.  
   `Gib dem Repository einen Stern und probier es aus.`
 
+## short06
+
+- **hook** (intro) Cache & Carry installieren?  
+  `Käsch and Kärri installieren?`
+- **hook** (intro) Drei Wege, eine Version.  
+  `Drei Wege, eine Version.`
+- **proxmox** (product) Erstens: Proxmox.  
+  `Erstens: Proxmox.`
+- **proxmox** (product) Ein Befehl auf dem Host legt einen fertigen Container an.  
+  `Ein Befehl auf dem Host legt einen fertigen Container an.`
+- **proxmox** (product) Der schnellste Weg, nichts von Hand.  
+  `Der schnellste Weg, nichts von Hand.`
+- **docker** (product) Zweitens: Docker.  
+  `Zweitens: [[dˈɔkɐ]].`
+- **docker** (product) Ein schlankes Image unter sechzehn Megabyte.  
+  `Ein schlankes Immitsch unter sechzehn [[mˈeːɡabaɪt]].`
+- **docker** (product) Läuft auf jedem Docker-Host.  
+  `Läuft auf jedem [[dˈɔkɐ]]-Host.`
+- **debian** (product) Drittens: Debian oder Ubuntu.  
+  `Drittens: [[dˈeːbi̯aːn]] oder Ubbuntu.`
+- **debian** (product) Paket laden, Installationsskript starten, fertig.  
+  `Paket laden, Installationsskript starten, fertig.`
+- **debian** (product) Als Systemdienst, auch auf dem Raspberry Pi.  
+  `Als Systemdienst, auch auf dem Raspberry Pi.`
+- **end** (cta) Überall dieselbe Version. Kostenlos und Open Source.  
+  `Überall dieselbe Version. Kostenlos und [[ˈoːpən zˈɔːɐs]].`
+- **end** (cta) Link in der Beschreibung.  
+  `Link in der Beschreibung.`
+

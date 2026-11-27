@@ -1,6 +1,6 @@
 # Prüfbericht Sprecher
 
-Stimme `tools/voices/de_DE-thorsten-high.onnx`, Ausspracheliste `voice/pronunciation_dictionary.yaml` (42 Einträge, 37 geprüfte Wörter ohne Änderung).
+Stimme `tools/voices/de_DE-thorsten-high.onnx`, Ausspracheliste `voice/pronunciation_dictionary.yaml` (44 Einträge, 40 geprüfte Wörter ohne Änderung).
 Erzeugt von `pipeline/voice_qa.py` vor dem Render.
 
 **Ergebnis: 0 Fehler, 0 Warnungen.**
@@ -38,6 +38,8 @@ keine
 | cachencarry_short_04_shared_download_en.srt | 5 | 19.45 s | 21.20 s | 21.30 s |
 | cachencarry_short_05_open_source_de.srt | 6 | 19.11 s | 20.87 s | 20.90 s |
 | cachencarry_short_05_open_source_en.srt | 6 | 19.11 s | 20.87 s | 20.90 s |
+| cachencarry_short_06_install_de.srt | 13 | 32.73 s | 34.50 s | nicht gerendert |
+| cachencarry_short_06_install_en.srt | 13 | 32.73 s | 34.50 s | nicht gerendert |
 
 ## Audiodateien
 
@@ -128,3 +130,16 @@ keine
 | short05 | 04 | control | product | 3.18 s | -4.9 dBFS |
 | short05 | 05 | control | product | 3.15 s | -6.5 dBFS |
 | short05 | 06 | end | cta | 2.86 s | -6.8 dBFS |
+| short06 | 01 | hook | intro | 1.53 s | -6.0 dBFS |
+| short06 | 02 | hook | intro | 1.48 s | -8.0 dBFS |
+| short06 | 03 | proxmox | product | 1.19 s | -4.9 dBFS |
+| short06 | 04 | proxmox | product | 3.04 s | -4.1 dBFS |
+| short06 | 05 | proxmox | product | 1.94 s | -8.1 dBFS |
+| short06 | 06 | docker | product | 1.10 s | -4.7 dBFS |
+| short06 | 07 | docker | product | 2.10 s | -6.5 dBFS |
+| short06 | 08 | docker | product | 1.40 s | -7.4 dBFS |
+| short06 | 09 | debian | product | 2.05 s | -7.9 dBFS |
+| short06 | 10 | debian | product | 3.05 s | -5.3 dBFS |
+| short06 | 11 | debian | product | 2.53 s | -5.3 dBFS |
+| short06 | 12 | end | cta | 3.19 s | -5.7 dBFS |
+| short06 | 13 | end | cta | 1.24 s | -7.4 dBFS |

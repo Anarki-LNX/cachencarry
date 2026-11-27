@@ -86,3 +86,16 @@ Die sichtbare Eingabe bleibt schnell (im Tutorial als „× schneller“ gekennz
 | Short02 | 20.7 s | −14.2 LUFS | −1.3 dBTP | keine |
 
 Short03 bis Short05 haben kein Tippgeräusch und bleiben unverändert. Hörvergleich alt und neu: `research/samples/tippen/`.
+
+## Short 6: drei Wege zu installieren (27.11.2026)
+
+| Prüfung | Ergebnis |
+|---|---|
+| Datei | `final/de/cachencarry_short_06_install_de.mp4`, 1080 × 1920, 30 fps, 34,6 s |
+| Lautheit | −14,0 LUFS, Spitze −1,1 dBFS |
+| schwarze Bilder | keine |
+| Sprecherprüfung (`voice_qa.py`) | 0 Fehler, 0 Warnungen |
+| Bildtext (`check_text.py`) | keine Gedankenstriche, keine Semikolons |
+| Aussprache neu | Docker (IPA, 2/3), Image als „Immitsch“ (3/3), Raspberry Pi und Link wie geschrieben (3/3), Bericht `voice/pron_test_report_runde4.md` |
+| Inhalt | Befehle aus README.md, Proxmox-Ausgabe aus einem echten Lauf von `scripts/proxmox-lxc.sh`, Setup-Token verdeckt |
+| Kontaktbogen | von Hand angesehen, Titel steht ab dem ersten Bild |

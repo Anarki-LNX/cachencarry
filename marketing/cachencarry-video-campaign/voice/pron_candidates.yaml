@@ -376,3 +376,29 @@
 - term: Host
   accept: "host"
   cand: ["Host", "Houst", "[[hˈoːst]]"]
+- term: Docker
+  accept: docker|dokka|docka
+  cand:
+  - Docker
+  - Docka
+  - '[[dˈɔkɐ]]'
+  - Dokker
+  - '[[dˈɔkɚ]]'
+  - '[[dˈɑːkɚ]]'
+- term: Image
+  accept: image|imitsch|immitsch
+  cand:
+  - Image
+  - Immitsch
+  - '[[ˈɪmɪtʃ]]'
+- term: Raspberry Pi
+  accept: raspberry\s*pi|rasberry\s*pi|raspberry\s*pie
+  cand:
+  - Raspberry Pi
+  - Rasberri Pei
+  - '[[ɹˈɑːzbəɹi pˈaɪ]]'
+- term: Link
+  accept: link
+  cand:
+  - Link
+  - '[[lˈɪŋk]]'

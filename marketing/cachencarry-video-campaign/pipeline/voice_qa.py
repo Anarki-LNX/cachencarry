@@ -24,7 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import voice as V
 
 ROOT = V.ROOT
-VIDEOS = ["presentation", "tutorial", "short01", "short02", "short03", "short04", "short05"]
+VIDEOS = ["presentation", "tutorial", "short01", "short02", "short03", "short04", "short05", "short06"]
 TOKEN = re.compile(r"[A-Za-zÄÖÜäöüß][\w&./-]*")
 IPA = re.compile(r"\[\[[^\]\"']*[ˈˌːɐəɛɪʊʃʒæœŋ]")
 FOREIGN = re.compile(r"(th|sh(?!e)|ck\b|oo|ee|ea|ou|ay|y\b|tion\b|^c[^h]|^x|[a-z][A-Z]|^[A-Z]{2,}|\d|[/._])")

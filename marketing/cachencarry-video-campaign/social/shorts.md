@@ -79,3 +79,24 @@ https://cachencarry.loopout.tech
 Sprecherstimme synthetisch (Piper TTS).
 
 #OpenSource #SelfHosted #Proxmox #CacheAndCarry
+
+---
+
+## Short 6: Drei Wege, Cache & Carry zu installieren
+
+Gedacht als erstes Video des Kanals.
+
+**Datei:** `final/de/cachencarry_short_06_install_de.mp4` · **Cover:** `thumbnails/cachencarry_short_06_cover.png`
+
+**Titel:** Cache & Carry installieren: drei Wege, eine Version
+
+**Beschreibung:**
+Dein eigener Paketcache fürs LAN, in wenigen Minuten installiert. Drei Wege mit derselben Version:
+1. Proxmox VE: ein Befehl auf dem Host legt einen unprivilegierten Debian-13-Container an, prüft die Prüfsumme und zeigt Adresse und Setup-Token.
+2. Docker: ein Image für amd64 und arm64, unter 16 MB, ohne Shell. Läuft auf jedem Docker-Host.
+3. Debian oder Ubuntu: Paket laden, install.sh starten. Läuft als systemd-Dienst, auch in VMs und auf dem Raspberry Pi.
+Kostenlos und Open Source (Apache 2.0). Alle Befehle auf der Website:
+https://cachencarry.loopout.tech
+Sprecherstimme synthetisch (Piper TTS).
+
+#Proxmox #Docker #Homelab #SelfHosted #CacheAndCarry
