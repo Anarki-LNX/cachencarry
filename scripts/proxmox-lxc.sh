@@ -33,6 +33,12 @@
 #   CC_YES            1 = do not ask before creating
 set -Eeuo pipefail
 
+# pct exec hands the host's locale to the container, where for example
+# en_US.UTF-8 is not generated and perl, apt and debconf warn about it.
+# C.UTF-8 exists everywhere, on the host and in the Debian template.
+export LANG=C.UTF-8 LC_ALL=C.UTF-8
+unset LANGUAGE
+
 REPO="Anarki-LNX/cachencarry"
 GITHUB="https://github.com/${REPO}"
 
