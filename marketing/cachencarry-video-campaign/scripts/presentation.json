@@ -4,6 +4,7 @@
  "scenes": [
   {
    "id": "problem",
+   "style": "intro",
    "lead": 1.2,
    "min": 10.5,
    "lines": [
@@ -23,6 +24,7 @@
   },
   {
    "id": "idea",
+   "style": "intro",
    "lead": 0.6,
    "min": 9.5,
    "lines": [
@@ -32,7 +34,7 @@
     },
     {
      "de": "Einmal herunterladen. Lokal speichern. Immer wieder verwenden.",
-     "say": "Einmal herunterladen. Lokal speichern. Immer wieder verwenden.",
+     "tts": "Einmal herunterladen. Lokal speichern. Immer wieder verwenden.",
      "en": "Download once. Store it locally. Use it again and again.",
      "gap": 0.2
     }
@@ -40,8 +42,9 @@
   },
   {
    "id": "meet",
+   "style": "product",
    "lead": 1.4,
-   "min": 13.2,
+   "min": 12.8,
    "lines": [
     {
      "de": "Das ist Cache & Carry.",
@@ -53,12 +56,14 @@
     },
     {
      "de": "Im Dashboard siehst du jede Anfrage, jedes gespeicherte Paket und wie viel Bandbreite du sparst.",
+     "tts": "Im Dashboard siehst du jede Anfrage. Jedes gespeicherte Paket. Und wie viel Bandbreite du sparst.",
      "en": "The dashboard shows every request, every stored package and how much bandwidth you save."
     }
    ]
   },
   {
    "id": "hitmiss",
+   "style": "tech",
    "lead": 0.8,
    "min": 10.8,
    "lines": [
@@ -78,16 +83,18 @@
   },
   {
    "id": "shared",
+   "style": "tech",
    "lead": 0.6,
    "min": 15,
    "lines": [
     {
      "de": "Und wenn mehrere Rechner gleichzeitig dieselbe Datei brauchen, reicht ein einziger Download aus dem Internet für alle.",
+     "tts": "Und wenn mehrere Rechner gleichzeitig dieselbe Datei brauchen? Dann reicht ein einziger Download aus dem Internet. Für alle.",
      "en": "And when several machines need the same file at the same time, a single upstream download can serve them all."
     },
     {
      "de": "In unserem Testnetzwerk kam ein Paketindex mit 8,6 MiB in 959 ms aus dem Internet. Aus dem Cache in 9 ms.",
-     "say": "In unserem Testnetzwerk kam ein Paketindex mit acht Komma sechs Mebibeit in 959 Millisekunden aus dem Internet. Aus dem Käsch in neun.",
+     "tts": "In unserem Testnetzwerk kam ein Paketindex mit acht Komma sechs Mebibyte in neunhundertneunundfünfzig Millisekunden aus dem Internet. Aus dem Cache in neun.",
      "en": "In our test network, an 8.6 MiB package index took 959 ms from the Internet. From the cache, 9 ms.",
      "gap": 0.5
     }
@@ -95,8 +102,9 @@
   },
   {
    "id": "homelab",
+   "style": "product",
    "lead": 0.6,
-   "min": 14,
+   "min": 13.17,
    "lines": [
     {
      "de": "Ob Proxmox, Debian, Ubuntu, Arch oder CachyOS:",
@@ -115,16 +123,19 @@
   },
   {
    "id": "cta",
+   "style": "cta",
    "lead": 0.6,
-   "min": 16,
+   "min": 15.03,
    "tail": 3.2,
    "lines": [
     {
      "de": "Cache & Carry ist kostenlos auf GitHub verfügbar, Open Source und bereit für dein Homelab.",
+     "tts": "Cache & Carry ist kostenlos auf GitHub. Open Source. Und bereit für dein Homelab.",
      "en": "Cache & Carry is free on GitHub, open source and ready for your homelab."
     },
     {
      "de": "Wenn du es ausprobierst, lass einen Stern da, teile das Projekt und sag mir in den Kommentaren, wie du es einsetzt.",
+     "tts": "Probier es aus. Lass einen Stern da, teile das Projekt, und sag mir in den Kommentaren, wie du es einsetzt.",
      "en": "If you try it, leave a star, share the project and tell me in the comments how you use it."
     }
    ]

@@ -1,22 +1,22 @@
 1
-00:00:00,250 --> 00:00:02,397
+00:00:00,250 --> 00:00:02,190
 Dein Netzwerk lädt das alles mehrfach?
 
 2
-00:00:03,500 --> 00:00:07,180
+00:00:03,500 --> 00:00:06,849
 Warum soll jeder Rechner dieselben
 Pakete aus dem Internet laden?
 
 3
-00:00:07,830 --> 00:00:10,993
+00:00:07,499 --> 00:00:10,585
 Cache & Carry speichert sie
 zentral in deinem Netzwerk.
 
 4
-00:00:11,093 --> 00:00:13,828
+00:00:10,685 --> 00:00:13,741
 Einmal herunterladen. Danach lokal nutzen.
 
 5
-00:00:14,500 --> 00:00:18,112
+00:00:14,391 --> 00:00:18,457
 Dein eigener LAN-Cache. Open
 Source und kostenlos auf GitHub.

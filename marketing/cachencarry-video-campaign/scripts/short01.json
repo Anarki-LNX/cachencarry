@@ -4,6 +4,7 @@
  "scenes": [
   {
    "id": "hook",
+   "style": "intro",
    "lead": 0.25,
    "min": 3.2,
    "lines": [
@@ -15,8 +16,9 @@
   },
   {
    "id": "problem",
+   "style": "intro",
    "lead": 0.3,
-   "min": 4.3,
+   "min": 3.95,
    "lines": [
     {
      "de": "Warum soll jeder Rechner dieselben Pakete aus dem Internet laden?",
@@ -26,6 +28,7 @@
   },
   {
    "id": "solution",
+   "style": "product",
    "lead": 0.3,
    "min": 6.67,
    "lines": [
@@ -41,6 +44,7 @@
   },
   {
    "id": "end",
+   "style": "cta",
    "lead": 0.3,
    "min": 6.07,
    "tail": 2.3,

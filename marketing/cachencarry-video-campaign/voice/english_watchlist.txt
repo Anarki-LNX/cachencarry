@@ -1,0 +1,15 @@
+# Common English tech and marketing words. voice_qa.py warns when one of them
+# appears in a spoken text and is neither in the pronunciation dictionary nor
+# in "as_is". One word per line, lower case. Extend freely.
+access account admin agent alert android api app apps backend backup beta blog bot browser bug build bundle
+cache chat check cli client clients cloud cluster code commit compose config container cookie core crash
+dashboard data debug deploy desktop dev device docker docs domain download driver drop editor email engine
+feature feed file firewall flag framework frontend gateway git github gitlab google hardware hash header health
+healthcheck host hosting hub image install interface issue java javascript job kernel key kubernetes lab layout
+link live load local log login logs mail manager master merge mesh mirror mobile mode monitor mount network
+nginx node npm online open package pacman patch pipeline plugin podman pool port post preview proxy pull push
+python queue random raspberry readme registry release remote repo repository request reset router runtime rust
+safe sandbox screen script sdk search security self server service session setup share shell smart snapshot
+software source sprint stack star start status storage stream sudo support switch sync system tag task team
+terminal test thread token tool traffic trigger tutorial ubuntu update updates upgrade upload user video view
+virtual vpn web webhook wifi window windows workflow worker workspace

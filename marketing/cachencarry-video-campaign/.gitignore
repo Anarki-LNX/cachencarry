@@ -10,3 +10,4 @@ work/
 final/**/*.mp4
 *.onnx
 project/public/audio/
+research/samples/pron/

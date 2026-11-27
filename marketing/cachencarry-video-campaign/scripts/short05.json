@@ -4,6 +4,7 @@
  "scenes": [
   {
    "id": "hook",
+   "style": "intro",
    "lead": 0.25,
    "min": 2.1,
    "lines": [
@@ -15,6 +16,7 @@
   },
   {
    "id": "free",
+   "style": "product",
    "lead": 0.5,
    "min": 6.0,
    "lines": [
@@ -24,15 +26,16 @@
     },
     {
      "de": "Open Source unter Apache 2.0.",
-     "say": "Open Source unter Äpätschi zwei Punkt null.",
+     "tts": "Open Source unter Apache zwei Punkt null.",
      "en": "Open source under Apache 2.0."
     }
    ]
   },
   {
    "id": "control",
+   "style": "product",
    "lead": 0.3,
-   "min": 7.8,
+   "min": 7.6,
    "lines": [
     {
      "de": "Du betreibst sie selbst in deinem Netzwerk und behältst die Kontrolle.",
@@ -46,6 +49,7 @@
   },
   {
    "id": "end",
+   "style": "cta",
    "lead": 0.3,
    "min": 5,
    "tail": 2.0,

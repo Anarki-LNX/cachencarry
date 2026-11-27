@@ -1,0 +1,280 @@
+# Pronunciation dictionary for the German voice-over (Piper, thorsten-high).
+#
+# Applied ONLY to the spoken text, right before the speech engine
+# (pipeline/voice.py, to_tts). Never to subtitles, on-screen text or documents.
+#
+#   term      display form (correct spelling)
+#   match     optional regex; default: the term as a whole word, case-sensitive
+#             (a hyphen counts as a word border, so "HIT-Einträge" matches HIT)
+#   spoken    what the engine gets: a German respelling, or IPA in [[ ]]
+#             (Piper hands [[ ]] straight to the model, no eSpeak guessing)
+#   language  en = English pronunciation, de = German pronunciation
+#   class     brand, product, software, tech, abbrev, english, path
+#   test      pipeline/pron_test.py with thorsten-high, whisper small, 3 carrier
+#             sentences (voice/pron_test_report_runde1.md and _runde2.md).
+#             Whisper only checks intelligibility. Listening decides.
+#
+# Order matters: longer terms first. Add project-specific terms at the end of
+# their group. Words that are tested and fine as written go to "as_is".
+
+version: 1
+voice: de_DE-thorsten-high
+
+pronunciations:
+  # ---- brand and product
+  - term: cachencarry
+    spoken: "Käsch en Kärri"
+    language: en
+    class: product
+    notes: service and user name, spoken like the brand
+    test: 2/3
+  - term: Cache & Carry
+    spoken: "Käsch and Kärri"
+    language: en
+    class: brand
+    test: "7/8 in four real sentences (Käsch änd Kärri 4/8, IPA 1/8)"
+  - term: Cache
+    match: "Cache"
+    spoken: "Käsch"
+    language: en
+    class: tech
+    notes: also inside words (X-Cache, Cache-Module, Cachegröße)
+    test: 3/3
+  - term: cache
+    match: "cache(?!n)"
+    spoken: "käsch"
+    language: en
+    class: tech
+    notes: lower case inside compounds (Paketcache, LAN-Cache)
+  - term: GitHub
+    spoken: "Gitt-Hab"
+    language: en
+    class: brand
+    test: "3/3 (IPA 1/3 and 2/3)"
+  - term: Open Source
+    spoken: "[[ˈoːpən zˈɔːɐs]]"
+    language: en
+    class: english
+    test: "3/3 (written as is 1/3)"
+  - term: Homelab
+    spoken: "[[hˈoːmlɛp]]"
+    language: en
+    class: english
+    test: "3/3 (Hohmläb 0/3)"
+  - term: Live-Traffic
+    spoken: "Leif Träffick"
+    language: en
+    class: english
+    test: 3/3
+  - term: Healthcheck
+    spoken: "[[hˈɛlθtʃɛk]]"
+    language: en
+    class: tech
+    test: "3/3 (round 2)"
+  - term: Download
+    spoken: "Daunlohd"
+    language: en
+    class: english
+    test: "3/3 (as is 1/3 and 2/3)"
+  - term: HIT
+    spoken: "Hitt"
+    language: en
+    class: product
+    notes: dashboard status, short word, hard for whisper in isolation
+    test: "2/3 (round 2)"
+  - term: MISS
+    spoken: "Miss"
+    language: en
+    class: product
+    test: "2/3 (round 2)"
+
+  # ---- operating systems and software
+  - term: Arch Linux
+    spoken: "[[ˈaːɐtʃ]] Linux"
+    language: en
+    class: software
+    test: "2/3 (Ahrtsch 0/3)"
+  - term: Arch
+    spoken: "[[ˈaːɐtʃ]]"
+    language: en
+    class: software
+  - term: CachyOS
+    spoken: "Kätschi O S"
+    language: en
+    class: software
+    test: "3/3 (IPA 0/3)"
+  - term: Debian
+    spoken: "[[dˈeːbi̯aːn]]"
+    language: de
+    class: software
+    test: "2/3 (Debbian 1/3)"
+  - term: Ubuntu
+    spoken: "Ubbuntu"
+    language: de
+    class: software
+    test: "2/3 (as is 1/3)"
+  - term: Pacman
+    spoken: "[[pˈɛkmɛn]]"
+    language: en
+    class: software
+    test: "3/3 (Päckmän 1/3)"
+  - term: Apache
+    spoken: "Apätschi"
+    language: en
+    class: software
+    test: "2/3 (round 2)"
+  - term: systemctl
+    spoken: "System C-T-L"
+    language: de
+    class: software
+    test: 1/3
+  - term: journalctl
+    spoken: "Journal C T L"
+    language: de
+    class: software
+    test: 1/3
+  - term: systemd
+    spoken: "System Dee"
+    language: en
+    class: software
+    test: "2/3 (System D 1/3)"
+  - term: sudo
+    spoken: "Sudu"
+    language: en
+    class: software
+    test: "1/3 (whisper hears German z, best of 6)"
+  - term: curl
+    spoken: "[[kˈœɾl]]"
+    language: en
+    class: software
+    test: "2/3 (Körl 1/3)"
+  - term: Signed-By
+    spoken: "[[sˈaɪnt bˈaɪ]]"
+    language: en
+    class: tech
+    notes: apt option, whisper hears "Standby" or "sein bei"
+    test: 1/3
+  - term: Nesting
+    spoken: "Nesting"
+    language: en
+    class: tech
+    test: 1/3
+
+  # ---- tech terms
+  - term: Clients
+    spoken: "[[klˈaɪɛnts]]"
+    language: en
+    class: tech
+    notes: Kleijents is heard as German "Klient"
+    test: 2/3
+  - term: Client
+    spoken: "[[klˈaɪɛnt]]"
+    language: en
+    class: tech
+    test: 1/3
+  - term: CLIENTS
+    spoken: "[[klˈaɪɛnts]]"
+    language: en
+    class: path
+    notes: file name CLIENTS.md
+  - term: APT
+    spoken: "A P T"
+    language: de
+    class: abbrev
+    test: 2/3
+  - term: LXC
+    spoken: "L X C"
+    language: de
+    class: abbrev
+    test: 3/3
+  - term: LAN
+    spoken: "Lan"
+    language: de
+    class: abbrev
+    notes: German [laːn], whisper writes "Land" or "Lahn"
+  - term: RAM
+    spoken: "Ramm"
+    language: de
+    class: abbrev
+    test: 2/3
+  - term: amd64
+    spoken: "A M D 64"
+    language: de
+    class: abbrev
+  - term: SHA-256
+    spoken: "Scha 256"
+    language: de
+    class: abbrev
+    test: 2/3
+  - term: Megabyte
+    spoken: "[[mˈeːɡabaɪt]]"
+    language: de
+    class: tech
+    test: "2/3 (as written 1/3)"
+  - term: Mebibyte
+    spoken: "[[mˈeːbibaɪt]]"
+    language: de
+    class: tech
+    notes: correct pronunciation, whisper does not know the word
+  - term: Bytes
+    spoken: "[[bˈaɪts]]"
+    language: en
+    class: tech
+  - term: Logs
+    spoken: "[[lˈɔks]]"
+    language: en
+    class: tech
+    test: 2/3
+  - term: yaml
+    spoken: "Jammel"
+    language: en
+    class: path
+  - term: etc
+    spoken: "E T C"
+    language: de
+    class: path
+  - term: docs
+    spoken: "[[dˈɔks]]"
+    language: en
+    class: path
+    test: 2/3
+
+# Tested and fine as written (no change needed).
+as_is:
+  - Dashboard      # 3/3, every respelling and IPA worse
+  - Proxmox        # 3/3
+  - Repository     # 3/3
+  - Release        # 2/3
+  - Token          # 3/3
+  - update         # 3/3
+  - Updates        # 2/3
+  - Gigabyte       # 3/3
+  - IP             # 2/3
+  - PC             # 2/3
+  - config         # spoken "Konfig", correct
+  - Browser        # 3/3
+  - Server
+  - Container
+  - Software       # 3/3
+  - Hardware
+  - Internet       # 3/3
+  - Linux          # 3/3
+  - Video          # 3/3
+  - Tutorial       # 3/3
+  - Port
+  - Host           # 3/3
+  - System
+  - user           # /usr is read as "user"
+  - local
+  - bin
+  - var
+  - lib
+  - M
+  - D
+  - ok
+  - X
+  - Punkt
+  - leer           # German words the heuristic flags
+  - deshalb
+  - Archiv
+  - Adresse

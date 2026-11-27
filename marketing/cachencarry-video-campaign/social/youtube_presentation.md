@@ -44,12 +44,12 @@ Wenn du es ausprobierst: Lass einen Stern auf GitHub da, teile das Projekt und s
 ## Kapitel
 
 0:00 Das Problem: dieselben Downloads, immer wieder
-0:12 Die Idee: ein Paketlager für dein Netzwerk
-0:24 Das ist Cache & Carry
-0:39 HIT und MISS
-0:56 Ein Download für mehrere Rechner
-1:12 Für dein Homelab
-1:27 Open Source auf GitHub
+0:10 Die Idee: ein Paketlager für dein Netzwerk
+0:20 Das ist Cache & Carry
+0:32 HIT und MISS
+0:43 Ein Download für mehrere Rechner
+1:00 Für dein Homelab
+1:13 Open Source auf GitHub
 
 ## Schlagwörter (Tags)
 

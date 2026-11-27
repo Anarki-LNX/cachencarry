@@ -1,23 +1,23 @@
 1
-00:00:00,250 --> 00:00:02,734
+00:00:00,250 --> 00:00:02,929
 Zwei Wörter. Ein ganzes
 Netzwerk schneller.
 
 2
-00:00:03,700 --> 00:00:06,772
+00:00:03,700 --> 00:00:07,364
 MISS bedeutet: Das Paket muss
 noch aus dem Internet kommen.
 
 3
-00:00:09,700 --> 00:00:12,276
+00:00:09,700 --> 00:00:12,950
 HIT bedeutet: Es liegt
 bereits in deinem Cache.
 
 4
-00:00:12,376 --> 00:00:15,034
+00:00:13,050 --> 00:00:15,971
 Und genau das macht Cache
 & Carry so praktisch.
 
 5
-00:00:16,070 --> 00:00:18,836
+00:00:16,621 --> 00:00:19,194
 Probier es selbst. Open Source auf GitHub.

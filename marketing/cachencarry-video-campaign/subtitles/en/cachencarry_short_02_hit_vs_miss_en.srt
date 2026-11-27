@@ -1,21 +1,21 @@
 1
-00:00:00,250 --> 00:00:02,734
+00:00:00,250 --> 00:00:02,929
 Two words. A whole network, faster.
 
 2
-00:00:03,700 --> 00:00:06,772
+00:00:03,700 --> 00:00:07,364
 MISS means the package still
 has to come from the mirror.
 
 3
-00:00:09,700 --> 00:00:12,276
+00:00:09,700 --> 00:00:12,950
 HIT means it is already in your cache.
 
 4
-00:00:12,376 --> 00:00:15,034
+00:00:13,050 --> 00:00:15,971
 And that is exactly what
 makes Cache & Carry so handy.
 
 5
-00:00:16,070 --> 00:00:18,836
+00:00:16,621 --> 00:00:19,194
 Try it yourself. Open source on GitHub.

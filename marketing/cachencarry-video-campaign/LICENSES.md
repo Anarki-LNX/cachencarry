@@ -22,17 +22,20 @@ Cloud-Sprachdienste verwendet.
 | Was | Herkunft | Lizenz / Rechte |
 |---|---|---|
 | Sprecher (Deutsch) | lokal erzeugt mit Piper TTS 1.8.0 (`piper-tts`, OHF-Voice/piper1-gpl) | Programm: GPL-3.0-or-later. Die erzeugten Audiodateien sind Ausgaben des Programms und fallen nicht unter die GPL |
-| Stimme | `de_DE-thorsten-high` aus `rhasspy/piper-voices` (Hugging Face), auf Wunsch des Nutzers | Modellkarte: Datensatz Thorsten-Voice, **CC0**. Training: feinabgestimmt vom englischen Modell „lessac“ (high), siehe Hinweis unten |
+| Stimme | `de_DE-thorsten-high` aus `rhasspy/piper-voices` (Hugging Face), **vom Nutzer gewählt** (27.11.2026) | Daten Thorsten-Voice **CC0**. Modell laut Modellkarte **feinabgestimmt vom englischen lessac (high)**, siehe Hinweis unten |
 | Musik und Soundeffekte | synthetisiert mit numpy/scipy in `pipeline/music.py` (Pad, Bass, Arpeggio, Drums, Whoosh, Impact, HIT-Klang, MISS-Klang, Tastenklicks) | eigene Komposition, keine Samples |
 
-Hinweis zur Stimme: Die erste Fassung nutzte `de_DE-thorsten-medium`, deren
-Kette laut Modellkarte vollständig CC0 ist (Thorsten-Voice, Basismodell „rdh“).
-Der Nutzer hat danach ausdrücklich `de_DE-thorsten-high` gewählt. Deren
-Datensatz ist ebenfalls CC0, das Modell ist aber laut Modellkarte vom
-englischen „lessac“-Modell abgeleitet. Der lessac-Datensatz hat eigene
-Lizenzbedingungen. Vor einer kommerziellen Nutzung diese Kette prüfen. Die
-Medium-Stimme liegt weiter in `tools/voices/`, ein Wechsel ist eine Zeile in
-`pipeline/voice.py` (`MODEL`).
+Hinweis zur Stimme: thorsten-high ist vom Modell „lessac“ abgeleitet. Lessac
+wurde mit den Blizzard-2013-Daten der Universität Edinburgh trainiert, deren
+Lizenz nur Forschung erlaubt. Ob das auch für abgeleitete Modelle und deren
+Audioausgaben gilt, ist nicht geklärt. Für veröffentlichte Videos ist das ein
+Risiko. Der Nutzer kennt es und hat High trotzdem gewählt. Vor einer
+Veröffentlichung sollte er es bewusst entscheiden (keine Rechtsberatung).
+Gleich gute Alternativen mit eindeutig freier Lizenz stehen in
+[research/tts-vergleich.md](research/tts-vergleich.md). Ein Wechsel ist eine
+Zeile in `voice/voice.yaml`. Fassungen mit anderen Stimmen liegen als Archiv in
+`final/de-thorsten-medium/` (CC0-Kette) und `final/de-thorsten-high/` (erste
+High-Fassung ohne die neue Pipeline).
 
 Im Video steht auf jeder Endkarte „Sprecherstimme synthetisch (Piper TTS)“,
 in allen Beschreibungen ebenfalls.

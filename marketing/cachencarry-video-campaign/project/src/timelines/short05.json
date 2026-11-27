@@ -11,7 +11,7 @@
     {
      "file": "vo/short05/01.wav",
      "start": 8,
-     "frames": 35,
+     "frames": 32,
      "de": "Und was kostet das?",
      "en": "And what does it cost?"
     }
@@ -20,19 +20,19 @@
   {
    "id": "free",
    "start": 63,
-   "frames": 180,
+   "frames": 185,
    "lines": [
     {
      "file": "vo/short05/02.wav",
      "start": 15,
-     "frames": 59,
+     "frames": 72,
      "de": "Die Software? Kostenlos auf GitHub.",
      "en": "The software? Free on GitHub."
     },
     {
      "file": "vo/short05/03.wav",
-     "start": 84,
-     "frames": 68,
+     "start": 97,
+     "frames": 70,
      "de": "Open Source unter Apache 2.0.",
      "en": "Open source under Apache 2.0."
     }
@@ -40,20 +40,20 @@
   },
   {
    "id": "control",
-   "start": 243,
-   "frames": 234,
+   "start": 248,
+   "frames": 228,
    "lines": [
     {
      "file": "vo/short05/04.wav",
      "start": 9,
-     "frames": 100,
+     "frames": 94,
      "de": "Du betreibst sie selbst in deinem Netzwerk und behältst die Kontrolle.",
      "en": "You run it yourself on your network and stay in control."
     },
     {
      "file": "vo/short05/05.wav",
-     "start": 120,
-     "frames": 83,
+     "start": 113,
+     "frames": 84,
      "de": "Nur Hardware und Strom für deinen Server bringst du selbst mit.",
      "en": "You only bring the hardware and power for your server."
     }
@@ -61,13 +61,13 @@
   },
   {
    "id": "end",
-   "start": 477,
-   "frames": 158,
+   "start": 476,
+   "frames": 159,
    "lines": [
     {
      "file": "vo/short05/06.wav",
      "start": 9,
-     "frames": 89,
+     "frames": 90,
      "de": "Gib dem Repository einen Stern und probier es aus.",
      "en": "Star the repository and try it out."
     }

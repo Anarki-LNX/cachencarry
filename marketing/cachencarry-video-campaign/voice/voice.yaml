@@ -1,0 +1,35 @@
+# Voice settings for pipeline/voice.py. One place to change the voice.
+# Piper defaults of thorsten-high: noise_scale 0.667, noise_w_scale 0.8.
+
+model: tools/voices/de_DE-thorsten-high.onnx
+dictionary: voice/pronunciation_dictionary.yaml
+
+# Delivery per scene ("style" in the script, per scene or per line).
+#   length_scale   tempo (1.0 = model default, higher = slower). No time stretching:
+#                  Piper speaks the phonemes slower or faster itself.
+#   noise_scale    liveliness of the voice (lower = calmer, more even)
+#   noise_w_scale  variation of the phoneme lengths (rhythm)
+#   sentence_pause pause between sentences inside one line, in seconds
+styles:
+  neutral:  {length_scale: 1.00, noise_scale: 0.667, noise_w_scale: 0.80, sentence_pause: 0.28}
+  intro:    {length_scale: 1.00, noise_scale: 0.700, noise_w_scale: 0.85, sentence_pause: 0.30}  # warm, engaging
+  product:  {length_scale: 0.97, noise_scale: 0.720, noise_w_scale: 0.85, sentence_pause: 0.24}  # confident, a little more energy
+  tech:     {length_scale: 1.02, noise_scale: 0.600, noise_w_scale: 0.75, sentence_pause: 0.28}  # calm, precise
+  tutorial: {length_scale: 1.04, noise_scale: 0.600, noise_w_scale: 0.75, sentence_pause: 0.30}  # clear, patient
+  cta:      {length_scale: 0.99, noise_scale: 0.700, noise_w_scale: 0.85, sentence_pause: 0.26}  # friendly, motivating
+
+# Gentle mastering of every line (ffmpeg). No pitch shift, no time stretching.
+master:
+  sample_rate: 48000          # soxr resampling from the model's 22 050 Hz
+  highpass_hz: 70             # removes rumble below the voice
+  eq:                         # parametric, gain in dB, width in octaves
+    - {f: 220, g: -1.5, w: 1.0}    # less boxiness
+    - {f: 3200, g: 1.5, w: 1.2}    # presence, intelligibility
+  deesser: 0.35               # intensity 0..1, only acts on sharp s sounds
+  compressor: {threshold_db: -20, ratio: 2.0, attack_ms: 10, release_ms: 150}
+  speech_rms_db: -20          # every line to the same speech level
+  peak: 0.89                  # never above this (no clipping)
+  fade_in_ms: 8
+  fade_out_ms: 40
+  trim_before_ms: 30
+  trim_after_ms: 100

@@ -1,0 +1,378 @@
+# Candidates for the pronunciation test (pipeline/pron_test.py).
+# term: display form. accept: regex on the lower-case whisper output that
+# counts as correct (homophones like "cash" for "cache" are accepted, because
+# whisper cannot hear the difference). Candidates in [[ ]] are IPA for Piper.
+- term: Cache & Carry
+  accept: (cache|cash|käsch)\s*(&|and|und|end|en)\s*(carry|kerry|kärri)
+  cand:
+  - Käsch änd Kärri
+  - '[[kˈɛʃ ʔɛnt kˈɛɾi]]'
+  - '[[kˈæʃ ʔɛnd kˈæɾi]]'
+- term: Cache
+  accept: cache|cash|käsch
+  cand:
+  - Käsch
+  - '[[kˈɛʃ]]'
+- term: GitHub
+  accept: github
+  cand:
+  - Gitt-Hab
+  - '[[ɡˈɪthap]]'
+  - '[[ɡˈɪthʌb]]'
+- term: Dashboard
+  accept: dashboard
+  cand:
+  - Dashboard
+  - '[[dˈɛʃbɔːɐt]]'
+  - '[[dˈɛʃbɔːd]]'
+  - Däsch-Bord
+- term: Client
+  accept: client
+  cand:
+  - Kleient
+  - Klaient
+  - '[[klˈaɪɛnt]]'
+  - '[[klˈaɪənt]]'
+- term: Clients
+  accept: clients
+  cand:
+  - Kleijents
+  - '[[klˈaɪənts]]'
+  - '[[klˈaɪɛnts]]'
+- term: Proxmox
+  accept: proxmox
+  cand:
+  - Proxmox
+  - Prox Mox
+  - '[[pɾˈɔksmɔks]]'
+- term: APT
+  accept: \bapt\b|a\.? ?p\.? ?t
+  cand:
+  - A P T
+  - '[[aː peː tˈeː]]'
+- term: Pacman
+  accept: pac-?man
+  cand:
+  - Päckmän
+  - '[[pˈɛkmɛn]]'
+- term: LXC
+  accept: lxc|l x c
+  cand:
+  - L X C
+  - '[[ʔɛl ʔɪks tsˈeː]]'
+- term: HIT
+  accept: \bhit
+  cand:
+  - Hit
+  - '[[hˈɪtː]]'
+  - Hitt
+- term: MISS
+  accept: \bmiss
+  cand:
+  - Mis
+  - '[[mˈɪsː]]'
+  - Miss
+- term: Open Source
+  accept: open[ -]?source
+  cand:
+  - Open Source
+  - Oupen Sors
+  - '[[ˈoːpən zˈɔːɐs]]'
+  - '[[ˈoʊpən sˈɔːɹs]]'
+- term: Homelab
+  accept: home[ -]?lab
+  cand:
+  - Hohmläb
+  - '[[hˈoːmlɛp]]'
+  - Houm Läb
+- term: Debian
+  accept: debian
+  cand:
+  - Debbian
+  - '[[dˈeːbi̯aːn]]'
+  - Debian
+- term: Ubuntu
+  accept: ubuntu
+  cand:
+  - Ubuntu
+  - Ubbuntu
+- term: Arch Linux
+  accept: arch[ -]?linux
+  cand:
+  - Ahrtsch Linux
+  - '[[ˈaːɐtʃ]] Linux'
+- term: CachyOS
+  accept: cachy ?os|catchy ?os
+  cand:
+  - Kätschi O S
+  - '[[kˈɛtʃi ʔoː ʔˈɛs]]'
+- term: systemd
+  accept: systemd|system ?d\b|system dee
+  cand:
+  - System D
+  - System Dee
+  - '[[zʏstˈeːm dˈeː]]'
+- term: Apache
+  accept: apache
+  cand:
+  - Ä-Pätschi
+  - Apätschi
+  - '[[əpˈætʃi]]'
+  - '[[ʔɛpˈɛtʃi]]'
+- term: Repository
+  accept: repositor
+  cand:
+  - Ripositorie
+  - '[[ʁipˈɔzitɔɾi]]'
+  - Repository
+- term: Release
+  accept: release
+  cand:
+  - Release
+  - Rilies
+  - '[[ʁilˈiːs]]'
+- term: Live-Traffic
+  accept: live[ -]?traffic
+  cand:
+  - Leif Träffick
+  - '[[lˈaɪf tɾˈɛfɪk]]'
+- term: Setup-Token
+  accept: setup[ -]?token
+  cand:
+  - Settap-Token
+  - Sett-App Token
+  - '[[sˈɛtʔap tˈoːkən]]'
+- term: Token
+  accept: token
+  cand:
+  - Tohken
+  - Token
+  - '[[tˈoʊkən]]'
+- term: Healthcheck
+  accept: health[ -]?check
+  cand:
+  - Hälts-Tschek
+  - Helfs Tscheck
+  - '[[hˈɛls tʃˈɛk]]'
+  - '[[hˈɛlθtʃɛk]]'
+- term: Header
+  accept: header
+  cand:
+  - Hädder
+  - Hedda
+  - '[[hˈɛːdɐ]]'
+- term: curl
+  accept: curl
+  cand:
+  - Körl
+  - '[[kˈœɾl]]'
+  - '[[kˈœːɐl]]'
+- term: root
+  accept: root
+  cand:
+  - Ruut
+  - Ruht-Benutzer
+  - '[[ʁˈuːt]]'
+- term: Signed-By
+  accept: signed[ -]?by
+  cand:
+  - Seind Bai
+  - Sainnd-Bai
+  - '[[zˈaɪnt bˈaɪ]]'
+- term: Mirrorlist
+  accept: mirror[ -]?list
+  cand:
+  - Mirror-List
+  - Mirrorlist
+  - '[[mˈɪʁɔːɐ lˈɪst]]'
+  - Mirrer-List
+- term: update
+  accept: update
+  cand:
+  - update
+  - Apdeit
+  - '[[ˈapdeːt]]'
+- term: Nesting
+  accept: nesting
+  cand:
+  - Nessting
+  - '[[nˈɛstɪŋk]]'
+  - Nesting
+- term: sudo
+  accept: sudo
+  cand:
+  - Suudu
+  - Sudu
+  - '[[sˈuːduː]]'
+- term: Megabyte
+  accept: megabyte
+  cand:
+  - Megabyte
+  - Megabeit
+  - '[[mˈeːɡabaɪt]]'
+- term: Gigabyte
+  accept: gigabyte
+  cand:
+  - Gigabyte
+  - Gigabeit
+  - '[[ɡˈiːɡabaɪt]]'
+- term: Mebibyte
+  accept: mebibyte
+  cand:
+  - Mebibyte
+  - Mebibeit
+  - '[[mˈeːbibaɪt]]'
+- term: Bytes
+  accept: bytes
+  cand:
+  - Bytes
+  - Beits
+  - '[[bˈaɪts]]'
+- term: RAM
+  accept: \bram\b
+  cand:
+  - RAM
+  - Ramm
+  - '[[ʁˈɛm]]'
+- term: LAN
+  accept: \blan\b
+  cand:
+  - Län
+  - Lään
+  - L A N
+- term: IP
+  accept: \bip\b|i\.? ?p\.?
+  cand:
+  - IP
+  - I P
+  - '[[ʔiː pˈeː]]'
+- term: PC
+  accept: \bpc\b|p\.? ?c
+  cand:
+  - PC
+  - P C
+  - '[[peː tsˈeː]]'
+- term: amd64
+  accept: amd ?64
+  cand:
+  - A M D 64
+  - '[[ʔaː ʔɛm dˈeː]] 64'
+- term: SHA-256
+  accept: sha[ -]?256
+  cand:
+  - Scha 256
+  - S H A 256
+  - '[[ʃˈaː]] 256'
+- term: systemctl
+  accept: systemctl|system ?c ?t ?l
+  cand:
+  - System C-T-L
+  - Sistem C T L
+  - System-Ce-Te-El
+- term: journalctl
+  accept: journalctl|journal ?c ?t ?l
+  cand:
+  - Journal C T L
+  - Schurnal C T L
+  - '[[ʒʊʁnˈaːl tseː teː ʔˈɛl]]'
+- term: cachencarry
+  accept: (cache|cash)\s*(&|and|und|end|en|in)\s*(carry|kerry)
+  cand:
+  - Käsch en Kärri
+  - '[[kˈɛʃ ʔən kˈɛɾi]]'
+- term: config
+  accept: config
+  cand:
+  - config
+  - Konfig
+  - '[[kɔnfˈɪk]]'
+- term: yaml
+  accept: yaml|jamel|yammel
+  cand:
+  - yaml
+  - Jammel
+  - '[[jˈɛməl]]'
+- term: etc
+  accept: \betc\b|e\.? ?t\.? ?c
+  cand:
+  - E T C
+  - '[[ʔeː teː tsˈeː]]'
+- term: usr
+  accept: \buser\b|\busr\b
+  cand:
+  - User
+  - Juser
+  - '[[jˈuːzɐ]]'
+- term: docs
+  accept: docs|docks
+  cand:
+  - docs
+  - Docks
+  - '[[dˈɔks]]'
+- term: deb
+  accept: \bdeb\b
+  cand:
+  - deb
+  - Debb
+  - '[[dˈɛp]]'
+- term: Updates
+  accept: updates
+  cand:
+  - Updates
+  - Apdeits
+  - '[[ˈapdeːts]]'
+- term: Logs
+  accept: logs
+  cand:
+  - Logs
+  - Locks
+  - '[[lˈɔks]]'
+- term: Browser
+  accept: browser
+  cand:
+  - Browser
+- term: Server
+  accept: server
+  cand:
+  - Server
+- term: Container
+  accept: container
+  cand:
+  - Container
+- term: Software
+  accept: software
+  cand:
+  - Software
+- term: Hardware
+  accept: hardware
+  cand:
+  - Hardware
+- term: Download
+  accept: download
+  cand:
+  - Daunlohd
+  - '[[dˈaʊnloːt]]'
+  - Download
+- term: Internet
+  accept: internet
+  cand:
+  - Internet
+- term: Linux
+  accept: linux
+  cand:
+  - Linux
+- term: Video
+  accept: video
+  cand:
+  - Video
+- term: Tutorial
+  accept: tutorial
+  cand:
+  - Tutorial
+- term: Port
+  accept: port
+  cand:
+  - Port
+- term: Host
+  accept: "host"
+  cand: ["Host", "Houst", "[[hˈoːst]]"]

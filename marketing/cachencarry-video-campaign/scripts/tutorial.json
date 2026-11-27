@@ -1,10 +1,11 @@
 {
  "id": "tutorial",
  "file": "cachencarry_installation_tutorial",
- "length_scale": 1.04,
+ "style": "tutorial",
  "scenes": [
   {
    "id": "title",
+   "style": "intro",
    "chapter": 1,
    "lead": 1.6,
    "min": 9,
@@ -27,15 +28,17 @@
    "lines": [
     {
      "de": "Der erste Rechner lädt ein Paket aus dem Internet. Cache & Carry speichert es, und jeder weitere Rechner bekommt es direkt aus dem LAN.",
+     "tts": "Der erste Rechner lädt ein Paket aus dem Internet. Cache & Carry speichert es. Und jeder weitere Rechner bekommt es direkt aus dem LAN.",
      "en": "The first machine downloads a package from the Internet. Cache & Carry stores it, and every other machine gets it straight from the LAN."
     },
     {
      "de": "Unterstützt werden heute APT für Debian, Ubuntu und Proxmox sowie Pacman für Arch Linux und CachyOS.",
+     "tts": "Unterstützt werden heute APT für Debian, Ubuntu und Proxmox. Und Pacman für Arch Linux und CachyOS.",
      "en": "Supported today: APT for Debian, Ubuntu and Proxmox, and Pacman for Arch Linux and CachyOS."
     },
     {
      "de": "Die Hardware darf klein sein: Ein Kern und 256 MB RAM sind das Minimum, mit zwei Kernen und einem GB läuft es komfortabel. Dazu Speicherplatz für alles, was im Cache landen soll.",
-     "say": "Die Hardware darf klein sein: Ein Kern und 256 Megabeit RAM sind das Minimum, mit zwei Kernen und einem Gigabeit läuft es komfortabel. Dazu Speicherplatz für alles, was im Käsch landen soll.",
+     "tts": "Die Hardware darf klein sein. Ein Kern und 256 Megabyte RAM sind das Minimum. Mit zwei Kernen und einem Gigabyte läuft es komfortabel. Dazu kommt Speicherplatz für alles, was im Cache landen soll.",
      "en": "The hardware can be small: one core and 256 MB of RAM are the minimum, two cores and one GB are comfortable. Plus disk space for everything you want to cache."
     },
     {
@@ -52,17 +55,17 @@
    "lines": [
     {
      "de": "Wir nehmen den empfohlenen Weg: einen unprivilegierten Debian 13 Container auf Proxmox. Ein normaler Server mit Debian oder Ubuntu und systemd funktioniert genauso.",
-     "say": "Wir nehmen den empfohlenen Weg: einen unprivilegierten Debbian dreizehn Container auf Proxmox. Ein normaler Server mit Debbian oder Ubuntu und System D funktioniert genauso.",
+     "tts": "Wir nehmen den empfohlenen Weg: einen unprivilegierten Debian dreizehn Container auf Proxmox. Ein normaler Server mit Debian oder Ubuntu und systemd funktioniert genauso.",
      "en": "We take the recommended route: an unprivileged Debian 13 container on Proxmox. A normal Debian or Ubuntu server with systemd works the same way."
     },
     {
      "de": "Auf dem Proxmox-Host legen wir den Container an: zwei Kerne, ein GB RAM, acht GB Speicher und eine feste IP-Adresse.",
-     "say": "Auf dem Proxmox Host legen wir den Container an: zwei Kerne, ein Gigabeit RAM, acht Gigabeit Speicher und eine feste I P Adresse.",
+     "tts": "Auf dem Proxmox Host legen wir den Container an: zwei Kerne, ein Gigabyte RAM, acht Gigabyte Speicher und eine feste IP-Adresse.",
      "en": "On the Proxmox host we create the container: two cores, one GB of RAM, eight GB of storage and a fixed IP address."
     },
     {
      "de": "Proxmox warnt, dass systemd 257 eventuell Nesting braucht. Für Cache & Carry ist das nicht nötig: Der Dienst wurde genau so ohne Nesting getestet.",
-     "say": "Proxmox warnt, dass System D zweihundertsiebenundfünfzig eventuell Nesting braucht. Für Käsch änd Kärri ist das nicht nötig: Der Dienst wurde genau so ohne Nesting getestet.",
+     "tts": "Proxmox warnt, dass systemd zweihundertsiebenundfünfzig eventuell Nesting braucht. Für Cache & Carry ist das nicht nötig. Der Dienst wurde genau so getestet, ohne Nesting.",
      "en": "Proxmox warns that systemd 257 may need nesting. Cache & Carry does not: the service was tested exactly like this, without nesting."
     }
    ]
@@ -75,17 +78,17 @@
    "lines": [
     {
      "de": "In der Konsole des Containers prüfen wir das System: Debian 13, Architektur amd64. Danach richtet sich das Release-Archiv.",
-     "say": "In der Konsole des Containers prüfen wir das System: Debbian dreizehn, Architektur A M D 64. Danach richtet sich das Release Archiv.",
+     "tts": "In der Konsole des Containers prüfen wir das System: Debian dreizehn, Architektur amd64. Danach richtet sich das Release-Archiv.",
      "en": "In the container's console we check the system: Debian 13, architecture amd64. That decides which release archive we need."
     },
     {
      "de": "Die Adresse 192.168.1.41 brauchen wir später für die Clients. Zwei Kerne, ein GB RAM, und unter /var/lib ist genug Platz für den Cache.",
-     "say": "Die Adresse 192 168 1 41 brauchen wir später für die Kleients. Zwei Kerne, ein Gigabeit RAM, und unter var lib ist genug Platz für den Käsch.",
+     "tts": "Die Adresse 192 Punkt 168 Punkt 1 Punkt 41 brauchen wir später für die Clients. Zwei Kerne, ein Gigabyte RAM. Und unter var lib ist genug Platz für den Cache.",
      "en": "We will need the address 192.168.1.41 for the clients later. Two cores, one GB of RAM, and enough space for the cache under /var/lib."
     },
     {
      "de": "Wir arbeiten hier als root. Auf einem normalen Server stellst du den Installationsbefehlen sudo voran.",
-     "say": "Wir arbeiten hier als Ruht. Auf einem normalen Server stellst du den Installationsbefehlen sudo voran.",
+     "tts": "Wir arbeiten hier mit Administratorrechten. Auf einem normalen Server stellst du den Installationsbefehlen sudo voran.",
      "en": "We work as root here. On a normal server, put sudo in front of the install commands."
     }
    ]
@@ -94,21 +97,21 @@
    "id": "download",
    "chapter": 3,
    "lead": 2.0,
-   "min": 21,
+   "min": 20.63,
    "lines": [
     {
      "de": "Jetzt laden wir das offizielle Release 0.2.1 von GitHub herunter und dazu die Datei mit den Prüfsummen.",
-     "say": "Jetzt laden wir das offizielle Release null Punkt zwei Punkt eins von Gitt Habb herunter und dazu die Datei mit den Prüfsummen.",
+     "tts": "Jetzt laden wir das offizielle Release null Punkt zwei Punkt eins von GitHub herunter und dazu die Datei mit den Prüfsummen.",
      "en": "Now we download the official release 0.2.1 from GitHub, together with the checksum file."
     },
     {
      "de": "sha256sum bestätigt: Das Archiv ist unverändert.",
-     "say": "Scha 256 Summe bestätigt: Das Archiv ist unverändert.",
+     "tts": "SHA-256-Summe bestätigt: Das Archiv ist unverändert.",
      "en": "sha256sum confirms: the archive is unchanged."
     },
     {
      "de": "Wir entpacken es. Darin sind das Programm, die systemd-Unit, eine Beispielkonfiguration und das Installationsskript.",
-     "say": "Wir entpacken es. Darin sind das Programm, die System D Unit, eine Beispielkonfiguration und das Installationsskript.",
+     "tts": "Wir entpacken es. Darin sind das Programm, die systemd-Unit, eine Beispielkonfiguration und das Installationsskript.",
      "en": "We unpack it. It contains the program, the systemd unit, an example configuration and the install script."
     }
    ]
@@ -117,16 +120,16 @@
    "id": "install",
    "chapter": 3,
    "lead": 0.4,
-   "min": 14,
+   "min": 12.93,
    "lines": [
     {
      "de": "Das Skript legt den Systembenutzer cachencarry an, installiert das Programm nach /usr/local/bin und erzeugt /etc/cachencarry und /var/lib/cachencarry.",
-     "say": "Das Skript legt den Systembenutzer Käsch en Kärri an, installiert das Programm nach user local bin und erzeugt die Ordner für Konfiguration und Daten.",
+     "tts": "Das Skript legt den Systembenutzer cachencarry an, installiert das Programm nach user local bin und erzeugt die Ordner für Konfiguration und Daten.",
      "en": "The script creates the system user cachencarry, installs the program to /usr/local/bin and creates /etc/cachencarry and /var/lib/cachencarry."
     },
     {
      "de": "Dann prüft es die Konfiguration und startet den gehärteten systemd-Dienst.",
-     "say": "Dann prüft es die Konfiguration und startet den gehärteten System D Dienst.",
+     "tts": "Dann prüft es die Konfiguration und startet den gehärteten systemd-Dienst.",
      "en": "Then it checks the configuration and starts the hardened systemd service."
     }
    ]
@@ -135,11 +138,11 @@
    "id": "status",
    "chapter": 3,
    "lead": 0.4,
-   "min": 7.83,
+   "min": 7.17,
    "lines": [
     {
      "de": "systemctl zeigt: Der Dienst cachencarry ist aktiv und läuft. Der Healthcheck antwortet mit ok.",
-     "say": "System C T L zeigt: Der Dienst Käsch en Kärri ist aktiv und läuft. Der Health Check antwortet mit O K.",
+     "tts": "systemctl zeigt: Der Dienst cachencarry ist aktiv und läuft. Der Healthcheck antwortet mit ok.",
      "en": "systemctl shows: the cachencarry service is active and running. The health check answers ok."
     }
    ]
@@ -152,12 +155,12 @@
    "lines": [
     {
      "de": "Öffne jetzt im Browser die Adresse des Servers mit Port 8080.",
-     "say": "Öffne jetzt im Browser die Adresse des Servers mit Port achttausendachtzig.",
+     "tts": "Öffne jetzt im Browser die Adresse des Servers mit Port achttausendachtzig.",
      "en": "Now open the server's address on port 8080 in your browser."
     },
     {
      "de": "Beim ersten Aufruf legst du das Administratorkonto an. Damit das nur kann, wer Zugriff auf den Server hat, fragt die Einrichtung nach einem einmaligen Setup-Token.",
-     "say": "Beim ersten Aufruf legst du das Administratorkonto an. Damit das nur kann, wer Zugriff auf den Server hat, fragt die Einrichtung nach einem einmaligen Setapp Tohken.",
+     "tts": "Beim ersten Aufruf legst du das Administratorkonto an. Damit das nur kann, wer Zugriff auf den Server hat, fragt die Einrichtung nach einem einmaligen Token für die Einrichtung.",
      "en": "On the first visit you create the administrator account. So that only someone with access to the server can do this, setup asks for a one-time setup token."
     }
    ]
@@ -170,7 +173,7 @@
    "lines": [
     {
      "de": "Das Token liest du auf dem Server mit diesem Befehl aus. Im Video ist es unkenntlich gemacht.",
-     "say": "Das Tohken liest du auf dem Server mit diesem Befehl aus. Im Video ist es unkenntlich gemacht.",
+     "tts": "Das Token liest du auf dem Server mit diesem Befehl aus. Im Video ist es unkenntlich gemacht.",
      "en": "You read the token on the server with this command. It is blurred in this video."
     }
    ]
@@ -183,7 +186,7 @@
    "lines": [
     {
      "de": "Benutzername, ein Passwort mit mindestens zehn Zeichen, das Token einfügen, und Konto anlegen.",
-     "say": "Benutzername, ein Passwort mit mindestens zehn Zeichen, das Tohken einfügen, und Konto anlegen.",
+     "tts": "Benutzername, ein Passwort mit mindestens zehn Zeichen, das Token einfügen, und Konto anlegen.",
      "en": "User name, a password with at least ten characters, paste the token, and create the account."
     },
     {
@@ -197,11 +200,11 @@
    "id": "client",
    "chapter": 5,
    "lead": 2.0,
-   "min": 8.43,
+   "min": 8.2,
    "lines": [
     {
      "de": "Jetzt der erste Client, ein Debian 13 Rechner. Hier siehst du seine originale Paketquelle.",
-     "say": "Jetzt der erste Kleient, ein Debbian dreizehn Rechner. Hier siehst du seine originale Paketquelle.",
+     "tts": "Jetzt der erste Client, ein Debian dreizehn Rechner. Hier siehst du seine originale Paketquelle.",
      "en": "Now the first client, a Debian 13 machine. Here you see its original package source."
     }
    ]
@@ -210,16 +213,16 @@
    "id": "sources",
    "chapter": 5,
    "lead": 0.3,
-   "min": 19.63,
+   "min": 19.33,
    "lines": [
     {
      "de": "Wir sichern die Datei und ersetzen sie durch die Variante aus der Dokumentation. Statt deb.debian.org steht dort der Cache mit Port 8080 und dem Pfad apt/debian.",
-     "say": "Wir sichern die Datei und ersetzen sie durch die Variante aus der Dokumentation. Statt deb Punkt debian Punkt org steht dort der Käsch mit Port achttausendachtzig und dem Pfad A P T Debbian.",
+     "tts": "Wir sichern die Datei und ersetzen sie durch die Variante aus der Dokumentation. Statt des offiziellen Debian-Servers steht dort der Cache mit Port achttausendachtzig und dem Pfad APT Debian.",
      "en": "We back up the file and replace it with the version from the documentation. Instead of deb.debian.org it points to the cache on port 8080 with the path apt/debian."
     },
     {
      "de": "Die Zeile Signed-By bleibt. apt prüft die Signaturen weiterhin selbst. Cache & Carry reicht die Dateien nur unverändert durch.",
-     "say": "Die Zeile Signed Bei bleibt. A P T prüft die Signaturen weiterhin selbst. Käsch änd Kärri reicht die Dateien nur unverändert durch.",
+     "tts": "Die Zeile Signed-By bleibt. APT prüft die Signaturen weiterhin selbst. Cache & Carry reicht die Dateien nur unverändert durch.",
      "en": "The Signed-By line stays. apt still checks the signatures itself. Cache & Carry passes the files through unchanged."
     }
    ]
@@ -244,11 +247,12 @@
    "lines": [
     {
      "de": "Jetzt apt update. Die Paketlisten kommen schon über den Cache.",
-     "say": "Jetzt A P T update. Die Paketlisten kommen schon über den Käsch.",
+     "tts": "Jetzt APT update. Die Paketlisten kommen schon über den Cache.",
      "en": "Now apt update. The package lists already come through the cache."
     },
     {
      "de": "Dann installieren wir curl. Der Cache ist noch leer, also holt Cache & Carry jedes Paket einmal vom Debian-Server im Internet. Das sind die MISS-Einträge.",
+     "tts": "Dann installieren wir curl. Der Cache ist noch leer. Also holt Cache & Carry jedes Paket einmal vom Debian-Server im Internet. Das sind die MISS-Einträge.",
      "en": "Then we install curl. The cache is still empty, so Cache & Carry fetches every package once from the Debian mirror. Those are the MISS entries."
     }
    ]
@@ -261,7 +265,7 @@
    "lines": [
     {
      "de": "Für Arch Linux und CachyOS geht es genauso über die Mirrorlist. Die Zeilen dafür stehen in docs/CLIENTS.md.",
-     "say": "Für Ahrtsch Linux und Kätschi O S geht es genauso über die Mirrerlist. Die Zeilen dafür stehen in der Datei Clients Punkt M D im Ordner docs.",
+     "tts": "Für Arch Linux und CachyOS geht es genauso über die Liste der Paketserver. Die Zeilen dafür stehen in der Datei CLIENTS Punkt M D im Ordner docs.",
      "en": "Arch Linux and CachyOS work the same way through the mirrorlist. The lines are in docs/CLIENTS.md."
     }
    ]
@@ -274,7 +278,7 @@
    "lines": [
     {
      "de": "Jetzt der spannende Teil: ein zweiter Client mit derselben Konfiguration. Er läuft hier auf demselben PC, deshalb zeigt das Dashboard dieselbe Adresse.",
-     "say": "Jetzt der spannende Teil: ein zweiter Kleient mit derselben Konfiguration. Er läuft hier auf demselben PC, deshalb zeigt das Däschbord dieselbe Adresse.",
+     "tts": "Jetzt der spannende Teil: ein zweiter Client mit derselben Konfiguration. Er läuft hier auf demselben PC, deshalb zeigt das Dashboard dieselbe Adresse.",
      "en": "Now the exciting part: a second client with the same configuration. Here it runs on the same PC, so the dashboard shows the same address."
     }
    ]
@@ -287,12 +291,12 @@
    "lines": [
     {
      "de": "apt update und dieselbe Installation.",
-     "say": "A P T update und dieselbe Installation.",
+     "tts": "APT update und dieselbe Installation.",
      "en": "apt update and the same installation."
     },
     {
      "de": "Diesmal kommt alles aus dem Cache. Beim ersten Client dauerte der Download drei Sekunden, jetzt null Sekunden, mit 252 MB pro Sekunde.",
-     "say": "Diesmal kommt alles aus dem Käsch. Beim ersten Kleient dauerte der Download drei Sekunden, jetzt null Sekunden, mit 252 Megabeit pro Sekunde.",
+     "tts": "Diesmal kommt alles aus dem Cache. Beim ersten Client dauerte der Download drei Sekunden. Jetzt null Sekunden, mit zweihundertzweiundfünfzig Megabyte pro Sekunde.",
      "en": "This time everything comes from the cache. For the first client the download took three seconds, now zero seconds, at 252 MB per second."
     }
    ]
@@ -301,11 +305,11 @@
    "id": "traffic",
    "chapter": 6,
    "lead": 0.3,
-   "min": 7.67,
+   "min": 7.07,
    "lines": [
     {
      "de": "Im Live-Traffic siehst du den Unterschied: oben die HIT-Einträge des zweiten Clients, darunter die MISS-Einträge des ersten.",
-     "say": "Im Leif Träffick siehst du den Unterschied: oben die Hitt Einträge des zweiten Kleients, darunter die Miss Einträge des ersten.",
+     "tts": "Im Live-Traffic siehst du den Unterschied: oben die HIT-Einträge des zweiten Clients, darunter die MISS-Einträge des ersten.",
      "en": "Live Traffic shows the difference: at the top the HIT entries of the second client, below them the MISS entries of the first."
     }
    ]
@@ -318,7 +322,7 @@
    "lines": [
     {
      "de": "Auf der Kommandozeile prüfst du es mit curl und dem Header X-Cache. Beim allerersten Abruf steht dort MISS, danach HIT.",
-     "say": "Auf der Kommandozeile prüfst du es mit Körl und dem Header X Käsch. Beim allerersten Abruf steht dort Miss, danach Hitt.",
+     "tts": "Auf der Kommandozeile prüfst du es mit curl und der Kopfzeile X Cache. Beim allerersten Abruf steht dort MISS, danach HIT.",
      "en": "On the command line you check it with curl and the X-Cache header. On the very first request it says MISS, afterwards HIT."
     }
    ]
@@ -327,10 +331,11 @@
    "id": "stats",
    "chapter": 6,
    "lead": 0.3,
-   "min": 7,
+   "min": 6.43,
    "lines": [
     {
      "de": "Die Statistik zählt die Bytes, die wirklich übertragen wurden: was aus dem Internet kam und was der Cache eingespart hat.",
+     "tts": "Die Statistik zählt die Bytes, die wirklich übertragen wurden. Was aus dem Internet kam. Und was der Cache eingespart hat.",
      "en": "Statistics count the bytes that were really transferred: what came from upstream and what the cache saved."
     }
    ]
@@ -339,16 +344,16 @@
    "id": "files",
    "chapter": 7,
    "lead": 2.0,
-   "min": 13.6,
+   "min": 13.33,
    "lines": [
     {
      "de": "Damit läuft dein Cache. Hier findest du alles Wichtige.",
-     "say": "Damit läuft dein Käsch. Hier findest du alles Wichtige.",
+     "tts": "Damit läuft dein Cache. Hier findest du alles Wichtige.",
      "en": "Your cache is running. Here is where to find everything."
     },
     {
      "de": "Die Konfiguration liegt in /etc/cachencarry/config.yaml, der Cache in /var/lib/cachencarry, und die Logs zeigt journalctl.",
-     "say": "Die Konfiguration liegt in der Datei config Punkt yaml unter e t c, der Käsch unter var lib, und die Logs zeigt Journal C T L.",
+     "tts": "Die Konfiguration liegt in der Datei config Punkt yaml unter etc. Der Cache liegt unter var lib. Und die Logs zeigt journalctl.",
      "en": "The configuration is in /etc/cachencarry/config.yaml, the cache in /var/lib/cachencarry, and journalctl shows the logs."
     }
    ]
@@ -361,7 +366,7 @@
    "lines": [
     {
      "de": "Im Dashboard findest du gespeicherte Pakete unter Speicher. Unter Einstellungen begrenzt du Cachegröße und Bandbreite, ohne Neustart.",
-     "say": "Im Däschbord findest du gespeicherte Pakete unter Speicher. Unter Einstellungen begrenzt du Käschgröße und Bandbreite, ohne Neustart.",
+     "tts": "Im Dashboard findest du gespeicherte Pakete unter Speicher. Unter Einstellungen begrenzt du Cachegröße und Bandbreite, ohne Neustart.",
      "en": "In the dashboard, stored packages are under Storage. Under Settings you limit cache size and bandwidth, without a restart."
     },
     {
@@ -372,6 +377,7 @@
   },
   {
    "id": "outro",
+   "style": "cta",
    "chapter": 7,
    "lead": 0.6,
    "min": 12.73,

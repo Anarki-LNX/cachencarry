@@ -4,6 +4,7 @@
  "scenes": [
   {
    "id": "hook",
+   "style": "product",
    "lead": 0.25,
    "min": 3.4,
    "lines": [
@@ -15,22 +16,26 @@
   },
   {
    "id": "miss",
+   "style": "tech",
    "lead": 0.3,
    "min": 6.0,
    "lines": [
     {
      "de": "MISS bedeutet: Das Paket muss noch aus dem Internet kommen.",
+     "tts": "MISS. Das bedeutet: Das Paket muss noch aus dem Internet kommen.",
      "en": "MISS means the package still has to come from the mirror."
     }
    ]
   },
   {
    "id": "hit",
+   "style": "tech",
    "lead": 0.3,
    "min": 6.37,
    "lines": [
     {
      "de": "HIT bedeutet: Es liegt bereits in deinem Cache.",
+     "tts": "HIT. Das bedeutet: Es liegt bereits in deinem Cache.",
      "en": "HIT means it is already in your cache."
     },
     {
@@ -41,6 +46,7 @@
   },
   {
    "id": "end",
+   "style": "cta",
    "lead": 0.3,
    "min": 4.33,
    "tail": 1.7,

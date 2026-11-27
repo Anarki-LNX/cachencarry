@@ -4,6 +4,7 @@
  "scenes": [
   {
    "id": "hook",
+   "style": "product",
    "lead": 0.25,
    "min": 4.03,
    "lines": [
@@ -15,6 +16,7 @@
   },
   {
    "id": "demo",
+   "style": "tech",
    "lead": 0.3,
    "min": 12,
    "lines": [
@@ -35,6 +37,7 @@
   },
   {
    "id": "end",
+   "style": "cta",
    "lead": 0.3,
    "min": 4.37,
    "tail": 1.7,

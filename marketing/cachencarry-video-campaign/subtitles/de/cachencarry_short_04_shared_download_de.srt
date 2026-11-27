@@ -1,23 +1,23 @@
 1
-00:00:00,250 --> 00:00:03,607
+00:00:00,250 --> 00:00:03,861
 Zehn Rechner. Dieselbe
 Datei. Nur ein Download.
 
 2
-00:00:04,330 --> 00:00:08,933
+00:00:04,511 --> 00:00:08,557
 Wenn mehrere Rechner gleichzeitig dieselbe
 Datei anfordern, die noch nicht im Cache liegt,
 
 3
-00:00:08,983 --> 00:00:12,174
+00:00:08,607 --> 00:00:11,681
 muss Cache & Carry sie nicht
 zehnmal aus dem Internet laden.
 
 4
-00:00:12,274 --> 00:00:16,289
+00:00:11,781 --> 00:00:15,610
 Ein einziger Download aus dem Internet
 versorgt alle wartenden Rechner.
 
 5
-00:00:16,939 --> 00:00:19,093
+00:00:16,511 --> 00:00:19,246
 Für dein Homelab. Open Source auf GitHub.

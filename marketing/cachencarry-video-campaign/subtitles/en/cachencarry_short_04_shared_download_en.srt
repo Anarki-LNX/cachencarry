@@ -1,23 +1,23 @@
 1
-00:00:00,250 --> 00:00:03,607
+00:00:00,250 --> 00:00:03,861
 Ten machines. The same file.
 Only one upstream download.
 
 2
-00:00:04,330 --> 00:00:08,933
+00:00:04,511 --> 00:00:08,557
 When several clients request the same
 file at once and it is not cached yet,
 
 3
-00:00:08,983 --> 00:00:12,174
+00:00:08,607 --> 00:00:11,681
 Cache & Carry does not have
 to download it ten times.
 
 4
-00:00:12,274 --> 00:00:16,289
+00:00:11,781 --> 00:00:15,610
 One upstream download serves
 every waiting client.
 
 5
-00:00:16,939 --> 00:00:19,093
+00:00:16,511 --> 00:00:19,246
 For your homelab. Open source on GitHub.

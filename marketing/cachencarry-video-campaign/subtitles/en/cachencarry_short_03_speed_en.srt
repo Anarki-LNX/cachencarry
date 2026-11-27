@@ -1,18 +1,18 @@
 1
-00:00:00,250 --> 00:00:05,285
+00:00:00,250 --> 00:00:05,669
 959 milliseconds. 9
 milliseconds. What happened?
 
 2
-00:00:05,935 --> 00:00:14,110
+00:00:06,319 --> 00:00:14,480
 In the documented test network, an 8.6 MiB package
 index took 959 milliseconds from the Internet.
 
 3
-00:00:14,210 --> 00:00:16,086
+00:00:14,580 --> 00:00:16,378
 From the cache, it took just 9.
 
 4
-00:00:17,065 --> 00:00:20,924
+00:00:17,449 --> 00:00:21,513
 That is exactly what Cache & Carry is
 for. More in the GitHub repository.

@@ -5,17 +5,22 @@
 1. **Recherche.** Repository gelesen (README, TODO, DEPLOYMENT, CLIENTS,
    ARCHITECTURE, Quellcode der Oberfläche). Jede Aussage mit Quelle steht in
    [research/faktencheck.md](research/faktencheck.md).
-2. **Skripte.** Pro Video eine Datei in `scripts/` mit deutschem Text, englischer
-   Übersetzung und, wo nötig, einer Aussprachefassung (`say`) für die
-   Sprachsynthese (z. B. „Käsch änd Kärri“, „Gitt Habb“, Zahlen ausgeschrieben).
+2. **Skripte.** Pro Video eine Datei in `scripts/` mit deutschem Anzeigetext
+   (`de`), englischer Übersetzung (`en`) und, wo nötig, einer Sprechfassung
+   (`tts`) in normaler Schreibweise: kürzere Sätze, ausgeschriebene Zahlen,
+   Pausen. Die Aussprache englischer Begriffe regelt nur die Ausspracheliste
+   `voice/pronunciation_dictionary.yaml`, Lautschrift steht nie im Skript.
 3. **Sprecher.** `pipeline/voice.py` spricht jeden Satz lokal mit Piper und der
-   Stimme Thorsten (high, vom Nutzer gewählt, siehe LICENSES.md). Wie in der
-   Vorlage `make_vo_de.py`: Stille vorn auf 30 ms und hinten auf 100 ms
-   gekürzt, Spitzenpegel 0,89, length_scale 1,0 (Tutorial 1,04). Die gemessene Länge jeder Aufnahme bestimmt
-   das Timing der Szenen. Daraus entstehen die Timeline für Remotion und die
-   SRT-Dateien (Deutsch und Englisch), exakt synchron zur Stimme. In die
-   deutsche Fassung wird nichts eingebrannt: deutscher Bildtext, deutsche
-   Stimme. Englische Fassungen entstehen getrennt.
+   Stimme Thorsten (high, vom Nutzer gewählt, Lizenzhinweis in LICENSES.md),
+   Satz für Satz mit kurzer fester Pause, im Stil der Szene (Einstieg, Produkt,
+   Technik, Tutorial, Aufruf), danach behutsam bearbeitet (Hochpass, leichter
+   EQ, De-Esser, Kompressor 2:1, gleiche Sprachlautstärke, Blenden). Die
+   gemessene Länge jeder Aufnahme bestimmt das Timing der Szenen und der
+   SRT-Dateien. `pipeline/voice_qa.py` prüft vor jedem Render Ausspracheliste,
+   Trennung von Anzeige- und Sprechtext und die Audiodateien. Details:
+   [voice/README.md](voice/README.md). In die deutsche Fassung wird nichts
+   eingebrannt: deutscher Bildtext, deutsche Stimme. Englische Fassungen
+   entstehen getrennt.
 4. **Musik.** `pipeline/music.py` synthetisiert die Musik passend zu den
    Szenengrenzen: elektronisch und ruhig für die Präsentation, sehr leise für
    das Tutorial, schneller (124 BPM) mit Drop für die Shorts. Dazu Whoosh,
