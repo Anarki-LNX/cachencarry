@@ -210,7 +210,11 @@ cmd_install() {
     info "updating Debian in the container"
     pct exec "$ctid" -- bash -ec "export DEBIAN_FRONTEND=noninteractive
         apt-get update -qq && apt-get -y -qq -o Dpkg::Options::=--force-confold dist-upgrade >/dev/null
-        apt-get install -y -qq ca-certificates >/dev/null"
+        apt-get install -y -qq ca-certificates >/dev/null
+        # without nesting, systemd 257 cannot mount these in an unprivileged
+        # container. Nothing needs them, masking keeps the system state clean.
+        systemctl mask -q tmp.mount run-lock.mount dev-mqueue.mount
+        systemctl reset-failed"
 
     install_into "$ctid" "$ver"
 
