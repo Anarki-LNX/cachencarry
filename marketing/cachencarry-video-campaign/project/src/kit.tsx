@@ -126,24 +126,59 @@ export const Terminal = ({ cast, t, fontSize, pad = 16, cursor = true, firstRow 
 /** Overall level of the keyboard sounds (user: typing was far too loud). */
 const KEY_GAIN = 0.2;
 
+/** Small deterministic random generator (mulberry32), so every render sounds the same. */
+const rand = (seed: number) => () => {
+  seed = (seed + 0x6d2b79f5) | 0;
+  let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+};
+
 /**
- * Keyboard sounds on the real keystroke times of a recording. Dull key sounds
- * (pipeline/music.py, keyboard_set): eight letter keys, three space bar and
- * three Enter variants, chosen per key, with a small level variation.
+ * Keyboard sounds in a human rhythm. The recordings were typed by a script at
+ * about 20 characters per second, and the tutorial often plays them faster.
+ * One sound per character would be machine typing, so the sounds follow a
+ * human typist instead: while a command is visibly being typed, a key sound
+ * every 100 to 250 ms (about 5 to 7 per second), a little later before a space
+ * or a special character, a short pause before Enter, then Enter on the real
+ * moment of the line break. A command that appears in under 0.3 s on screen
+ * (practically pasted) gets only its Enter. Sounds: pipeline/music.py,
+ * keyboard_set (dull letters, deeper space bar and Enter).
  */
 export const KeySounds = ({ cast, offset, rate = 1, until, volume = 0.35 }: { cast: Cast; offset: number; rate?: number; until?: number; volume?: number }) => {
-  const events = [
-    ...cast.keys.map((k, i) => ({ t: k, file: cast.keyKinds?.[i] === "s" ? `s${i % 3}` : `n${(i * 5 + (i >> 2)) % 8}` })),
-    ...(cast.enters ?? []).map((k, i) => ({ t: k, file: `e${i % 3}` })),
-  ];
+  const vis = (t: number) => (t - offset) / rate; // recording time -> seconds in this sequence
+  const kinds = cast.keyKinds ?? "";
+  const enters = (cast.enters ?? []).map(vis);
+  const events: { t: number; file: string; gain: number }[] = [];
+  // commands = runs of keys without a pause longer than 0.4 s (recording time)
+  let first = 0;
+  for (let i = 1; i <= cast.keys.length; i++) {
+    if (i < cast.keys.length && cast.keys[i] - cast.keys[i - 1] <= 0.4) continue;
+    const r = rand(Math.round(cast.keys[first] * 1000) + first);
+    const vs = vis(cast.keys[first]), ve = vis(cast.keys[i - 1]);
+    if (ve - vs >= 0.3) {
+      let k = first;
+      for (let t = vs; t <= ve; ) {
+        while (k + 1 < i && vis(cast.keys[k + 1]) <= t) k++;
+        const kind = kinds[k] ?? "n";
+        events.push({ t, file: kind === "s" ? `s${Math.floor(r() * 3)}` : `n${Math.floor(r() * 8)}`, gain: 0.85 + r() * 0.3 });
+        const next = kinds[k + 1] ?? "n";
+        t += 0.1 + r() * 0.15 + (next === "s" || next === "p" ? 0.04 + r() * 0.05 : 0);
+      }
+    }
+    first = i;
+  }
+  // short pause before every Enter, then the Enter itself
+  const taps = events.filter((e) => !enters.some((en) => e.t > en - 0.18 && e.t < en + 0.08));
+  enters.forEach((t, i) => taps.push({ t, file: `e${i % 3}`, gain: 1 }));
   return (
     <>
-      {events
-        .map((e) => ({ ...e, f: Math.round(((e.t - offset) / rate) * FPS) }))
+      {taps
+        .map((e) => ({ ...e, f: Math.round(e.t * FPS) }))
         .filter((e) => e.f >= 0 && (until === undefined || e.f < until))
         .map((e, i) => (
           <Sequence key={i} from={e.f} durationInFrames={6} layout="none">
-            <Audio src={staticFile(`audio/fx_kbd_${e.file}.wav`)} volume={KEY_GAIN * volume * (0.85 + ((i * 37) % 10) / 33)} />
+            <Audio src={staticFile(`audio/fx_kbd_${e.file}.wav`)} volume={KEY_GAIN * volume * e.gain} />
           </Sequence>
         ))}
     </>

@@ -6,7 +6,8 @@
 Reads the original recordings (assets/recordings/casts/*.cast) with the same
 timing rules as project/term/cast2json.mjs and writes, next to the existing
 "keys" (times of typed characters), the fields
-    keyKinds  "n" normal key, "s" space bar, one per entry of "keys"
+    keyKinds  "n" letter or digit, "s" space bar, "p" other character
+              (- / . : and so on), one per entry of "keys"
     enters    times of the Enter key (the line break echoed after typing)
 Nothing else in the JSON changes. A file is skipped if the recomputed key
 times do not match the stored ones exactly.
@@ -35,7 +36,7 @@ def replay(cast: Path, idle: float):
         tt = round(t * 1000) / 1000
         if len(data) == 1 and " " <= data <= "~":
             keys.append(tt)
-            kinds.append("s" if data == " " else "n")
+            kinds.append("s" if data == " " else "n" if data.isalnum() else "p")
         elif "\n" in data and keys and (not enters or enters[-1] < keys[-1]) and tt - keys[-1] < 2.0:
             enters.append(tt)  # first line break after a typed burst = Enter
     return keys, kinds, enters

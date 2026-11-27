@@ -73,3 +73,16 @@ Alle: H.264, 30 fps, AAC 48 kHz Stereo.
   bei der synthetischen Stimme aber ungenau. Fachwörter wie systemd, Ubuntu
   und CachyOS sollte jemand anhören.
 - Die Videos wurden nicht auf YouTube oder einem Telefon abgespielt.
+
+## Tippgeräusch im menschlichen Rhythmus (27.11.2026)
+
+Die sichtbare Eingabe bleibt schnell (im Tutorial als „× schneller“ gekennzeichnet). Hörbar sind nur Anschläge im Tempo eines Menschen: etwa 5 bis 7 pro Sekunde, Abstände 100 bis 250 ms, etwas länger vor Leerzeichen und Sonderzeichen, eine kurze Pause vor Enter, eingefügte Befehle nur mit Enter. Echtes Tipptempo im Bild hätte das Tutorial von 5:32 auf etwa 10 Minuten verlängert.
+
+| Video | Länge | Lautheit | True Peak | Schwarzbilder |
+|---|---|---|---|---|
+| Tutorial | 331.7 s | −14.0 LUFS | −1.2 dBTP | keine |
+| Präsentation | 89.0 s | −14.0 LUFS | −1.3 dBTP | keine |
+| Short01 | 20.1 s | −13.9 LUFS | −1.3 dBTP | keine |
+| Short02 | 20.7 s | −14.2 LUFS | −1.3 dBTP | keine |
+
+Short03 bis Short05 haben kein Tippgeräusch und bleiben unverändert. Hörvergleich alt und neu: `research/samples/tippen/`.
