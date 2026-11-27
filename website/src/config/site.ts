@@ -32,9 +32,9 @@ export const REPO = {
 
 /** Newest release, as published on GitHub. Update with each release. */
 export const RELEASE = {
-  version: '0.2.2',
+  version: '0.2.3',
   date: '2026-11-27',
-  url: `${repo}/releases/tag/v0.2.2`,
+  url: `${repo}/releases/tag/v0.2.3`,
 } as const;
 
 /**
