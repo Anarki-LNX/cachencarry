@@ -130,3 +130,27 @@ export const Cover6 = () => (
     <Way6 n={3} label="Debian / Ubuntu" color={C.amber} y={1080} />
   </Cover>
 );
+
+/** Thumbnail of the install video. `en`: English text only. */
+const ThumbInstallBase = ({ en }: { en: boolean }) => {
+  const ways: [string, string][] = [["Proxmox VE", C.green], ["Docker", C.cyan], ["Debian / Ubuntu", C.amber]];
+  return (
+    <AbsoluteFill style={{ background: C.bg }}>
+      <Backdrop glow={1.4} />
+      <div style={{ position: "absolute", left: 50, top: 60, width: 640 }}>
+        <Big size={54} color={C.cyan}>CACHE & CARRY</Big>
+        <Big size={112} style={{ marginTop: 12 }}>{en ? <>3 WAYS<br />TO<br /><span style={{ color: C.green }}>INSTALL</span></> : <>3 WEGE<br />ZUM<br /><span style={{ color: C.green }}>EIGENEN<br />CACHE</span></>}</Big>
+      </div>
+      {ways.map(([label, color], i) => (
+        <div key={label} style={{ position: "absolute", left: 690, top: 110 + i * 150, width: 540, height: 120, display: "flex", alignItems: "center", gap: 26, padding: "0 28px", borderRadius: 26, background: "rgba(13,20,36,0.94)", border: `3px solid ${color}`, boxShadow: `0 0 50px ${color}55` }}>
+          <div style={{ width: 80, height: 80, borderRadius: 22, background: color, color: "#0a0e17", fontFamily: FONT, fontSize: 60, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center" }}>{i + 1}</div>
+          <div style={{ fontFamily: FONT, fontSize: 44, fontWeight: 850, color: C.fg, whiteSpace: "nowrap" }}>{label}</div>
+        </div>
+      ))}
+      <LogoImg width={380} style={{ position: "absolute", left: 50, bottom: 40 }} />
+      <div style={{ position: "absolute", right: 60, bottom: 52, fontFamily: MONO, fontSize: 26, color: C.soft }}>{en ? "one version everywhere" : "überall dieselbe Version"}</div>
+    </AbsoluteFill>
+  );
+};
+export const ThumbInstall = () => <ThumbInstallBase en={false} />;
+export const ThumbInstallEn = () => <ThumbInstallBase en />;
