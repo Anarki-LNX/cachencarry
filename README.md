@@ -12,6 +12,8 @@
 <p align="center">
   <a href="LICENSE"><img alt="License: Apache 2.0" src="https://img.shields.io/badge/license-Apache%202.0-34d399"></a>
   <img alt="Go" src="https://img.shields.io/badge/Go-1.27-34d399">
+  <a href="https://github.com/Anarki-LNX/cachencarry/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/Anarki-LNX/cachencarry?color=34d399"></a>
+  <a href="https://github.com/Anarki-LNX/cachencarry/pkgs/container/cachencarry"><img alt="Container image on ghcr.io" src="https://img.shields.io/badge/ghcr.io-amd64%20%C2%B7%20arm64-34d399"></a>
   <img alt="Status: early" src="https://img.shields.io/badge/status-early%20release-f59e0b">
 </p>
 
@@ -87,7 +89,16 @@ and verified and what has not. Nothing here is advertised that does not exist.
 
 ## Get started
 
-### On Proxmox VE with one command
+Three ways to install. All three ship the same release with the same
+version number: one tag builds the packages and the container image.
+
+| Way | For | Command |
+|---|---|---|
+| [1. Proxmox VE](#1-proxmox-ve-with-one-command) | a ready LXC container on your Proxmox host | one line on the host |
+| [2. Debian or Ubuntu](#2-debian-or-ubuntu-with-the-release-package) | any Debian or Ubuntu machine, VM or container | download, `install.sh` |
+| [3. Docker](#3-docker) | any Docker host | `docker run` or `docker compose up` |
+
+### 1. Proxmox VE with one command
 
 Run this on the Proxmox VE host as root. It creates an unprivileged Debian 13
 container without nesting, installs the latest release for amd64 or arm64
@@ -103,7 +114,7 @@ variables such as `CC_CTID=130 CC_CACHE_GB=200 CC_IP=192.168.1.20/24 CC_GW=192.1
 Updating later is the same command followed by `-- update <container ID>`.
 Details: [DEPLOYMENT.md](DEPLOYMENT.md#proxmox-lxc).
 
-### In a Proxmox container or on any Debian or Ubuntu machine
+### 2. Debian or Ubuntu with the release package
 
 Download the package for your machine from the
 [latest release](https://github.com/Anarki-LNX/cachencarry/releases/latest)
@@ -132,7 +143,7 @@ An unprivileged Proxmox LXC container with 2 cores and 1 GB of memory is
 plenty. The full guide, including upgrades and backups, is in
 [DEPLOYMENT.md](DEPLOYMENT.md).
 
-### With Docker
+### 3. Docker
 
 The image `ghcr.io/anarki-lnx/cachencarry` is published for amd64 and arm64
 with every release.
@@ -224,6 +235,13 @@ make race     # the same with the race detector
 make build    # dashboard plus a single static binary in bin/cachencarry
 make docker   # container image
 ```
+
+## Support the project
+
+Cache & Carry is free and open source. If it saves you time and bandwidth and
+you want to support its development, a voluntary donation is welcome:
+[paypal.me/HenryMeinekat](https://www.paypal.me/HenryMeinekat). Stars,
+bug reports and pull requests help just as much.
 
 ## License
 
