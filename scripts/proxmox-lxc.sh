@@ -48,6 +48,18 @@ ok()   { echo "${G}ok${N} $*"; }
 warn() { echo "${Y}warning:${N} $*" >&2; }
 die()  { echo "${R}error:${N} $*" >&2; exit 1; }
 
+# Runs a Proxmox command quietly and shows its output only if it fails. On
+# success Proxmox prints a nesting warning for Debian 13. This container runs
+# without nesting on purpose (see the systemctl mask step below), so it is
+# expected and would only confuse.
+pve_quiet() {
+    local out
+    if ! out="$("$@" 2>&1)"; then
+        printf '%s\n' "$out" >&2
+        return 1
+    fi
+}
+
 WORK=""
 CREATED=""
 cleanup() {
@@ -116,13 +128,19 @@ fetch_release() {
 # Copies the checked tarball into the container and runs the release's installer.
 install_into() {
     local ct="$1" ver="$2"
+    info "installing Cache & Carry ${ver} in the container"
     pct push "$ct" "$TARBALL" "/root/cachencarry.tar.gz"
-    pct exec "$ct" -- bash -euo pipefail -c "
+    # The installer's own summary is meant for a plain server. This script
+    # prints a Proxmox summary at the end, so its output is shown only on failure.
+    if ! pct exec "$ct" -- bash -euo pipefail -c "
         rm -rf /opt/cachencarry-release && mkdir -p /opt/cachencarry-release
         tar xzf /root/cachencarry.tar.gz -C /opt/cachencarry-release --strip-components=1
         rm -f /root/cachencarry.tar.gz
         /opt/cachencarry-release/scripts/install.sh /opt/cachencarry-release/bin/cachencarry
-        rm -rf /opt/cachencarry-release"
+        rm -rf /opt/cachencarry-release" >"$WORK/install.log" 2>&1; then
+        cat "$WORK/install.log" >&2
+        die "installation in container ${ct} failed"
+    fi
     ok "Cache & Carry ${ver} installed"
 }
 
@@ -195,9 +213,9 @@ cmd_install() {
         --tags cachencarry --timezone host
         --description "Cache & Carry LAN package cache. ${GITHUB}")
     [ "$cache" -gt 0 ] && args+=(--mp0 "${storage}:${cache},mp=/var/lib/cachencarry,backup=${CC_CACHE_BACKUP:-0}")
-    pct create "$ctid" "${tstore}:vztmpl/${tmpl}" "${args[@]}" >/dev/null
+    pve_quiet pct create "$ctid" "${tstore}:vztmpl/${tmpl}" "${args[@]}"
     CREATED="$ctid"
-    pct start "$ctid"
+    pve_quiet pct start "$ctid"
 
     info "waiting for the network in the container"
     local i
