@@ -5,7 +5,7 @@ import { useT } from "../i18n";
  * Credit and voluntary donation link. Plain outbound links: nothing is loaded
  * from PayPal or the author's site, the UI makes no external requests.
  */
-export const AUTHOR = { name: "LOOP OUT TECH", url: "https://loopout.tech" } as const;
+export const AUTHOR = { name: "@loopout.tech", url: "https://loopout.tech" } as const;
 export const DONATE_URL = "https://www.paypal.me/HenryMeinekat";
 
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
@@ -29,7 +29,7 @@ export function DonateLink({ compact, className = "" }: { compact?: boolean; cla
   );
 }
 
-/** "A project by LOOP OUT TECH" plus the donation link, for the sidebar foot and the sign-in screen. */
+/** "A project by @loopout.tech" plus the donation link, for the sign-in screen. */
 export function Credit({ className = "", stacked }: { className?: string; stacked?: boolean }) {
   const { t } = useT();
   return (
@@ -43,5 +43,38 @@ export function Credit({ className = "", stacked }: { className?: string; stacke
       {!stacked && <span aria-hidden>·</span>}
       <DonateLink className={stacked ? "-ml-1" : ""} />
     </div>
+  );
+}
+
+/** Footer at the end of every page: credit, version and the PayPal donation link. */
+export function AppFooter({ version }: { version?: string | null }) {
+  const { t } = useT();
+  const v = version ? (/^\d/.test(version) ? `v${version}` : version) : "";
+  return (
+    <footer className="mt-8 flex flex-col items-center gap-3 border-t border-line pt-4 pb-1 text-xs text-dim sm:flex-row sm:justify-between">
+      <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+        <span>
+          {t("credit.by", { author: "" })}
+          <a href={AUTHOR.url} {...ext} aria-label={t("credit.authorLabel", { author: AUTHOR.name })} className="font-medium text-muted underline-offset-2 hover:text-fg hover:underline">
+            {AUTHOR.name}
+          </a>
+        </span>
+        {v && (
+          <>
+            <span aria-hidden>·</span>
+            <span className="num">Cache &amp; Carry {v}</span>
+          </>
+        )}
+      </div>
+      <a
+        href={DONATE_URL}
+        {...ext}
+        aria-label={t("credit.donateLabel")}
+        className="inline-flex items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 text-muted transition-colors hover:border-[#ff5c8a]/60 hover:text-[#ff5c8a] focus-visible:text-[#ff5c8a]"
+      >
+        <Heart className="size-3.5 shrink-0" aria-hidden />
+        <span>{t("credit.donatePaypal")}</span>
+      </a>
+    </footer>
   );
 }

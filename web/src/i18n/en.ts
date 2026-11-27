@@ -94,6 +94,7 @@ export const en = {
 
   "credit.by": "A project by {author}",
   "credit.donate": "Support",
+  "credit.donatePaypal": "Support via PayPal",
   "credit.donateLabel": "Support Cache & Carry with a donation via PayPal (opens in a new tab)",
   "credit.authorLabel": "{author} website (opens in a new tab)",
 

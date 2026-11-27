@@ -29,7 +29,7 @@ import { useTheme } from "../state/theme";
 import { loadFlag, saveFlag } from "../lib/theme";
 import { IconButton } from "./Controls";
 import { LanguageSwitch } from "./LanguageSwitch";
-import { Credit, DonateLink } from "./Credit";
+import { AppFooter } from "./Credit";
 
 export const NAV: { to: string; label: Key; icon: typeof LayoutDashboard }[] = [
   { to: "/", label: "nav.dashboard", icon: LayoutDashboard },
@@ -144,11 +144,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <aside className={`hidden shrink-0 flex-col border-r border-line bg-panel transition-[width] duration-200 md:flex ${expanded ? "w-56" : "w-14"}`}>
         <Brand expanded={expanded} />
         <Sidebar expanded={expanded} />
-        <div className={`border-t border-line px-2 pt-2 ${expanded ? "" : "flex justify-center"}`}>
-          {expanded ? <Credit stacked className="px-1" /> : <DonateLink compact />}
-        </div>
-        <div className={`flex items-center p-2 ${expanded ? "justify-between" : "justify-center"}`}>
-          {expanded && <span className="num truncate px-1 text-[11px] text-dim">{version ? (/^\d/.test(version) ? `v${version}` : version) : ""}</span>}
+        <div className={`flex items-center border-t border-line p-2 ${expanded ? "justify-end" : "justify-center"}`}>
           <IconButton
             label={expanded ? t("layout.collapseSidebar") : t("layout.expandSidebar")}
             aria-expanded={expanded}
@@ -174,9 +170,6 @@ export function Layout({ children }: { children: ReactNode }) {
               </IconButton>
             </div>
             <Sidebar expanded onNavigate={() => setMobileOpen(false)} />
-            <div className="border-t border-line p-3">
-              <Credit stacked />
-            </div>
           </aside>
         </div>
       )}
@@ -203,7 +196,10 @@ export function Layout({ children }: { children: ReactNode }) {
           </div>
         </header>
         <main id="main" tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto focus:outline-none">
-          <div className="mx-auto w-full max-w-[1500px] p-3 sm:p-5">{children}</div>
+          <div className="mx-auto flex min-h-full w-full max-w-[1500px] flex-col p-3 sm:p-5">
+            <div className="flex-1">{children}</div>
+            <AppFooter version={version} />
+          </div>
         </main>
       </div>
     </div>

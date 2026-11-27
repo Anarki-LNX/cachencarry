@@ -92,6 +92,7 @@ export const de: typeof en = {
 
   "credit.by": "Ein Projekt von {author}",
   "credit.donate": "Unterstützen",
+  "credit.donatePaypal": "Mit PayPal unterstützen",
   "credit.donateLabel": "Cache & Carry mit einer Spende über PayPal unterstützen (öffnet in neuem Tab)",
   "credit.authorLabel": "Website von {author} (öffnet in neuem Tab)",
 
