@@ -59,21 +59,18 @@ Honest record of what was actually executed for v0.1 and what was not.
   authentication and CSRF), plus a browser check of the form (save, reset
   button, value active in storage).
 
+- **`docker compose up` with the shipped `docker-compose.yml`**: the CI job
+  `compose` starts the stack on GitHub (bridge network, published port, named
+  volume, read-only root, no capabilities) and the container reports healthy
+  (first green run 2026-11-27, commit 2c8cb8c). The development machine itself
+  still cannot create bridge networks, so it was not run there.
+
 - **GitHub Actions** on the public repository: race-detector tests, dashboard
   lint and build, container image build and a start-up smoke test of the
   container all pass.
 
 ## Not verified yet
 
-- **`docker compose up` itself.** The development machine's Docker daemon
-  cannot create bridge networks ("operation not supported"), so Compose could
-  not start the stack there. The image and its runtime options were tested
-  with `docker run --network host` instead (see above); the Compose file's
-  port publishing and bridge networking are untested.
-  The CI job `compose` (`.github/workflows/ci.yml`) now runs the shipped
-  `docker-compose.yml` with `docker compose up -d --build` on GitHub and waits
-  for the container to report healthy. Move this item to the verified list
-  once that job has passed on GitHub.
 - The systemd unit on Ubuntu and on bare-metal Debian (only tested in the
   Proxmox LXC above).
 - Installing or upgrading packages through the cache on the APT clients
