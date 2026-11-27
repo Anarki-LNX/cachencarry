@@ -1,6 +1,6 @@
 # Prüfbericht Sprecher
 
-Stimme `tools/voices/de_DE-thorsten-high.onnx`, Ausspracheliste `voice/pronunciation_dictionary.yaml` (44 Einträge, 40 geprüfte Wörter ohne Änderung).
+Stimme `tools/voices/de_DE-thorsten-high.onnx`, Ausspracheliste `voice/pronunciation_dictionary.yaml` (45 Einträge, 42 geprüfte Wörter ohne Änderung).
 Erzeugt von `pipeline/voice_qa.py` vor dem Render.
 
 **Ergebnis: 0 Fehler, 0 Warnungen.**
@@ -38,8 +38,12 @@ keine
 | cachencarry_short_04_shared_download_en.srt | 5 | 19.45 s | 21.20 s | 21.30 s |
 | cachencarry_short_05_open_source_de.srt | 6 | 19.11 s | 20.87 s | 20.90 s |
 | cachencarry_short_05_open_source_en.srt | 6 | 19.11 s | 20.87 s | 20.90 s |
-| cachencarry_short_06_install_de.srt | 13 | 32.73 s | 34.50 s | nicht gerendert |
-| cachencarry_short_06_install_en.srt | 13 | 32.73 s | 34.50 s | nicht gerendert |
+| cachencarry_short_06_install_de.srt | 13 | 32.73 s | 34.50 s | 34.60 s |
+| cachencarry_short_06_install_en.srt | 13 | 32.73 s | 34.50 s | 34.60 s |
+| cachencarry_install_three_ways_de.srt | 28 | 111.83 s | 114.07 s | nicht gerendert |
+| cachencarry_install_three_ways_en.srt | 28 | 111.83 s | 114.07 s | nicht gerendert |
+| cachencarry_reel_install_de.srt | 11 | 29.96 s | 31.50 s | nicht gerendert |
+| cachencarry_reel_install_en.srt | 11 | 29.96 s | 31.50 s | nicht gerendert |
 
 ## Audiodateien
 
@@ -143,3 +147,42 @@ keine
 | short06 | 11 | debian | product | 2.53 s | -5.3 dBFS |
 | short06 | 12 | end | cta | 3.19 s | -5.7 dBFS |
 | short06 | 13 | end | cta | 1.24 s | -7.4 dBFS |
+| install | 01 | problem | intro | 3.09 s | -4.5 dBFS |
+| install | 02 | problem | intro | 2.70 s | -7.9 dBFS |
+| install | 03 | solution | product | 1.32 s | -6.6 dBFS |
+| install | 04 | solution | product | 2.49 s | -6.6 dBFS |
+| install | 05 | solution | product | 2.69 s | -6.8 dBFS |
+| install | 06 | hitmiss | tech | 1.84 s | -5.8 dBFS |
+| install | 07 | hitmiss | tech | 2.68 s | -5.3 dBFS |
+| install | 08 | hitmiss | tech | 1.98 s | -5.3 dBFS |
+| install | 09 | pitch | product | 4.24 s | -5.1 dBFS |
+| install | 10 | pitch | product | 4.51 s | -6.2 dBFS |
+| install | 11 | pitch | product | 1.59 s | -5.2 dBFS |
+| install | 12 | ways | product | 3.36 s | -5.8 dBFS |
+| install | 13 | proxmox | tutorial | 1.39 s | -4.9 dBFS |
+| install | 14 | proxmox | tutorial | 7.12 s | -8.4 dBFS |
+| install | 15 | proxmox | tutorial | 2.96 s | -6.1 dBFS |
+| install | 16 | proxmox | tutorial | 3.81 s | -5.9 dBFS |
+| install | 17 | docker | tutorial | 1.19 s | -4.7 dBFS |
+| install | 18 | docker | tutorial | 8.56 s | -5.1 dBFS |
+| install | 19 | docker | tutorial | 1.75 s | -7.7 dBFS |
+| install | 20 | debian | tutorial | 2.17 s | -8.4 dBFS |
+| install | 21 | debian | tutorial | 4.39 s | -5.3 dBFS |
+| install | 22 | debian | tutorial | 6.08 s | -6.4 dBFS |
+| install | 23 | debian | tutorial | 3.05 s | -5.7 dBFS |
+| install | 24 | setup | tutorial | 3.11 s | -5.6 dBFS |
+| install | 25 | setup | tutorial | 2.88 s | -5.4 dBFS |
+| install | 26 | cta | cta | 2.60 s | -5.8 dBFS |
+| install | 27 | cta | cta | 3.15 s | -5.6 dBFS |
+| install | 28 | cta | cta | 5.83 s | -6.1 dBFS |
+| reel_install | 01 | hook | intro | 2.42 s | -7.1 dBFS |
+| reel_install | 02 | solution | product | 2.33 s | -7.1 dBFS |
+| reel_install | 03 | solution | product | 2.19 s | -6.8 dBFS |
+| reel_install | 04 | hitmiss | tech | 2.29 s | -6.3 dBFS |
+| reel_install | 05 | hitmiss | tech | 2.19 s | -5.3 dBFS |
+| reel_install | 06 | ways | product | 1.69 s | -8.0 dBFS |
+| reel_install | 07 | ways | product | 1.24 s | -6.0 dBFS |
+| reel_install | 08 | ways | product | 0.86 s | -5.3 dBFS |
+| reel_install | 09 | ways | product | 2.44 s | -6.6 dBFS |
+| reel_install | 10 | end | cta | 2.29 s | -7.0 dBFS |
+| reel_install | 11 | end | cta | 1.65 s | -7.9 dBFS |

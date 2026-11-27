@@ -5,6 +5,7 @@ import { SHORTS } from "./Shorts";
 import { Short06, SHORT06_FRAMES } from "./Short06";
 import { Install, INSTALL_EN_FRAMES, INSTALL_FRAMES, InstallEn } from "./Install";
 import { Tutorial, TUTORIAL_FRAMES } from "./Tutorial";
+import { REEL_INSTALL_EN_FRAMES, REEL_INSTALL_FRAMES, ReelCover, ReelCoverEn, ReelInstall, ReelInstallEn } from "./ReelInstall";
 
 export const Root = () => (
   <>
@@ -15,6 +16,10 @@ export const Root = () => (
     <Composition id="Install" component={Install} durationInFrames={INSTALL_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="InstallEn" component={InstallEn} durationInFrames={INSTALL_EN_FRAMES} fps={30} width={1920} height={1080} />
     <Composition id="Short06" component={Short06} durationInFrames={SHORT06_FRAMES} fps={30} width={1080} height={1920} />
+    <Composition id="ReelInstall" component={ReelInstall} durationInFrames={REEL_INSTALL_FRAMES} fps={30} width={1080} height={1920} />
+    <Composition id="ReelInstallEn" component={ReelInstallEn} durationInFrames={REEL_INSTALL_EN_FRAMES} fps={30} width={1080} height={1920} />
+    <Still id="ReelCover" component={ReelCover} width={1080} height={1920} />
+    <Still id="ReelCoverEn" component={ReelCoverEn} width={1080} height={1920} />
     <Still id="ThumbMain" component={ThumbMain} width={1280} height={720} />
     <Still id="ThumbTutorial" component={ThumbTutorial} width={1280} height={720} />
     <Still id="ThumbInstall" component={ThumbInstall} width={1280} height={720} />

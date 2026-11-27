@@ -224,3 +224,87 @@ Dieser Text darf nie in Untertitel, Bildtexte oder Beschreibungen gelangen.
 - **end** (cta) Link in der Beschreibung.  
   `Link in der Beschreibung.`
 
+## install
+
+- **problem** (intro) Kennst du das? Drei Linux-Rechner, drei Updates.  
+  `Kennst du das? Drei Linux-Rechner, drei Updates.`
+- **problem** (intro) Und jeder lädt dieselben Pakete wieder aus dem Internet.  
+  `Und jeder lädt dieselben Pakete wieder aus dem Internet.`
+- **solution** (product) Cache & Carry löst das.  
+  `Käsch and Kärri löst das.`
+- **solution** (product) Der erste Rechner lädt ein Paket aus dem Internet.  
+  `Der erste Rechner lädt ein Paket aus dem Internet.`
+- **solution** (product) Alle weiteren bekommen es direkt aus deinem Netzwerk.  
+  `Alle weiteren bekommen es direkt aus deinem Netzwerk.`
+- **hitmiss** (tech) Im Live-Traffic siehst du es genau.  
+  `Im Leif Träffick siehst du es genau.`
+- **hitmiss** (tech) Beim ersten Abruf kommt das Paket aus dem Internet.  
+  `Beim ersten Abruf kommt das Paket aus dem Internet.`
+- **hitmiss** (tech) Beim nächsten Rechner kommt es aus dem Cache.  
+  `Beim nächsten Rechner kommt es aus dem Käsch.`
+- **pitch** (product) Cache & Carry ist ein schlanker, selbst gehosteter Paketcache für dein Netzwerk.  
+  `Käsch and Kärri ist ein schlanker, selbst gehosteter Paketkäsch für dein Netzwerk.`
+- **pitch** (product) Für APT und Pacman, mit Dashboard, Statistiken und Limits für den Speicher.  
+  `Für A P T und [[pˈɛkmɛn]], mit Dashboard, Statistiken und Limits für den Speicher.`
+- **pitch** (product) Kostenlos und Open Source.  
+  `Kostenlos und [[ˈoːpən zˈɔːɐs]].`
+- **ways** (product) Installieren kannst du es auf drei Wegen. Alle mit derselben Version.  
+  `Installieren kannst du es auf drei Wegen. Alle mit derselben Version.`
+- **proxmox** (tutorial) Erstens: Proxmox.  
+  `Erstens: Proxmox.`
+- **proxmox** (tutorial) Ein Befehl auf dem Host legt einen unprivilegierten Debian-Container an, prüft die Prüfsumme und installiert das neueste Release.  
+  `Ein Befehl auf dem Host legt einen unprivilegierten [[dˈeːbi̯aːn]]-Container an, prüft die Prüfsumme und installiert das neueste Release.`
+- **proxmox** (tutorial) Am Ende siehst du die Adresse und das Token für die Einrichtung.  
+  `Am Ende siehst du die Adresse und das Token für die Einrichtung.`
+- **proxmox** (tutorial) Ein Update ist derselbe Befehl mit update und der Nummer des Containers.  
+  `Ein Update ist derselbe Befehl mit update und der Nummer des Containers.`
+- **docker** (tutorial) Zweitens: Docker.  
+  `Zweitens: [[dˈɔkɐ]].`
+- **docker** (tutorial) Das Image gibt es für A M D 64 und A R M 64. Es ist kleiner als sechzehn Megabyte und enthält keine Shell.  
+  `Das Immitsch gibt es für A M D 64 und A R M 64. Es ist kleiner als sechzehn [[mˈeːɡabaɪt]] und enthält keine Schell.`
+- **docker** (tutorial) Ein einziger Docker-Befehl genügt.  
+  `Ein einziger [[dˈɔkɐ]]-Befehl genügt.`
+- **debian** (tutorial) Drittens: Debian oder Ubuntu.  
+  `Drittens: [[dˈeːbi̯aːn]] oder Ubbuntu.`
+- **debian** (tutorial) Lade das Paket aus dem Release, entpacke es und starte das Installationsskript.  
+  `Lade das Paket aus dem Release, entpacke es und starte das Installationsskript.`
+- **debian** (tutorial) Cache & Carry läuft dann als systemd-Dienst, auch in einer virtuellen Maschine oder auf dem Raspberry Pi.  
+  `Käsch and Kärri läuft dann als System Dee-Dienst, auch in einer virtuellen Maschine oder auf dem Raspberry Pi.`
+- **debian** (tutorial) Für ein Update startest du das Skript mit der neuen Version erneut.  
+  `Für ein Update startest du das Skript mit der neuen Version erneut.`
+- **setup** (tutorial) Danach öffnest du die Weboberfläche auf Port achtzig achtzig.  
+  `Danach öffnest du die Weboberfläche auf Port achtzig achtzig.`
+- **setup** (tutorial) Gib das Token ein, wähle ein Passwort, fertig.  
+  `Gib das Token ein, wähle ein Passwort, fertig.`
+- **cta** (cta) Alle Befehle findest du auf der Website und auf GitHub.  
+  `Alle Befehle findest du auf der Website und auf Gitt-Hab.`
+- **cta** (cta) Cache & Carry ist Open Source. Lass gern einen Stern da.  
+  `Käsch and Kärri ist [[ˈoːpən zˈɔːɐs]]. Lass gern einen Stern da.`
+- **cta** (cta) Wenn dir das Video hilft: Abonniere den Kanal, lass ein Like da und schreib mir in die Kommentare, wie du es einsetzt.  
+  `Wenn dir das Video hilft: Abonniere den Kanal, lass ein Like da und schreib mir in die Kommentare, wie du es einsetzt.`
+
+## reel_install
+
+- **hook** (intro) Drei Rechner laden dasselbe Update dreimal?  
+  `Drei Rechner laden dasselbe Update dreimal?`
+- **solution** (product) Cache & Carry lädt es einmal aus dem Internet.  
+  `Käsch and Kärri lädt es einmal aus dem Internet.`
+- **solution** (product) Alle anderen holen es aus deinem Netzwerk.  
+  `Alle anderen holen es aus deinem Netzwerk.`
+- **hitmiss** (tech) Rechner eins holt das Paket aus dem Internet.  
+  `Rechner eins holt das Paket aus dem Internet.`
+- **hitmiss** (tech) Rechner zwei bekommt es sofort aus dem Cache.  
+  `Rechner zwei bekommt es sofort aus dem Käsch.`
+- **ways** (product) Installieren geht auf drei Wegen:  
+  `Installieren geht auf drei Wegen:`
+- **ways** (product) Proxmox mit einem Befehl.  
+  `Proxmox mit einem Befehl.`
+- **ways** (product) Als Docker-Image.  
+  `Als [[dˈɔkɐ]]-Immitsch.`
+- **ways** (product) Oder als Paket für Debian und Ubuntu.  
+  `Oder als Paket für [[dˈeːbi̯aːn]] und Ubbuntu.`
+- **end** (cta) Kostenlos und Open Source. Link in der Bio.  
+  `Kostenlos und [[ˈoːpən zˈɔːɐs]]. Link in der Bio.`
+- **end** (cta) Folge mir für mehr aus dem Homelab.  
+  `Folge mir für mehr aus dem [[hˈoːmlɛp]].`
+

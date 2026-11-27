@@ -1,0 +1,119 @@
+{
+ "id": "reel_install",
+ "fps": 30,
+ "frames": 945,
+ "scenes": [
+  {
+   "id": "hook",
+   "start": 0,
+   "frames": 95,
+   "lines": [
+    {
+     "file": "vo/reel_install/01.wav",
+     "start": 4,
+     "frames": 73,
+     "de": "Drei Rechner laden dasselbe Update dreimal?",
+     "en": "Three machines download the same update three times?"
+    }
+   ]
+  },
+  {
+   "id": "solution",
+   "start": 95,
+   "frames": 180,
+   "lines": [
+    {
+     "file": "vo/reel_install/02.wav",
+     "start": 8,
+     "frames": 70,
+     "de": "Cache & Carry lädt es einmal aus dem Internet.",
+     "en": "Cache & Carry downloads it once from the internet."
+    },
+    {
+     "file": "vo/reel_install/03.wav",
+     "start": 88,
+     "frames": 66,
+     "de": "Alle anderen holen es aus deinem Netzwerk.",
+     "en": "All the others get it from your network."
+    }
+   ]
+  },
+  {
+   "id": "hitmiss",
+   "start": 275,
+   "frames": 210,
+   "lines": [
+    {
+     "file": "vo/reel_install/04.wav",
+     "start": 8,
+     "frames": 69,
+     "de": "Rechner eins holt das Paket aus dem Internet.",
+     "en": "Machine one gets the package from the internet."
+    },
+    {
+     "file": "vo/reel_install/05.wav",
+     "start": 94,
+     "frames": 66,
+     "de": "Rechner zwei bekommt es sofort aus dem Cache.",
+     "en": "Machine two gets it straight from the cache."
+    }
+   ]
+  },
+  {
+   "id": "ways",
+   "start": 485,
+   "frames": 270,
+   "lines": [
+    {
+     "file": "vo/reel_install/06.wav",
+     "start": 8,
+     "frames": 51,
+     "de": "Installieren geht auf drei Wegen:",
+     "en": "There are three ways to install it:"
+    },
+    {
+     "file": "vo/reel_install/07.wav",
+     "start": 69,
+     "frames": 37,
+     "de": "Proxmox VE mit einem Befehl.",
+     "en": "Proxmox VE with one command."
+    },
+    {
+     "file": "vo/reel_install/08.wav",
+     "start": 116,
+     "frames": 26,
+     "de": "Als Docker-Image.",
+     "en": "As a Docker image."
+    },
+    {
+     "file": "vo/reel_install/09.wav",
+     "start": 153,
+     "frames": 73,
+     "de": "Oder als Paket für Debian und Ubuntu.",
+     "en": "Or as a package for Debian and Ubuntu."
+    }
+   ]
+  },
+  {
+   "id": "end",
+   "start": 755,
+   "frames": 190,
+   "lines": [
+    {
+     "file": "vo/reel_install/10.wav",
+     "start": 8,
+     "frames": 69,
+     "de": "Kostenlos und Open Source. Link in der Bio.",
+     "en": "Free and open source. Link in bio."
+    },
+    {
+     "file": "vo/reel_install/11.wav",
+     "start": 87,
+     "frames": 49,
+     "de": "Folge mir für mehr aus dem Homelab.",
+     "en": "Follow for more homelab tips."
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,48 @@
+1
+00:00:00,150 --> 00:00:02,822
+Drei Rechner laden
+dasselbe Update dreimal?
+
+2
+00:00:03,422 --> 00:00:06,006
+Cache & Carry lädt es
+einmal aus dem Internet.
+
+3
+00:00:06,106 --> 00:00:08,545
+Alle anderen holen es aus deinem Netzwerk.
+
+4
+00:00:09,422 --> 00:00:11,959
+Rechner eins holt das
+Paket aus dem Internet.
+
+5
+00:00:12,309 --> 00:00:14,745
+Rechner zwei bekommt es
+sofort aus dem Cache.
+
+6
+00:00:16,422 --> 00:00:18,364
+Installieren geht auf drei Wegen:
+
+7
+00:00:18,464 --> 00:00:19,953
+Proxmox VE mit einem Befehl.
+
+8
+00:00:20,053 --> 00:00:21,162
+Als Docker-Image.
+
+9
+00:00:21,262 --> 00:00:23,951
+Oder als Paket für Debian und Ubuntu.
+
+10
+00:00:25,422 --> 00:00:27,966
+Kostenlos und Open
+Source. Link in der Bio.
+
+11
+00:00:28,066 --> 00:00:29,963
+Folge mir für mehr aus dem Homelab.

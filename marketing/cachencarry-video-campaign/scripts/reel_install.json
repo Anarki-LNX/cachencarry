@@ -1,0 +1,29 @@
+{
+ "id": "reel_install",
+ "file": "cachencarry_reel_install",
+ "file_en": "cachencarry_reel_install",
+ "voice_en": "am_michael",
+ "scenes": [
+  {"id": "hook", "style": "intro", "lead": 0.15, "min": 3.0, "lines": [
+    {"de": "Drei Rechner laden dasselbe Update dreimal?", "en": "Three machines download the same update three times?"}
+  ]},
+  {"id": "solution", "style": "product", "lead": 0.25, "min": 6.0, "lines": [
+    {"de": "Cache & Carry lädt es einmal aus dem Internet.", "en": "Cache & Carry downloads it once from the internet.", "tts_en": "Cache and Carry downloads it once from the internet."},
+    {"de": "Alle anderen holen es aus deinem Netzwerk.", "en": "All the others get it from your network."}
+  ]},
+  {"id": "hitmiss", "style": "tech", "lead": 0.25, "min": 7.0, "tail": 1.2, "lines": [
+    {"de": "Rechner eins holt das Paket aus dem Internet.", "en": "Machine one gets the package from the internet.", "gap": 0.6},
+    {"de": "Rechner zwei bekommt es sofort aus dem Cache.", "en": "Machine two gets it straight from the cache."}
+  ]},
+  {"id": "ways", "style": "product", "lead": 0.25, "min": 9.0, "tail": 1.0, "lines": [
+    {"de": "Installieren geht auf drei Wegen:", "en": "There are three ways to install it:"},
+    {"de": "Proxmox VE mit einem Befehl.", "en": "Proxmox VE with one command.", "tts": "Proxmox mit einem Befehl.", "tts_en": "Proxmox V E with one command."},
+    {"de": "Als Docker-Image.", "en": "As a Docker image."},
+    {"de": "Oder als Paket für Debian und Ubuntu.", "en": "Or as a package for Debian and Ubuntu."}
+  ]},
+  {"id": "end", "style": "cta", "lead": 0.25, "min": 6.0, "tail": 1.8, "lines": [
+    {"de": "Kostenlos und Open Source. Link in der Bio.", "en": "Free and open source. Link in bio."},
+    {"de": "Folge mir für mehr aus dem Homelab.", "en": "Follow for more homelab tips."}
+  ]}
+ ]
+}

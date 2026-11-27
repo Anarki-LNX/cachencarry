@@ -124,3 +124,48 @@ Erzeugt von `pipeline/voice_qa.py` aus `scripts/*.json` (Feld `de`). Richtige Sc
 - **end** Überall dieselbe Version. Kostenlos und Open Source.
 - **end** Link in der Beschreibung.
 
+## install
+
+- **problem** Kennst du das? Drei Linux-Rechner, drei Updates.
+- **problem** Und jeder lädt dieselben Pakete wieder aus dem Internet.
+- **solution** Cache & Carry löst das.
+- **solution** Der erste Rechner lädt ein Paket aus dem Internet.
+- **solution** Alle weiteren bekommen es direkt aus deinem Netzwerk.
+- **hitmiss** Im Live-Traffic siehst du es genau.
+- **hitmiss** Beim ersten Abruf kommt das Paket aus dem Internet.
+- **hitmiss** Beim nächsten Rechner kommt es aus dem Cache.
+- **pitch** Cache & Carry ist ein schlanker, selbst gehosteter Paketcache für dein Netzwerk.
+- **pitch** Für APT und Pacman, mit Dashboard, Statistiken und Limits für den Speicher.
+- **pitch** Kostenlos und Open Source.
+- **ways** Installieren kannst du es auf drei Wegen. Alle mit derselben Version.
+- **proxmox** Erstens: Proxmox VE.
+- **proxmox** Ein Befehl auf dem Host legt einen unprivilegierten Debian-Container an, prüft die Prüfsumme und installiert das neueste Release.
+- **proxmox** Am Ende siehst du die Adresse und das Token für die Einrichtung.
+- **proxmox** Ein Update ist derselbe Befehl mit update und der Nummer des Containers.
+- **docker** Zweitens: Docker.
+- **docker** Das Image gibt es für amd64 und arm64. Es ist kleiner als 16 Megabyte und enthält keine Shell.
+- **docker** Ein einziger Docker-Befehl genügt.
+- **debian** Drittens: Debian oder Ubuntu.
+- **debian** Lade das Paket aus dem Release, entpacke es und starte das Installationsskript.
+- **debian** Cache & Carry läuft dann als systemd-Dienst, auch in einer VM oder auf dem Raspberry Pi.
+- **debian** Für ein Update startest du das Skript mit der neuen Version erneut.
+- **setup** Danach öffnest du die Weboberfläche auf Port 8080.
+- **setup** Gib das Token ein, wähle ein Passwort, fertig.
+- **cta** Alle Befehle findest du auf der Website und auf GitHub.
+- **cta** Cache & Carry ist Open Source. Lass gern einen Stern da.
+- **cta** Wenn dir das Video hilft: Abonniere den Kanal, lass ein Like da und schreib mir in die Kommentare, wie du es einsetzt.
+
+## reel_install
+
+- **hook** Drei Rechner laden dasselbe Update dreimal?
+- **solution** Cache & Carry lädt es einmal aus dem Internet.
+- **solution** Alle anderen holen es aus deinem Netzwerk.
+- **hitmiss** Rechner eins holt das Paket aus dem Internet.
+- **hitmiss** Rechner zwei bekommt es sofort aus dem Cache.
+- **ways** Installieren geht auf drei Wegen:
+- **ways** Proxmox VE mit einem Befehl.
+- **ways** Als Docker-Image.
+- **ways** Oder als Paket für Debian und Ubuntu.
+- **end** Kostenlos und Open Source. Link in der Bio.
+- **end** Folge mir für mehr aus dem Homelab.
+

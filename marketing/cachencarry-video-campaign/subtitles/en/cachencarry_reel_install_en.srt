@@ -1,0 +1,47 @@
+1
+00:00:00,150 --> 00:00:02,822
+Three machines download the
+same update three times?
+
+2
+00:00:03,422 --> 00:00:06,006
+Cache & Carry downloads it
+once from the internet.
+
+3
+00:00:06,106 --> 00:00:08,545
+All the others get it from your network.
+
+4
+00:00:09,422 --> 00:00:11,959
+Machine one gets the
+package from the internet.
+
+5
+00:00:12,309 --> 00:00:14,745
+Machine two gets it
+straight from the cache.
+
+6
+00:00:16,422 --> 00:00:18,364
+There are three ways to install it:
+
+7
+00:00:18,464 --> 00:00:19,953
+Proxmox VE with one command.
+
+8
+00:00:20,053 --> 00:00:21,162
+As a Docker image.
+
+9
+00:00:21,262 --> 00:00:23,951
+Or as a package for Debian and Ubuntu.
+
+10
+00:00:25,422 --> 00:00:27,966
+Free and open source. Link in bio.
+
+11
+00:00:28,066 --> 00:00:29,963
+Follow for more homelab tips.
