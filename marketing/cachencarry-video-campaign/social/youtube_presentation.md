@@ -24,18 +24,27 @@ Was Cache & Carry heute kann:
 • Signaturen bleiben unangetastet: apt und pacman prüfen wie gewohnt selbst
 • Ein statisches Programm, ein systemd-Dienst, läuft z. B. in einem Proxmox-LXC mit 2 Kernen und 1 GB RAM
 
-Ehrlich gesagt: Pacman und APT sind fertig und mit echten Clients getestet. Einfache HTTP-Dateiserver sind experimentell. Container-Images, npm, PyPI, RPM und Maven sind geplant, aber noch nicht umgesetzt.
+Ehrlich gesagt: Pacman und APT sind fertig und mit echten Clients getestet. Einfache HTTP-Dateiserver sind experimentell. Container-Registries, npm, PyPI, RPM und Maven sind geplant, aber noch nicht umgesetzt.
 
 Die Zahlen im Video (Paketindex mit 8,6 MiB: 959 ms aus dem Internet, 9 ms aus dem Cache) stammen aus unserem Testnetzwerk, gemessen beim ersten echten Clienttest mit CachyOS. Das ist ein Beispiel, kein Garantiewert.
 
+So installierst du Cache & Carry, alle drei Wege mit derselben Version:
+1️⃣ Proxmox VE mit einem Befehl auf dem Host:
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Anarki-LNX/cachencarry/main/scripts/proxmox-lxc.sh)"
+2️⃣ Docker: ghcr.io/anarki-lnx/cachencarry (amd64 und arm64)
+3️⃣ Debian oder Ubuntu: Release-Paket von GitHub, dann sudo ./scripts/install.sh
+Alle Befehle: https://cachencarry.loopout.tech/de/#install
+
+🌐 Website: https://cachencarry.loopout.tech
 🔗 GitHub: https://github.com/Anarki-LNX/cachencarry
 📖 Installation: https://github.com/Anarki-LNX/cachencarry/blob/main/DEPLOYMENT.md
 💻 Clients einrichten: https://github.com/Anarki-LNX/cachencarry/blob/main/docs/CLIENTS.md
 🎬 Installations-Tutorial: (Link zum Tutorial-Video einfügen)
 
 Lizenz: Apache License 2.0. Die Software ist kostenlos. Hardware, Strom und Speicherplatz für deinen Server bringst du selbst mit.
+❤️ Projekt unterstützen (freiwillig): https://www.paypal.me/HenryMeinekat
 
-Die Sprecherstimme ist synthetisch (lokal erzeugt mit Piper TTS, Stimme Thorsten). Untertitel auf Deutsch zum Hochladen bei YouTube liegen bei.
+Die Sprecherstimme ist synthetisch (lokal erzeugt mit Piper TTS, Stimme Thorsten). Untertitel gibt es auf Deutsch und Englisch.
 
 Wenn du es ausprobierst: Lass einen Stern auf GitHub da, teile das Projekt und schreib in die Kommentare, wie du es einsetzt.
 
