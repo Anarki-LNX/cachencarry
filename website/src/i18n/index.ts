@@ -308,11 +308,18 @@ const de = {
   install: {
     label: 'Jetzt loslegen',
     title: 'In ein paar Minuten startklar.',
-    lead: 'Ein unprivilegierter Proxmox LXC mit 2 Kernen und 1 GB Arbeitsspeicher reicht dicke. Alle Befehle stammen aus der Anleitung im Repository.',
+    lead: 'Auf Proxmox reicht ein einziger Befehl. Ein unprivilegierter LXC mit 2 Kernen und 1 GB Arbeitsspeicher reicht dicke. Alle Befehle stammen aus der Anleitung im Repository.',
     tabsLabel: 'Installationsweg wählen',
     methods: {
+      proxmox: {
+        tab: 'Proxmox LXC',
+        title: 'Ein Befehl auf dem Proxmox-Host',
+        text: 'Als root in der Shell des Proxmox-Hosts ausführen. Das Skript legt einen unprivilegierten Debian-13-Container ohne Nesting an, installiert das neueste Release nach Prüfung der Prüfsumme und zeigt am Ende Adresse und Setup-Token.',
+        after: 'Später auf die neueste Version aktualisieren, mit der ID deines Containers:',
+        verified: 'Getestet auf Proxmox VE 9.2: Container anlegen und Update von 0.2.1 auf 0.2.2.',
+      },
       release: {
-        tab: 'Proxmox LXC, Debian, Ubuntu',
+        tab: 'Debian, Ubuntu',
         title: 'Mit dem Release-Paket',
         text: 'Lade das Paket für deinen Rechner aus dem neuesten Release: amd64 für normale PCs und Server, arm64 zum Beispiel für einen Raspberry Pi. Dann entpacken und installieren:',
         after:
@@ -321,11 +328,11 @@ const de = {
         download: 'Neuestes Release herunterladen',
       },
       docker: {
-        tab: 'Docker Compose',
-        title: 'Mit Docker Compose',
-        text: 'Repository klonen, Beispielkonfiguration kopieren, starten. In der Datei .env das Administratorpasswort setzen, mindestens 10 Zeichen.',
+        tab: 'Docker',
+        title: 'Mit Docker',
+        text: 'Das fertige Image liegt auf ghcr.io für amd64 und arm64. Ein eigenes Administratorpasswort setzen, mindestens 10 Zeichen. Die docker-compose.yml im Repository bringt zusätzlich Härtungsoptionen mit.',
         verified:
-          'Das Image wurde mit den Compose-Härtungsoptionen gebaut und betrieben. Ein vollständiger Lauf von docker compose up steht noch aus, siehe TODO.md.',
+          'Jedes Release baut das Image automatisch und startet es zur Prüfung. Auch docker compose up läuft bei jedem Push in der CI.',
       },
       source: {
         tab: 'Selbst bauen',
@@ -348,7 +355,7 @@ const de = {
       'Platz für den Cache plus 10 % frei',
     ],
     reqDockerTitle: 'Docker',
-    reqDocker: ['Docker mit Docker Compose v2', 'Ein Verzeichnis oder Volume für den Cache'],
+    reqDocker: ['Docker auf amd64 oder arm64', 'Ein Verzeichnis oder Volume für den Cache'],
     reqSourceTitle: 'Selbst bauen',
     reqSource: ['Go 1.27', 'Node.js 20 oder neuer', 'make'],
     warn: 'Nur im eigenen LAN betreiben. Den Port nicht ins Internet freigeben.',
@@ -719,11 +726,18 @@ const en: Copy = {
   install: {
     label: 'Get started',
     title: 'Up and running in a few minutes.',
-    lead: 'An unprivileged Proxmox LXC with 2 cores and 1 GB of memory is plenty. Every command comes from the guide in the repository.',
+    lead: 'On Proxmox a single command is enough. An unprivileged LXC with 2 cores and 1 GB of memory is plenty. Every command comes from the guide in the repository.',
     tabsLabel: 'Choose an installation method',
     methods: {
+      proxmox: {
+        tab: 'Proxmox LXC',
+        title: 'One command on the Proxmox host',
+        text: 'Run it as root in the shell of your Proxmox host. The script creates an unprivileged Debian 13 container without nesting, installs the latest release after checking its checksum and prints the address and the setup token.',
+        after: 'Update to the newest version later, with the ID of your container:',
+        verified: 'Tested on Proxmox VE 9.2: creating the container and updating from 0.2.1 to 0.2.2.',
+      },
       release: {
-        tab: 'Proxmox LXC, Debian, Ubuntu',
+        tab: 'Debian, Ubuntu',
         title: 'With the release package',
         text: 'Download the package for your machine from the latest release: amd64 for normal PCs and servers, arm64 for a Raspberry Pi and similar. Then unpack and install:',
         after:
@@ -732,11 +746,11 @@ const en: Copy = {
         download: 'Download the latest release',
       },
       docker: {
-        tab: 'Docker Compose',
-        title: 'With Docker Compose',
-        text: 'Clone the repository, copy the example configuration, start. Set the administrator password in .env, at least 10 characters.',
+        tab: 'Docker',
+        title: 'With Docker',
+        text: 'The ready image is on ghcr.io for amd64 and arm64. Choose your own administrator password, at least 10 characters. The docker-compose.yml in the repository adds hardening options on top.',
         verified:
-          'The image was built and run with the Compose hardening options. A full run of docker compose up is still open, see TODO.md.',
+          'Every release builds the image automatically and starts it as a check. docker compose up also runs in CI on every push.',
       },
       source: {
         tab: 'Build it yourself',
@@ -758,7 +772,7 @@ const en: Copy = {
       'Space for the cache plus 10 % free',
     ],
     reqDockerTitle: 'Docker',
-    reqDocker: ['Docker with Docker Compose v2', 'A directory or volume for the cache'],
+    reqDocker: ['Docker on amd64 or arm64', 'A directory or volume for the cache'],
     reqSourceTitle: 'Build from source',
     reqSource: ['Go 1.27', 'Node.js 20 or newer', 'make'],
     warn: 'Run it on your own LAN only. Do not expose the port to the Internet.',

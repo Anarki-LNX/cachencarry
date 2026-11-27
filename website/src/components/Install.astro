@@ -6,7 +6,7 @@ import { REPO } from '~/config/site';
 import { type Locale, t, anchors } from '~/i18n';
 
 // Commands are copied from README.md and DEPLOYMENT.md of the repository
-// (checked against release v0.2.1 on 2026-11-26). Change them there first.
+// (checked against release v0.2.2 on 2026-11-27). Change them there first.
 interface Props {
   locale: Locale;
 }
@@ -15,16 +15,18 @@ const tr = t(locale);
 const s = tr.install;
 const ext = { target: '_blank', rel: 'noopener noreferrer' } as const;
 
+const pveScript = 'https://raw.githubusercontent.com/Anarki-LNX/cachencarry/main/scripts/proxmox-lxc.sh';
 const cmd = {
+  proxmox: `bash -c "$(curl -fsSL ${pveScript})"`,
+  proxmoxUpdate: `bash -c "$(curl -fsSL ${pveScript})" -- update <ID>`,
   release: `tar xzf cachencarry-*-linux-amd64.tar.gz
 cd cachencarry-*-linux-amd64
 sudo ./scripts/install.sh`,
   token: `su -s /bin/sh cachencarry -c '/usr/local/bin/cachencarry setup-token'`,
-  docker: `git clone https://github.com/Anarki-LNX/cachencarry.git
-cd cachencarry
-cp .env.example .env
-# ${locale === 'de' ? 'in .env CACHENCARRY_ADMIN_PASSWORD setzen, mindestens 10 Zeichen' : 'set CACHENCARRY_ADMIN_PASSWORD in .env, at least 10 characters'}
-docker compose up -d --build`,
+  docker: `docker run -d --name cachencarry --restart unless-stopped \\
+  -p 8080:8080 -v cachencarry-data:/var/lib/cachencarry \\
+  -e CACHENCARRY_SECURITY_ADMIN_PASSWORD=${locale === 'de' ? 'langes-passwort' : 'long-password'} \\
+  ghcr.io/anarki-lnx/cachencarry:latest`,
   source: `git clone https://github.com/Anarki-LNX/cachencarry.git
 cd cachencarry
 make dist`,
@@ -36,6 +38,7 @@ Components: main contrib non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg`,
 };
 const methods = [
+  { key: 'proxmox', icon: 'terminal' },
   { key: 'release', icon: 'server' },
   { key: 'docker', icon: 'package' },
   { key: 'source', icon: 'code' },
@@ -65,6 +68,17 @@ const methods = [
       </div>
 
       <div class="inst__panels">
+        <div class="card inst__panel" role="tabpanel" id="inst-panel-proxmox" aria-labelledby="inst-tab-proxmox">
+          <h3>{s.methods.proxmox.title}</h3>
+          <p class="muted">{s.methods.proxmox.text}</p>
+          <CodeBlock code={cmd.proxmox} lang="shell" locale={locale} />
+          <p class="muted">{s.methods.proxmox.after}</p>
+          <CodeBlock code={cmd.proxmoxUpdate} lang="shell" locale={locale} />
+          <p class="inst__verified">
+            <Icon name="check" size={14} /> {s.methods.proxmox.verified}
+          </p>
+        </div>
+
         <div class="card inst__panel" role="tabpanel" id="inst-panel-release" aria-labelledby="inst-tab-release">
           <h3>{s.methods.release.title}</h3>
           <p class="muted">{s.methods.release.text}</p>
@@ -85,8 +99,8 @@ const methods = [
           <h3>{s.methods.docker.title}</h3>
           <p class="muted">{s.methods.docker.text}</p>
           <CodeBlock code={cmd.docker} lang="shell" locale={locale} />
-          <p class="inst__verified inst__verified--open">
-            <Icon name="info" size={14} /> {s.methods.docker.verified}
+          <p class="inst__verified">
+            <Icon name="check" size={14} /> {s.methods.docker.verified}
           </p>
         </div>
 
