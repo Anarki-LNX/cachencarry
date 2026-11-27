@@ -10,10 +10,10 @@ import { EndCard } from "./blocks";
 import { C, FONT, MONO } from "./theme";
 
 const S6 = t6 as Timeline;
-type Out = { t: string; c?: string };
+export type Out = { t: string; c?: string };
 
 /** A command that types itself, then its output line by line. */
-const Console = ({ ps, cmd, out = [], typeAt, outAt, size = 25 }: { ps: string; cmd: string[]; out?: Out[]; typeAt: number; outAt: number; size?: number }) => {
+export const Console = ({ ps, cmd, out = [], typeAt, outAt, size = 25 }: { ps: string; cmd: string[]; out?: Out[]; typeAt: number; outAt: number; size?: number }) => {
   const frame = useCurrentFrame();
   const all = cmd.join("\n");
   const shown = Math.floor(interpolate(frame, [typeAt, typeAt + 26], [0, all.length], clamp));
@@ -67,7 +67,7 @@ const Way = ({ id, n, name, color, win, ps, cmd, out, size, h, pills, best }: {
   );
 };
 
-const PROXMOX_CMD = 'bash -c "$(curl -fsSL https://raw.githubusercontent.com/Anarki-LNX/cachencarry/main/scripts/proxmox-lxc.sh)"';
+export const PROXMOX_CMD = 'bash -c "$(curl -fsSL https://raw.githubusercontent.com/Anarki-LNX/cachencarry/main/scripts/proxmox-lxc.sh)"';
 
 const Tile = ({ n, label, color, at }: { n: number; label: string; color: string; at: number }) => {
   const frame = useCurrentFrame();

@@ -14,6 +14,9 @@ const SITE = "http://cachencarry.lan:8080";
 const OUT = new URL("./public/footage/", import.meta.url).pathname;
 const CASTS = new URL("../assets/recordings/casts/", import.meta.url).pathname;
 const FPS = 6;
+// CAPTURE_LANG=en records the English interface; names get the suffix "-en".
+const LANG = process.env.CAPTURE_LANG || "de";
+const SFX = LANG === "de" ? "" : `-${LANG}`;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const sh = (cmd) => execFileSync("bash", ["-c", cmd], { stdio: "inherit" });
 
@@ -33,10 +36,10 @@ const browser = await chromium.launch({ executablePath: "/usr/bin/chromium", pro
 let session = null; // one login for all shots (the login endpoint is rate limited)
 async function open(width, height, path, scale = 2) {
   const context = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: scale, colorScheme: "dark", ...(session ? { storageState: session } : {}) });
-  await context.addInitScript(() => {
-    localStorage.setItem("cachencarry.lang", "de");
+  await context.addInitScript((lang) => {
+    localStorage.setItem("cachencarry.lang", lang);
     localStorage.setItem("cachencarry.theme", "dark");
-  });
+  }, LANG);
   const page = await context.newPage();
   // Log in from inside the page (the API client of Playwright cannot use a plain HTTP proxy).
   if (!session) {
@@ -84,14 +87,14 @@ const shots = {
   // the same from machine 2 (HIT, from the cache), with Live-Traffic open.
   hitmiss: async () => {
     sh("term/reset-arch.sh 3 relay && for i in 1 2 3; do docker exec ccdemo-pc$i pacman -Sy >/dev/null; done");
-    await sequence("hitmiss", 1600, 1000, "/traffic", 30, async (mark) => {
+    await sequence("hitmiss" + SFX, 1600, 1000, "/traffic", 30, async (mark) => {
       await sleep(1500);
       mark("pc1");
-      await cast("hitmiss-pc1", "hitmiss-pc1");
+      await cast("hitmiss-pc1", `hitmiss${SFX}-pc1`);
       mark("pc1done");
       await sleep(800);
       mark("pc2");
-      await cast("hitmiss-pc2", "hitmiss-pc2");
+      await cast("hitmiss-pc2", `hitmiss${SFX}-pc2`);
       mark("pc2done");
     });
   },
@@ -118,12 +121,23 @@ const shots = {
   // The dashboard while packages are handed out to several machines.
   "dash-live": async () => {
     const list = ["vim", "go", "linux", "mesa", "python", "docker", "cmake", "nodejs"].map((p) => "pacman/archlinux/" + execFileSync("./demo.sh", ["pkg", p]).toString().trim());
-    await sequence("dash-live", 1600, 1000, "/", 12, async () => {
+    await sequence("dash-live" + SFX, 1600, 1000, "/", 12, async () => {
       for (let i = 0; i < 22; i++) {
         await sleep(450);
         fetchAs(11 + (i % 6), list[i % list.length]);
       }
     });
+  },
+  // The setup page of a fresh instance without an administrator (SETUP_URL).
+  setup: async () => {
+    const context = await browser.newContext({ viewport: { width: 1600, height: 1000 }, deviceScaleFactor: 2, colorScheme: "dark" });
+    await context.addInitScript((lang) => { localStorage.setItem("cachencarry.lang", lang); localStorage.setItem("cachencarry.theme", "dark"); }, LANG);
+    const page = await context.newPage();
+    await page.goto(process.env.SETUP_URL, { waitUntil: "networkidle" });
+    await sleep(1200);
+    await page.screenshot({ path: `${OUT}setup${SFX}.png`, fullPage: true });
+    await context.close();
+    console.log("still", "setup" + SFX);
   },
   stills: async () => {
     await still("dash", 1600, 1000, "/");

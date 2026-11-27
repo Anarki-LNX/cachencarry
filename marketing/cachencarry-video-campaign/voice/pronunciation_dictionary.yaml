@@ -252,6 +252,12 @@ pronunciations:
     class: tech
     notes: container image. Written form 0/3 (read as German "Image")
     test: 3/3
+  - term: Shell
+    spoken: "Schell"
+    language: en
+    class: tech
+    notes: written form 1/3 (heard as schön, Schale)
+    test: 3/3
 as_is:
   - Dashboard      # 3/3, every respelling and IPA worse
   - Proxmox        # 3/3
@@ -293,3 +299,5 @@ as_is:
   - Raspberry      # Raspberry Pi 3/3 as written
   - Pi
   - Link           # 3/3
+  - enthält        # German word the heuristic flags
+  - Like           # 3/3

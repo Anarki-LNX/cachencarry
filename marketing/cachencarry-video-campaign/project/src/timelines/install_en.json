@@ -1,0 +1,273 @@
+{
+ "id": "install_en",
+ "fps": 30,
+ "frames": 3623,
+ "scenes": [
+  {
+   "id": "problem",
+   "start": 0,
+   "frames": 270,
+   "lines": [
+    {
+     "file": "vo/install_en/01.wav",
+     "start": 12,
+     "frames": 106,
+     "de": "Sound familiar? Three Linux machines, three updates.",
+     "en": "Sound familiar? Three Linux machines, three updates."
+    },
+    {
+     "file": "vo/install_en/02.wav",
+     "start": 129,
+     "frames": 124,
+     "de": "And each one downloads the same packages from the internet again.",
+     "en": "And each one downloads the same packages from the internet again."
+    }
+   ]
+  },
+  {
+   "id": "solution",
+   "start": 270,
+   "frames": 258,
+   "lines": [
+    {
+     "file": "vo/install_en/03.wav",
+     "start": 9,
+     "frames": 49,
+     "de": "Cache & Carry solves this.",
+     "en": "Cache & Carry solves this."
+    },
+    {
+     "file": "vo/install_en/04.wav",
+     "start": 69,
+     "frames": 94,
+     "de": "The first machine downloads a package from the internet.",
+     "en": "The first machine downloads a package from the internet."
+    },
+    {
+     "file": "vo/install_en/05.wav",
+     "start": 173,
+     "frames": 66,
+     "de": "All others get it straight from your network.",
+     "en": "All others get it straight from your network."
+    }
+   ]
+  },
+  {
+   "id": "hitmiss",
+   "start": 528,
+   "frames": 272,
+   "lines": [
+    {
+     "file": "vo/install_en/06.wav",
+     "start": 9,
+     "frames": 61,
+     "de": "Live traffic shows it exactly.",
+     "en": "Live traffic shows it exactly."
+    },
+    {
+     "file": "vo/install_en/07.wav",
+     "start": 80,
+     "frames": 95,
+     "de": "On the first request the package comes from the internet.",
+     "en": "On the first request the package comes from the internet."
+    },
+    {
+     "file": "vo/install_en/08.wav",
+     "start": 186,
+     "frames": 69,
+     "de": "For the next machine it comes from the cache.",
+     "en": "For the next machine it comes from the cache."
+    }
+   ]
+  },
+  {
+   "id": "pitch",
+   "start": 800,
+   "frames": 373,
+   "lines": [
+    {
+     "file": "vo/install_en/09.wav",
+     "start": 9,
+     "frames": 136,
+     "de": "Cache & Carry is a lean, self-hosted package cache for your network.",
+     "en": "Cache & Carry is a lean, self-hosted package cache for your network."
+    },
+    {
+     "file": "vo/install_en/10.wav",
+     "start": 155,
+     "frames": 146,
+     "de": "For APT and Pacman, with a dashboard, statistics and storage limits.",
+     "en": "For APT and Pacman, with a dashboard, statistics and storage limits."
+    },
+    {
+     "file": "vo/install_en/11.wav",
+     "start": 312,
+     "frames": 43,
+     "de": "Free and open source.",
+     "en": "Free and open source."
+    }
+   ]
+  },
+  {
+   "id": "ways",
+   "start": 1173,
+   "frames": 150,
+   "lines": [
+    {
+     "file": "vo/install_en/12.wav",
+     "start": 9,
+     "frames": 110,
+     "de": "You can install it in three ways. All with the same version.",
+     "en": "You can install it in three ways. All with the same version."
+    }
+   ]
+  },
+  {
+   "id": "proxmox",
+   "start": 1323,
+   "frames": 578,
+   "lines": [
+    {
+     "file": "vo/install_en/13.wav",
+     "start": 9,
+     "frames": 49,
+     "de": "One: Proxmox VE.",
+     "en": "One: Proxmox VE."
+    },
+    {
+     "file": "vo/install_en/14.wav",
+     "start": 69,
+     "frames": 255,
+     "de": "One command on the host creates an unprivileged Debian container, verifies the checksum and installs the latest release.",
+     "en": "One command on the host creates an unprivileged Debian container, verifies the checksum and installs the latest release."
+    },
+    {
+     "file": "vo/install_en/15.wav",
+     "start": 334,
+     "frames": 94,
+     "de": "At the end you see the address and the setup token.",
+     "en": "At the end you see the address and the setup token."
+    },
+    {
+     "file": "vo/install_en/16.wav",
+     "start": 438,
+     "frames": 122,
+     "de": "An update is the same command with update and the container number.",
+     "en": "An update is the same command with update and the container number."
+    }
+   ]
+  },
+  {
+   "id": "docker",
+   "start": 1901,
+   "frames": 415,
+   "lines": [
+    {
+     "file": "vo/install_en/17.wav",
+     "start": 9,
+     "frames": 30,
+     "de": "Two: Docker.",
+     "en": "Two: Docker."
+    },
+    {
+     "file": "vo/install_en/18.wav",
+     "start": 50,
+     "frames": 274,
+     "de": "The image is available for amd64 and arm64. It is smaller than 16 megabytes and contains no shell.",
+     "en": "The image is available for amd64 and arm64. It is smaller than 16 megabytes and contains no shell."
+    },
+    {
+     "file": "vo/install_en/19.wav",
+     "start": 334,
+     "frames": 63,
+     "de": "A single Docker command is enough.",
+     "en": "A single Docker command is enough."
+    }
+   ]
+  },
+  {
+   "id": "debian",
+   "start": 2316,
+   "frames": 555,
+   "lines": [
+    {
+     "file": "vo/install_en/20.wav",
+     "start": 9,
+     "frames": 53,
+     "de": "Three: Debian or Ubuntu.",
+     "en": "Three: Debian or Ubuntu."
+    },
+    {
+     "file": "vo/install_en/21.wav",
+     "start": 72,
+     "frames": 139,
+     "de": "Download the package from the release, unpack it and run the install script.",
+     "en": "Download the package from the release, unpack it and run the install script."
+    },
+    {
+     "file": "vo/install_en/22.wav",
+     "start": 222,
+     "frames": 216,
+     "de": "Cache & Carry then runs as a systemd service, also in a VM or on a Raspberry Pi.",
+     "en": "Cache & Carry then runs as a systemd service, also in a VM or on a Raspberry Pi."
+    },
+    {
+     "file": "vo/install_en/23.wav",
+     "start": 449,
+     "frames": 88,
+     "de": "To update, run the script again with the new version.",
+     "en": "To update, run the script again with the new version."
+    }
+   ]
+  },
+  {
+   "id": "setup",
+   "start": 2871,
+   "frames": 240,
+   "lines": [
+    {
+     "file": "vo/install_en/24.wav",
+     "start": 9,
+     "frames": 91,
+     "de": "Then open the web interface on port 8080.",
+     "en": "Then open the web interface on port 8080."
+    },
+    {
+     "file": "vo/install_en/25.wav",
+     "start": 110,
+     "frames": 72,
+     "de": "Enter the token, choose a password, done.",
+     "en": "Enter the token, choose a password, done."
+    }
+   ]
+  },
+  {
+   "id": "cta",
+   "start": 3111,
+   "frames": 512,
+   "lines": [
+    {
+     "file": "vo/install_en/26.wav",
+     "start": 9,
+     "frames": 106,
+     "de": "You will find all commands on the website and on GitHub.",
+     "en": "You will find all commands on the website and on GitHub."
+    },
+    {
+     "file": "vo/install_en/27.wav",
+     "start": 125,
+     "frames": 116,
+     "de": "Cache & Carry is open source. Feel free to leave a star.",
+     "en": "Cache & Carry is open source. Feel free to leave a star."
+    },
+    {
+     "file": "vo/install_en/28.wav",
+     "start": 251,
+     "frames": 185,
+     "de": "If this video helps you: subscribe to the channel, leave a like and tell me in the comments how you use it.",
+     "en": "If this video helps you: subscribe to the channel, leave a like and tell me in the comments how you use it."
+    }
+   ]
+  }
+ ]
+}

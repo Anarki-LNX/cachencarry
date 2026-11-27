@@ -1,0 +1,130 @@
+1
+00:00:00,400 --> 00:00:03,745
+Sound familiar? Three Linux
+machines, three updates.
+
+2
+00:00:03,845 --> 00:00:06,793
+And each one downloads the same
+packages from the internet again.
+
+3
+00:00:09,300 --> 00:00:10,868
+Cache & Carry solves this.
+
+4
+00:00:10,968 --> 00:00:13,704
+The first machine downloads
+a package from the internet.
+
+5
+00:00:13,804 --> 00:00:16,746
+All others get it straight
+from your network.
+
+6
+00:00:17,396 --> 00:00:19,488
+Live traffic shows it exactly.
+
+7
+00:00:19,588 --> 00:00:22,515
+On the first request the
+package comes from the internet.
+
+8
+00:00:22,615 --> 00:00:24,844
+For the next machine it
+comes from the cache.
+
+9
+00:00:26,396 --> 00:00:30,885
+Cache & Carry is a lean, self-hosted
+package cache for your network.
+
+10
+00:00:30,985 --> 00:00:35,750
+For APT and Pacman, with a dashboard,
+statistics and storage limits.
+
+11
+00:00:35,850 --> 00:00:37,688
+Free and open source.
+
+12
+00:00:38,338 --> 00:00:41,946
+You can install it in three
+ways. All with the same version.
+
+13
+00:00:43,338 --> 00:00:44,983
+One: Proxmox VE.
+
+14
+00:00:45,083 --> 00:00:52,450
+One command on the host creates an unprivileged Debian container,
+verifies the checksum and installs the latest release.
+
+15
+00:00:52,550 --> 00:00:55,760
+At the end you see the
+address and the setup token.
+
+16
+00:00:55,860 --> 00:00:59,923
+An update is the same command with
+update and the container number.
+
+17
+00:01:00,573 --> 00:01:02,014
+Two: Docker.
+
+18
+00:01:02,114 --> 00:01:10,924
+The image is available for amd64 and arm64. It is
+smaller than 16 megabytes and contains no shell.
+
+19
+00:01:11,024 --> 00:01:13,028
+A single Docker command is enough.
+
+20
+00:01:13,678 --> 00:01:16,093
+Three: Debian or Ubuntu.
+
+21
+00:01:16,193 --> 00:01:20,831
+Download the package from the release,
+unpack it and run the install script.
+
+22
+00:01:20,931 --> 00:01:27,260
+Cache & Carry then runs as a systemd
+service, also in a VM or on a Raspberry Pi.
+
+23
+00:01:27,360 --> 00:01:30,656
+To update, run the script
+again with the new version.
+
+24
+00:01:31,306 --> 00:01:34,664
+Then open the web interface on port 8080.
+
+25
+00:01:34,764 --> 00:01:37,893
+Enter the token, choose a password, done.
+
+26
+00:01:39,306 --> 00:01:42,152
+You will find all commands on
+the website and on GitHub.
+
+27
+00:01:42,252 --> 00:01:45,653
+Cache & Carry is open source.
+Feel free to leave a star.
+
+28
+00:01:45,753 --> 00:01:51,831
+If this video helps you: subscribe to the channel,
+leave a like and tell me in the comments how you use it.

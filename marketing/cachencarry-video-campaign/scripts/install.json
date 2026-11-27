@@ -1,0 +1,213 @@
+{
+ "id": "install",
+ "file": "cachencarry_install_three_ways",
+ "scenes": [
+  {
+   "id": "problem",
+   "style": "intro",
+   "lead": 0.4,
+   "min": 9.0,
+   "lines": [
+    {
+     "de": "Kennst du das? Drei Linux-Rechner, drei Updates.",
+     "en": "Sound familiar? Three Linux machines, three updates."
+    },
+    {
+     "de": "Und jeder lädt dieselben Pakete wieder aus dem Internet.",
+     "en": "And each one downloads the same packages from the internet again."
+    }
+   ]
+  },
+  {
+   "id": "solution",
+   "style": "product",
+   "lead": 0.3,
+   "min": 8.0,
+   "lines": [
+    {
+     "de": "Cache & Carry löst das.",
+     "en": "Cache & Carry solves this.",
+     "tts_en": "Cache and Carry solves this."
+    },
+    {
+     "de": "Der erste Rechner lädt ein Paket aus dem Internet.",
+     "en": "The first machine downloads a package from the internet."
+    },
+    {
+     "de": "Alle weiteren bekommen es direkt aus deinem Netzwerk.",
+     "en": "All others get it straight from your network."
+    }
+   ]
+  },
+  {
+   "id": "hitmiss",
+   "style": "tech",
+   "lead": 0.3,
+   "min": 9.0,
+   "lines": [
+    {
+     "de": "Im Live-Traffic siehst du es genau.",
+     "en": "Live traffic shows it exactly."
+    },
+    {
+     "de": "Beim ersten Abruf kommt das Paket aus dem Internet.",
+     "en": "On the first request the package comes from the internet."
+    },
+    {
+     "de": "Beim nächsten Rechner kommt es aus dem Cache.",
+     "en": "For the next machine it comes from the cache."
+    }
+   ]
+  },
+  {
+   "id": "pitch",
+   "style": "product",
+   "lead": 0.3,
+   "min": 10.0,
+   "lines": [
+    {
+     "de": "Cache & Carry ist ein schlanker, selbst gehosteter Paketcache für dein Netzwerk.",
+     "en": "Cache & Carry is a lean, self-hosted package cache for your network.",
+     "tts_en": "Cache and Carry is a lean, self-hosted package cache for your network."
+    },
+    {
+     "de": "Für APT und Pacman, mit Dashboard, Statistiken und Limits für den Speicher.",
+     "en": "For APT and Pacman, with a dashboard, statistics and storage limits.",
+     "tts_en": "For A P T and Pacman, with a dashboard, statistics and storage limits."
+    },
+    {
+     "de": "Kostenlos und Open Source.",
+     "en": "Free and open source."
+    }
+   ]
+  },
+  {
+   "id": "ways",
+   "style": "product",
+   "lead": 0.3,
+   "min": 5.0,
+   "lines": [
+    {
+     "de": "Installieren kannst du es auf drei Wegen. Alle mit derselben Version.",
+     "en": "You can install it in three ways. All with the same version."
+    }
+   ]
+  },
+  {
+   "id": "proxmox",
+   "style": "tutorial",
+   "lead": 0.3,
+   "min": 14.0,
+   "lines": [
+    {
+     "de": "Erstens: Proxmox VE.",
+     "tts": "Erstens: Proxmox.",
+     "en": "One: Proxmox VE.",
+     "tts_en": "One: Proxmox V E."
+    },
+    {
+     "de": "Ein Befehl auf dem Host legt einen unprivilegierten Debian-Container an, prüft die Prüfsumme und installiert das neueste Release.",
+     "en": "One command on the host creates an unprivileged Debian container, verifies the checksum and installs the latest release."
+    },
+    {
+     "de": "Am Ende siehst du die Adresse und das Token für die Einrichtung.",
+     "en": "At the end you see the address and the setup token."
+    },
+    {
+     "de": "Ein Update ist derselbe Befehl mit update und der Nummer des Containers.",
+     "en": "An update is the same command with update and the container number."
+    }
+   ]
+  },
+  {
+   "id": "docker",
+   "style": "tutorial",
+   "lead": 0.3,
+   "min": 11.0,
+   "lines": [
+    {
+     "de": "Zweitens: Docker.",
+     "en": "Two: Docker."
+    },
+    {
+     "de": "Das Image gibt es für amd64 und arm64. Es ist kleiner als 16 Megabyte und enthält keine Shell.",
+     "tts": "Das Image gibt es für A M D 64 und A R M 64. Es ist kleiner als sechzehn Megabyte und enthält keine Shell.",
+     "en": "The image is available for amd64 and arm64. It is smaller than 16 megabytes and contains no shell.",
+     "tts_en": "The image is available for A M D sixty-four and A R M sixty-four. It is smaller than 16 megabytes and contains no shell."
+    },
+    {
+     "de": "Ein einziger Docker-Befehl genügt.",
+     "en": "A single Docker command is enough."
+    }
+   ]
+  },
+  {
+   "id": "debian",
+   "style": "tutorial",
+   "lead": 0.3,
+   "min": 13.0,
+   "lines": [
+    {
+     "de": "Drittens: Debian oder Ubuntu.",
+     "en": "Three: Debian or Ubuntu."
+    },
+    {
+     "de": "Lade das Paket aus dem Release, entpacke es und starte das Installationsskript.",
+     "en": "Download the package from the release, unpack it and run the install script."
+    },
+    {
+     "de": "Cache & Carry läuft dann als systemd-Dienst, auch in einer VM oder auf dem Raspberry Pi.",
+     "tts": "Cache & Carry läuft dann als systemd-Dienst, auch in einer virtuellen Maschine oder auf dem Raspberry Pi.",
+     "en": "Cache & Carry then runs as a systemd service, also in a VM or on a Raspberry Pi.",
+     "tts_en": "Cache and Carry then runs as a system D service, also in a virtual machine or on a Raspberry Pi."
+    },
+    {
+     "de": "Für ein Update startest du das Skript mit der neuen Version erneut.",
+     "en": "To update, run the script again with the new version."
+    }
+   ]
+  },
+  {
+   "id": "setup",
+   "style": "tutorial",
+   "lead": 0.3,
+   "min": 8.0,
+   "lines": [
+    {
+     "de": "Danach öffnest du die Weboberfläche auf Port 8080.",
+     "tts": "Danach öffnest du die Weboberfläche auf Port achtzig achtzig.",
+     "en": "Then open the web interface on port 8080.",
+     "tts_en": "Then open the web interface on port eighty eighty."
+    },
+    {
+     "de": "Gib das Token ein, wähle ein Passwort, fertig.",
+     "en": "Enter the token, choose a password, done."
+    }
+   ]
+  },
+  {
+   "id": "cta",
+   "style": "cta",
+   "lead": 0.3,
+   "min": 12.0,
+   "tail": 2.5,
+   "lines": [
+    {
+     "de": "Alle Befehle findest du auf der Website und auf GitHub.",
+     "en": "You will find all commands on the website and on GitHub."
+    },
+    {
+     "de": "Cache & Carry ist Open Source. Lass gern einen Stern da.",
+     "en": "Cache & Carry is open source. Feel free to leave a star.",
+     "tts_en": "Cache and Carry is open source. Feel free to leave a star."
+    },
+    {
+     "de": "Wenn dir das Video hilft: Abonniere den Kanal, lass ein Like da und schreib mir in die Kommentare, wie du es einsetzt.",
+     "en": "If this video helps you: subscribe to the channel, leave a like and tell me in the comments how you use it."
+    }
+   ]
+  }
+ ],
+ "file_en": "cachencarry_install_three_ways",
+ "voice_en": "am_michael"
+}

@@ -354,6 +354,25 @@ def track_presentation():
     save("music_presentation.wav", fade(mix, 1.0, 3.0))
 
 
+def track_install(vid="install"):
+    """Install video: like the presentation for the pitch, calmer for the three ways."""
+    tl, sc = timeline(vid)
+    total = tl["frames"] / tl["fps"]
+    secs = [
+        (0, sc["solution"][0], {"drone", "pulse", "hat16"}),
+        (sc["solution"][0], sc["pitch"][0], {"pad", "arp", "kick", "hat", "bass"}),
+        (sc["pitch"][0], sc["ways"][0], {"pad", "arp", "kick", "hat", "hat16", "bass", "clap", "big"}),
+        (sc["ways"][0], sc["cta"][0], {"pad", "arp", "pulse"}),
+        (sc["cta"][0], total - 4, {"pad", "arp", "kick", "hat", "bass", "clap"}),
+        (total - 4, total + 5, {"pad", "big"}),
+    ]
+    mix = groove(total, 112, secs)
+    for k in ("solution", "pitch", "ways", "cta"):
+        place(mix, riser(1.6, 0.16)[:, None] * np.ones(2), sc[k][0] - 1.6)
+    place(mix, impact(0.6), sc["solution"][0] + 0.2)
+    save(f"music_{vid}.wav", fade(mix, 1.0, 3.0))
+
+
 def track_tutorial():
     tl, _ = timeline("tutorial")
     total = tl["frames"] / tl["fps"]
@@ -388,14 +407,17 @@ def effects():
 
 
 if __name__ == "__main__":
-    what = sys.argv[1:] or ["fx", "presentation", "tutorial", "shorts"]
+    what = sys.argv[1:] or ["fx", "presentation", "tutorial", "install", "shorts"]
     if "fx" in what:
         effects()
     if "presentation" in what:
         track_presentation()
     if "tutorial" in what:
         track_tutorial()
+    if "install" in what:
+        track_install()
+        track_install("install_en")
     if "shorts" in what:
-        for vid, drop in (("short01", 2), ("short02", 1), ("short03", 1), ("short04", 1), ("short05", 1), ("short06", 1)):
+        for vid, drop in (("short01", 2), ("short02", 1), ("short03", 1), ("short04", 1), ("short05", 1), ("short06", 1))):
             if (ROOT / "project/src/timelines" / f"{vid}.json").exists():
                 track_short(vid, drop)

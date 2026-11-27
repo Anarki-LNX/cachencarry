@@ -402,3 +402,15 @@
   cand:
   - Link
   - '[[lˈɪŋk]]'
+- term: Shell
+  accept: shell|schell|chell
+  cand:
+  - Shell
+  - Schell
+  - '[[ʃˈɛl]]'
+- term: Like
+  accept: like|leik|laik
+  cand:
+  - Like
+  - Leik
+  - '[[lˈaɪk]]'

@@ -4,13 +4,13 @@ import { clamp, Kicker, Logo, Pill, ramp, Title } from "./kit";
 import { C, FONT, MONO } from "./theme";
 
 /** MISS → INTERNET → LOCAL CACHE → HIT → CLIENT, lighting up step by step. */
-export const FlowStrip = ({ y, frame, missAt, hitAt, portrait = false }: { y: number; frame: number; missAt: number; hitAt: number; portrait?: boolean }) => {
+export const FlowStrip = ({ y, frame, missAt, hitAt, portrait = false, labels = ["LOKALER CACHE", "RECHNER"] }: { y: number; frame: number; missAt: number; hitAt: number; portrait?: boolean; labels?: [string, string] }) => {
   const steps = [
     { t: "MISS", c: C.amber, at: missAt },
     { t: "INTERNET", c: C.amber, at: missAt + 10 },
-    { t: "LOKALER CACHE", c: C.cyan, at: missAt + 22 },
+    { t: labels[0], c: C.cyan, at: missAt + 22 },
     { t: "HIT", c: C.green, at: hitAt },
-    { t: "RECHNER", c: C.green, at: hitAt + 10 },
+    { t: labels[1], c: C.green, at: hitAt + 10 },
   ];
   const size = portrait ? 30 : 30;
   return (

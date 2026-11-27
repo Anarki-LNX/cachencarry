@@ -1,0 +1,132 @@
+1
+00:00:00,400 --> 00:00:03,745
+Kennst du das? Drei
+Linux-Rechner, drei Updates.
+
+2
+00:00:03,845 --> 00:00:06,793
+Und jeder lädt dieselben Pakete
+wieder aus dem Internet.
+
+3
+00:00:09,300 --> 00:00:10,868
+Cache & Carry löst das.
+
+4
+00:00:10,968 --> 00:00:13,704
+Der erste Rechner lädt ein
+Paket aus dem Internet.
+
+5
+00:00:13,804 --> 00:00:16,746
+Alle weiteren bekommen es
+direkt aus deinem Netzwerk.
+
+6
+00:00:17,396 --> 00:00:19,488
+Im Live-Traffic siehst du es genau.
+
+7
+00:00:19,588 --> 00:00:22,515
+Beim ersten Abruf kommt
+das Paket aus dem Internet.
+
+8
+00:00:22,615 --> 00:00:24,844
+Beim nächsten Rechner
+kommt es aus dem Cache.
+
+9
+00:00:26,396 --> 00:00:30,885
+Cache & Carry ist ein schlanker, selbst
+gehosteter Paketcache für dein Netzwerk.
+
+10
+00:00:30,985 --> 00:00:35,750
+Für APT und Pacman, mit Dashboard,
+Statistiken und Limits für den Speicher.
+
+11
+00:00:35,850 --> 00:00:37,688
+Kostenlos und Open Source.
+
+12
+00:00:38,338 --> 00:00:41,946
+Installieren kannst du es auf drei
+Wegen. Alle mit derselben Version.
+
+13
+00:00:43,338 --> 00:00:44,983
+Erstens: Proxmox VE.
+
+14
+00:00:45,083 --> 00:00:52,450
+Ein Befehl auf dem Host legt einen unprivilegierten Debian-Container
+an, prüft die Prüfsumme und installiert das neueste Release.
+
+15
+00:00:52,550 --> 00:00:55,760
+Am Ende siehst du die Adresse und
+das Token für die Einrichtung.
+
+16
+00:00:55,860 --> 00:00:59,923
+Ein Update ist derselbe Befehl mit
+update und der Nummer des Containers.
+
+17
+00:01:00,573 --> 00:01:02,014
+Zweitens: Docker.
+
+18
+00:01:02,114 --> 00:01:10,924
+Das Image gibt es für amd64 und arm64. Es ist
+kleiner als 16 Megabyte und enthält keine Shell.
+
+19
+00:01:11,024 --> 00:01:13,028
+Ein einziger Docker-Befehl genügt.
+
+20
+00:01:13,678 --> 00:01:16,093
+Drittens: Debian oder Ubuntu.
+
+21
+00:01:16,193 --> 00:01:20,831
+Lade das Paket aus dem Release, entpacke
+es und starte das Installationsskript.
+
+22
+00:01:20,931 --> 00:01:27,260
+Cache & Carry läuft dann als systemd-Dienst,
+auch in einer VM oder auf dem Raspberry Pi.
+
+23
+00:01:27,360 --> 00:01:30,656
+Für ein Update startest du das
+Skript mit der neuen Version erneut.
+
+24
+00:01:31,306 --> 00:01:34,664
+Danach öffnest du die
+Weboberfläche auf Port 8080.
+
+25
+00:01:34,764 --> 00:01:37,893
+Gib das Token ein, wähle
+ein Passwort, fertig.
+
+26
+00:01:39,306 --> 00:01:42,152
+Alle Befehle findest du auf
+der Website und auf GitHub.
+
+27
+00:01:42,252 --> 00:01:45,653
+Cache & Carry ist Open Source.
+Lass gern einen Stern da.
+
+28
+00:01:45,753 --> 00:01:51,831
+Wenn dir das Video hilft: Abonniere den Kanal, lass ein Like
+da und schreib mir in die Kommentare, wie du es einsetzt.
