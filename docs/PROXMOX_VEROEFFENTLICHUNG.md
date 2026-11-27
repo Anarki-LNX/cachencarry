@@ -6,7 +6,7 @@ Stand: 27.11.2026.
 
 | Datei | Zweck | Getestet |
 |---|---|---|
-| `scripts/proxmox-lxc.sh` | Ein Befehl auf dem Proxmox-Host: legt einen unprivilegierten Debian-13-LXC ohne Nesting an, installiert das Release, gibt Adresse und Setup-Token aus. Modus `update <CTID>` aktualisiert. | ja, mit simulierten Proxmox-Befehlen (siehe unten) |
+| `scripts/proxmox-lxc.sh` | Ein Befehl auf dem Proxmox-Host: legt einen unprivilegierten Debian-13-LXC ohne Nesting an, installiert das Release, gibt Adresse und Setup-Token aus. Modus `update <CTID>` aktualisiert. | ja, auf dem echten Proxmox (PVE 9.2) und vorher simuliert (siehe unten) |
 | `deployments/community-scripts/ct/cachencarry.sh` | Container-Skript im Format von community-scripts | nur Syntax und shellcheck |
 | `deployments/community-scripts/install/cachencarry-install.sh` | Installation im Container im Format von community-scripts | nur Syntax und shellcheck |
 | `deployments/community-scripts/json/cachencarry.json` | Metadaten für die Website, Kategorie 4 (Network & Firewall) | JSON gültig |
@@ -14,29 +14,28 @@ Stand: 27.11.2026.
 
 ### Wie getestet wurde
 
-Kein echter Proxmox-Host, weil ein Test-LXC auf dem Proxmox nur nach deiner
-Freigabe angelegt wird. Stattdessen:
+**Auf dem echten Proxmox** (PVE 9.2.32, 27.11.2026, nach deiner Freigabe):
+Test-LXC 130 mit `CC_CTID=130 CC_CACHE_GB=2 CC_YES=1` angelegt, danach wieder
+gelöscht.
 
-- `pct`, `pveam`, `pvesm`, `pvesh` und `pveversion` wurden durch kleine
-  Ersatzskripte simuliert. `pct create` startete dabei einen lokalen Container
-  aus dem **offiziellen Proxmox-Template** `debian-13-standard_13.6-1_amd64.tar.zst`
-  mit systemd. `pct exec` und `pct push` liefen echt in diesem Container.
-- Ergebnis Installation: Release 0.2.1 geladen, Prüfsumme geprüft, Debian
-  aktualisiert, Dienst `active`, Weboberfläche antwortet mit HTTP 200,
-  `cachencarry healthcheck` erfolgreich, Setup-Token ausgegeben.
-- Ergebnis Update: gleiche Version wird erkannt und übersprungen, mit
-  `CC_FORCE=1` Datenbank gesichert, neu installiert, Dienst wieder `active`.
-- Nicht getestet: echtes `pct create` mit Storage und `mp0`, arm64, statische
-  IP, der Abbruch-Dialog. Der manuelle Weg mit denselben Einstellungen ist laut
-  `DEPLOYMENT.md` auf PVE 9.2 getestet.
+- Installation: Release 0.2.2 geladen, Prüfsumme geprüft, Container auf
+  `local-lvm` mit `mp0` (2 GB, ohne vzdump-Backup) angelegt, per DHCP im Netz,
+  Dienst `active`, Weboberfläche HTTP 200, `healthcheck` erfolgreich,
+  APT-Abruf über den Cache HTTP 200, Setup-Token ausgegeben.
+- Gefunden und behoben: Ohne Nesting kann systemd 257 in Debian 13 die
+  Einheiten `tmp.mount`, `run-lock.mount` und `dev-mqueue.mount` nicht
+  einhängen, der Container stand auf `degraded` (bei Container 120 genauso).
+  Das Skript maskiert die drei jetzt. Neu angelegt: Zustand `running`, keine
+  fehlgeschlagenen Einheiten. Die Proxmox-Warnung „Systemd 257 detected. You
+  may need to enable nesting.“ erscheint weiterhin und ist damit harmlos.
+- Update: gleiche Version wird übersprungen, mit `CC_FORCE=1` Datenbank
+  gesichert (`metadata-before-0.2.2-….db`), neu installiert, Dienst `active`.
 
-Empfehlung vor dem Veröffentlichen: einmal auf dem Proxmox einen Test-LXC mit
-einer freien ID (zum Beispiel 130) anlegen lassen und danach wieder löschen:
+Vorher lokal mit simulierten Proxmox-Befehlen und einem Container aus dem
+offiziellen Template `debian-13-standard_13.6-1_amd64.tar.zst` (Release 0.2.1),
+gleiches Ergebnis.
 
-```sh
-CC_CTID=130 bash scripts/proxmox-lxc.sh
-pct stop 130 && pct destroy 130 --purge 1
-```
+Nicht getestet: arm64, statische IP und VLAN, der Abbruch-Dialog.
 
 ## Weg 1: eigenes Skript im Repo (sofort möglich)
 
