@@ -26,8 +26,8 @@
      "file": "vo/short02/02.wav",
      "start": 9,
      "frames": 102,
-     "de": "MISS bedeutet: Das Paket muss noch aus dem Internet kommen.",
-     "en": "MISS means the package still has to come from the mirror."
+     "de": "MISS. Das bedeutet: Das Paket muss noch aus dem Internet kommen.",
+     "en": "MISS. That means the package still has to come from the Internet."
     }
    ]
   },
@@ -40,8 +40,8 @@
      "file": "vo/short02/03.wav",
      "start": 9,
      "frames": 90,
-     "de": "HIT bedeutet: Es liegt bereits in deinem Cache.",
-     "en": "HIT means it is already in your cache."
+     "de": "HIT. Das bedeutet: Es liegt bereits in deinem Cache.",
+     "en": "HIT. That means it is already in your cache."
     },
     {
      "file": "vo/short02/04.wav",

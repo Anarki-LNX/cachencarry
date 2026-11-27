@@ -55,9 +55,9 @@
      "en": "A lean, self-hosted package cache for your network."
     },
     {
-     "de": "Im Dashboard siehst du jede Anfrage, jedes gespeicherte Paket und wie viel Bandbreite du sparst.",
+     "de": "Im Dashboard siehst du jede Anfrage. Jedes gespeicherte Paket. Und wie viel Bandbreite du sparst.",
      "tts": "Im Dashboard siehst du jede Anfrage. Jedes gespeicherte Paket. Und wie viel Bandbreite du sparst.",
-     "en": "The dashboard shows every request, every stored package and how much bandwidth you save."
+     "en": "In the dashboard you see every request. Every stored package. And how much bandwidth you save."
     }
    ]
   },
@@ -88,9 +88,9 @@
    "min": 15,
    "lines": [
     {
-     "de": "Und wenn mehrere Rechner gleichzeitig dieselbe Datei brauchen, reicht ein einziger Download aus dem Internet für alle.",
+     "de": "Und wenn mehrere Rechner gleichzeitig dieselbe Datei brauchen? Dann reicht ein einziger Download aus dem Internet. Für alle.",
      "tts": "Und wenn mehrere Rechner gleichzeitig dieselbe Datei brauchen? Dann reicht ein einziger Download aus dem Internet. Für alle.",
-     "en": "And when several machines need the same file at the same time, a single upstream download can serve them all."
+     "en": "And when several machines need the same file at the same time? Then a single download from the Internet is enough. For all of them."
     },
     {
      "de": "In unserem Testnetzwerk kam ein Paketindex mit 8,6 MiB in 959 ms aus dem Internet. Aus dem Cache in 9 ms.",
@@ -129,14 +129,14 @@
    "tail": 3.2,
    "lines": [
     {
-     "de": "Cache & Carry ist kostenlos auf GitHub verfügbar, Open Source und bereit für dein Homelab.",
+     "de": "Cache & Carry ist kostenlos auf GitHub. Open Source. Und bereit für dein Homelab.",
      "tts": "Cache & Carry ist kostenlos auf GitHub. Open Source. Und bereit für dein Homelab.",
-     "en": "Cache & Carry is free on GitHub, open source and ready for your homelab."
+     "en": "Cache & Carry is free on GitHub. Open source. And ready for your homelab."
     },
     {
-     "de": "Wenn du es ausprobierst, lass einen Stern da, teile das Projekt und sag mir in den Kommentaren, wie du es einsetzt.",
+     "de": "Probier es aus. Lass einen Stern da, teile das Projekt und sag mir in den Kommentaren, wie du es einsetzt.",
      "tts": "Probier es aus. Lass einen Stern da, teile das Projekt, und sag mir in den Kommentaren, wie du es einsetzt.",
-     "en": "If you try it, leave a star, share the project and tell me in the comments how you use it."
+     "en": "Try it out. Leave a star, share the project and tell me in the comments how you use it."
     }
    ]
   }

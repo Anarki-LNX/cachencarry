@@ -34,22 +34,22 @@
      "file": "vo/tutorial/03.wav",
      "start": 15,
      "frames": 219,
-     "de": "Der erste Rechner lädt ein Paket aus dem Internet. Cache & Carry speichert es, und jeder weitere Rechner bekommt es direkt aus dem LAN.",
-     "en": "The first machine downloads a package from the Internet. Cache & Carry stores it, and every other machine gets it straight from the LAN."
+     "de": "Der erste Rechner lädt ein Paket aus dem Internet. Cache & Carry speichert es. Und jeder weitere Rechner bekommt es direkt aus dem LAN.",
+     "en": "The first machine downloads a package from the Internet. Cache & Carry stores it. And every other machine gets it straight from the LAN."
     },
     {
      "file": "vo/tutorial/04.wav",
      "start": 245,
      "frames": 215,
-     "de": "Unterstützt werden heute APT für Debian, Ubuntu und Proxmox sowie Pacman für Arch Linux und CachyOS.",
-     "en": "Supported today: APT for Debian, Ubuntu and Proxmox, and Pacman for Arch Linux and CachyOS."
+     "de": "Unterstützt werden heute APT für Debian, Ubuntu und Proxmox. Und Pacman für Arch Linux und CachyOS.",
+     "en": "Supported today: APT for Debian, Ubuntu and Proxmox. And Pacman for Arch Linux and CachyOS."
     },
     {
      "file": "vo/tutorial/05.wav",
      "start": 470,
      "frames": 400,
-     "de": "Die Hardware darf klein sein: Ein Kern und 256 MB RAM sind das Minimum, mit zwei Kernen und einem GB läuft es komfortabel. Dazu Speicherplatz für alles, was im Cache landen soll.",
-     "en": "The hardware can be small: one core and 256 MB of RAM are the minimum, two cores and one GB are comfortable. Plus disk space for everything you want to cache."
+     "de": "Die Hardware darf klein sein. Ein Kern und 256 MB RAM sind das Minimum. Mit zwei Kernen und einem GB läuft es komfortabel. Dazu kommt Speicherplatz für alles, was im Cache landen soll.",
+     "en": "The hardware can be small. One core and 256 MB of RAM are the minimum. With two cores and one GB it runs comfortably. Plus disk space for everything you want to cache."
     },
     {
      "file": "vo/tutorial/06.wav",
@@ -84,8 +84,8 @@
      "file": "vo/tutorial/09.wav",
      "start": 611,
      "frames": 311,
-     "de": "Proxmox warnt, dass systemd 257 eventuell Nesting braucht. Für Cache & Carry ist das nicht nötig: Der Dienst wurde genau so ohne Nesting getestet.",
-     "en": "Proxmox warns that systemd 257 may need nesting. Cache & Carry does not: the service was tested exactly like this, without nesting."
+     "de": "Proxmox warnt, dass systemd 257 eventuell Nesting braucht. Für Cache & Carry ist das nicht nötig. Der Dienst wurde genau so getestet, ohne Nesting.",
+     "en": "Proxmox warns that systemd 257 may need nesting. Cache & Carry does not need it. The service was tested exactly like this, without nesting."
     }
    ],
    "chapter": 2
@@ -106,15 +106,15 @@
      "file": "vo/tutorial/11.wav",
      "start": 274,
      "frames": 366,
-     "de": "Die Adresse 192.168.1.41 brauchen wir später für die Clients. Zwei Kerne, ein GB RAM, und unter /var/lib ist genug Platz für den Cache.",
-     "en": "We will need the address 192.168.1.41 for the clients later. Two cores, one GB of RAM, and enough space for the cache under /var/lib."
+     "de": "Die Adresse 192.168.1.41 brauchen wir später für die Clients. Zwei Kerne, ein GB RAM. Und unter /var/lib ist genug Platz für den Cache.",
+     "en": "We will need the address 192.168.1.41 for the clients later. Two cores, one GB of RAM. And enough space for the cache under /var/lib."
     },
     {
      "file": "vo/tutorial/12.wav",
      "start": 651,
      "frames": 191,
-     "de": "Wir arbeiten hier als root. Auf einem normalen Server stellst du den Installationsbefehlen sudo voran.",
-     "en": "We work as root here. On a normal server, put sudo in front of the install commands."
+     "de": "Wir arbeiten hier mit Administratorrechten. Auf einem normalen Server stellst du den Installationsbefehlen sudo voran.",
+     "en": "We work with administrator rights here. On a normal server, put sudo in front of the install commands."
     }
    ],
    "chapter": 2
@@ -157,8 +157,8 @@
      "file": "vo/tutorial/16.wav",
      "start": 12,
      "frames": 258,
-     "de": "Das Skript legt den Systembenutzer cachencarry an, installiert das Programm nach /usr/local/bin und erzeugt /etc/cachencarry und /var/lib/cachencarry.",
-     "en": "The script creates the system user cachencarry, installs the program to /usr/local/bin and creates /etc/cachencarry and /var/lib/cachencarry."
+     "de": "Das Skript legt den Systembenutzer cachencarry an, installiert das Programm nach /usr/local/bin und erzeugt die Ordner für Konfiguration und Daten.",
+     "en": "The script creates the system user cachencarry, installs the program to /usr/local/bin and creates the folders for configuration and data."
     },
     {
      "file": "vo/tutorial/17.wav",
@@ -201,7 +201,7 @@
      "file": "vo/tutorial/20.wav",
      "start": 195,
      "frames": 271,
-     "de": "Beim ersten Aufruf legst du das Administratorkonto an. Damit das nur kann, wer Zugriff auf den Server hat, fragt die Einrichtung nach einem einmaligen Setup-Token.",
+     "de": "Beim ersten Aufruf legst du das Administratorkonto an. Damit das nur kann, wer Zugriff auf den Server hat, fragt die Einrichtung nach einem einmaligen Token für die Einrichtung.",
      "en": "On the first visit you create the administrator account. So that only someone with access to the server can do this, setup asks for a one-time setup token."
     }
    ],
@@ -268,8 +268,8 @@
      "file": "vo/tutorial/25.wav",
      "start": 9,
      "frames": 334,
-     "de": "Wir sichern die Datei und ersetzen sie durch die Variante aus der Dokumentation. Statt deb.debian.org steht dort der Cache mit Port 8080 und dem Pfad apt/debian.",
-     "en": "We back up the file and replace it with the version from the documentation. Instead of deb.debian.org it points to the cache on port 8080 with the path apt/debian."
+     "de": "Wir sichern die Datei und ersetzen sie durch die Variante aus der Dokumentation. Statt des offiziellen Debian-Servers steht dort der Cache mit Port 8080 und dem Pfad apt/debian.",
+     "en": "We back up the file and replace it with the version from the documentation. Instead of the official Debian server it points to the cache on port 8080 with the path apt/debian."
     },
     {
      "file": "vo/tutorial/26.wav",
@@ -312,8 +312,8 @@
      "file": "vo/tutorial/29.wav",
      "start": 121,
      "frames": 258,
-     "de": "Dann installieren wir curl. Der Cache ist noch leer, also holt Cache & Carry jedes Paket einmal vom Debian-Server im Internet. Das sind die MISS-Einträge.",
-     "en": "Then we install curl. The cache is still empty, so Cache & Carry fetches every package once from the Debian mirror. Those are the MISS entries."
+     "de": "Dann installieren wir curl. Der Cache ist noch leer. Also holt Cache & Carry jedes Paket einmal vom Debian-Server im Internet. Das sind die MISS-Einträge.",
+     "en": "Then we install curl. The cache is still empty. So Cache & Carry fetches every package once from the Debian server on the Internet. Those are the MISS entries."
     }
    ],
    "chapter": 5
@@ -327,8 +327,8 @@
      "file": "vo/tutorial/30.wav",
      "start": 9,
      "frames": 274,
-     "de": "Für Arch Linux und CachyOS geht es genauso über die Mirrorlist. Die Zeilen dafür stehen in docs/CLIENTS.md.",
-     "en": "Arch Linux and CachyOS work the same way through the mirrorlist. The lines are in docs/CLIENTS.md."
+     "de": "Für Arch Linux und CachyOS geht es genauso über die Liste der Paketserver. Die Zeilen dafür stehen in der Datei CLIENTS.md im Ordner docs.",
+     "en": "Arch Linux and CachyOS work the same way through the list of package servers. The lines are in the file CLIENTS.md in the docs folder."
     }
    ],
    "chapter": 5
@@ -364,8 +364,8 @@
      "file": "vo/tutorial/33.wav",
      "start": 92,
      "frames": 277,
-     "de": "Diesmal kommt alles aus dem Cache. Beim ersten Client dauerte der Download drei Sekunden, jetzt null Sekunden, mit 252 MB pro Sekunde.",
-     "en": "This time everything comes from the cache. For the first client the download took three seconds, now zero seconds, at 252 MB per second."
+     "de": "Diesmal kommt alles aus dem Cache. Beim ersten Client dauerte der Download drei Sekunden. Jetzt null Sekunden, mit 252 MB pro Sekunde.",
+     "en": "This time everything comes from the cache. For the first client the download took three seconds. Now zero seconds, at 252 MB per second."
     }
    ],
    "chapter": 6
@@ -394,7 +394,7 @@
      "file": "vo/tutorial/35.wav",
      "start": 9,
      "frames": 201,
-     "de": "Auf der Kommandozeile prüfst du es mit curl und dem Header X-Cache. Beim allerersten Abruf steht dort MISS, danach HIT.",
+     "de": "Auf der Kommandozeile prüfst du es mit curl und der Kopfzeile X-Cache. Beim allerersten Abruf steht dort MISS, danach HIT.",
      "en": "On the command line you check it with curl and the X-Cache header. On the very first request it says MISS, afterwards HIT."
     }
    ],
@@ -409,8 +409,8 @@
      "file": "vo/tutorial/36.wav",
      "start": 9,
      "frames": 190,
-     "de": "Die Statistik zählt die Bytes, die wirklich übertragen wurden: was aus dem Internet kam und was der Cache eingespart hat.",
-     "en": "Statistics count the bytes that were really transferred: what came from upstream and what the cache saved."
+     "de": "Die Statistik zählt die Bytes, die wirklich übertragen wurden. Was aus dem Internet kam. Und was der Cache eingespart hat.",
+     "en": "Statistics count the bytes that were really transferred. What came from the Internet. And what the cache saved."
     }
    ],
    "chapter": 6
@@ -431,8 +431,8 @@
      "file": "vo/tutorial/38.wav",
      "start": 155,
      "frames": 241,
-     "de": "Die Konfiguration liegt in /etc/cachencarry/config.yaml, der Cache in /var/lib/cachencarry, und die Logs zeigt journalctl.",
-     "en": "The configuration is in /etc/cachencarry/config.yaml, the cache in /var/lib/cachencarry, and journalctl shows the logs."
+     "de": "Die Konfiguration liegt in der Datei config.yaml unter /etc. Der Cache liegt unter /var/lib. Und die Logs zeigt journalctl.",
+     "en": "The configuration is in the file config.yaml under /etc. The cache is under /var/lib. And journalctl shows the logs."
     }
    ],
    "chapter": 7

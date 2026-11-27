@@ -23,7 +23,8 @@ Cloud-Sprachdienste verwendet.
 |---|---|---|
 | Sprecher (Deutsch) | lokal erzeugt mit Piper TTS 1.8.0 (`piper-tts`, OHF-Voice/piper1-gpl) | Programm: GPL-3.0-or-later. Die erzeugten Audiodateien sind Ausgaben des Programms und fallen nicht unter die GPL |
 | Stimme | `de_DE-thorsten-high` aus `rhasspy/piper-voices` (Hugging Face), **vom Nutzer gewählt** (27.11.2026) | Daten Thorsten-Voice **CC0**. Modell laut Modellkarte **feinabgestimmt vom englischen lessac (high)**, siehe Hinweis unten |
-| Musik und Soundeffekte | synthetisiert mit numpy/scipy in `pipeline/music.py` (Pad, Bass, Arpeggio, Drums, Whoosh, Impact, HIT-Klang, MISS-Klang, Tastenklicks) | eigene Komposition, keine Samples |
+| Musik und Soundeffekte | synthetisiert mit numpy/scipy in `pipeline/music.py` (Pad, Bass, Arpeggio, Drums, Whoosh, Impact, HIT-Klang, MISS-Klang) | eigene Komposition, keine Samples |
+| Tastaturgeräusch | selbst erzeugt in `pipeline/music.py` (`keyboard_set`): gefiltertes Rauschen und Sinus, 8 Varianten für Buchstaben, je 3 für Leertaste und Enter. Zeitpunkte und Tastenart aus den echten Terminalaufnahmen (`pipeline/key_kinds.py`) | eigene Erzeugung, keine Samples, frei nutzbar |
 
 Hinweis zur Stimme: thorsten-high ist vom Modell „lessac“ abgeleitet. Lessac
 wurde mit den Blizzard-2013-Daten der Universität Edinburgh trainiert, deren

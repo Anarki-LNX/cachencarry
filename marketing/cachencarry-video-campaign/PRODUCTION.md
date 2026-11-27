@@ -24,8 +24,9 @@
 4. **Musik.** `pipeline/music.py` synthetisiert die Musik passend zu den
    Szenengrenzen: elektronisch und ruhig für die Präsentation, sehr leise für
    das Tutorial, schneller (124 BPM) mit Drop für die Shorts. Dazu Whoosh,
-   Impact, HIT-Klang, MISS-Klang, Datenimpulse und Tastenklicks, die auf die
-   echten Tastenzeitpunkte der Terminalaufnahmen gelegt werden.
+   Impact, HIT-Klang, MISS-Klang, Datenimpulse und ein dumpfes Tastaturgeräusch (eigene
+   Erzeugung, leise, je Taste etwas anders, Leertaste und Enter tiefer) auf
+   den echten Tastenzeitpunkten der Terminalaufnahmen.
 5. **Aufnahmen.**
    - Demo-Instanz (frisch gebaut aus dem Repository, eigener Datenordner) auf
      `127.0.0.1:18086` für Präsentation und Shorts. Echte pacman-Clients in

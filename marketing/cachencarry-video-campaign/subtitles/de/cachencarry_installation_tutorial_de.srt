@@ -11,17 +11,17 @@ für dein lokales Netzwerk.
 3
 00:00:10,922 --> 00:00:18,476
 Der erste Rechner lädt ein Paket aus dem Internet. Cache & Carry
-speichert es, und jeder weitere Rechner bekommt es direkt aus dem LAN.
+speichert es. Und jeder weitere Rechner bekommt es direkt aus dem LAN.
 
 4
 00:00:18,576 --> 00:00:25,996
-Unterstützt werden heute APT für Debian, Ubuntu und
-Proxmox sowie Pacman für Arch Linux und CachyOS.
+Unterstützt werden heute APT für Debian, Ubuntu
+und Proxmox. Und Pacman für Arch Linux und CachyOS.
 
 5
 00:00:26,096 --> 00:00:39,672
-Die Hardware darf klein sein: Ein Kern und 256 MB RAM sind das Minimum, mit zwei Kernen
-und einem GB läuft es komfortabel. Dazu Speicherplatz für alles, was im Cache landen soll.
+Die Hardware darf klein sein. Ein Kern und 256 MB RAM sind das Minimum. Mit zwei Kernen und
+einem GB läuft es komfortabel. Dazu kommt Speicherplatz für alles, was im Cache landen soll.
 
 6
 00:00:39,772 --> 00:00:46,140
@@ -41,7 +41,7 @@ ein GB RAM, acht GB Speicher und eine feste IP-Adresse.
 9
 00:01:06,851 --> 00:01:17,475
 Proxmox warnt, dass systemd 257 eventuell Nesting braucht. Für Cache &
-Carry ist das nicht nötig: Der Dienst wurde genau so ohne Nesting getestet.
+Carry ist das nicht nötig. Der Dienst wurde genau so getestet, ohne Nesting.
 
 10
 00:01:18,225 --> 00:01:26,870
@@ -51,12 +51,12 @@ In der Konsole des Containers prüfen wir das System: Debian
 11
 00:01:26,970 --> 00:01:39,413
 Die Adresse 192.168.1.41 brauchen wir später für die Clients. Zwei
-Kerne, ein GB RAM, und unter /var/lib ist genug Platz für den Cache.
+Kerne, ein GB RAM. Und unter /var/lib ist genug Platz für den Cache.
 
 12
 00:01:39,513 --> 00:01:46,143
-Wir arbeiten hier als root. Auf einem normalen Server
-stellst du den Installationsbefehlen sudo voran.
+Wir arbeiten hier mit Administratorrechten. Auf einem normalen
+Server stellst du den Installationsbefehlen sudo voran.
 
 13
 00:01:48,493 --> 00:01:54,747
@@ -76,7 +76,7 @@ eine Beispielkonfiguration und das Installationsskript.
 16
 00:02:07,805 --> 00:02:16,644
 Das Skript legt den Systembenutzer cachencarry an, installiert das Programm
-nach /usr/local/bin und erzeugt /etc/cachencarry und /var/lib/cachencarry.
+nach /usr/local/bin und erzeugt die Ordner für Konfiguration und Daten.
 
 17
 00:02:16,744 --> 00:02:21,065
@@ -95,8 +95,8 @@ Adresse des Servers mit Port 8080.
 
 20
 00:02:35,823 --> 00:02:45,097
-Beim ersten Aufruf legst du das Administratorkonto an. Damit das nur kann, wer
-Zugriff auf den Server hat, fragt die Einrichtung nach einem einmaligen Setup-Token.
+Beim ersten Aufruf legst du das Administratorkonto an. Damit das nur kann, wer Zugriff
+auf den Server hat, fragt die Einrichtung nach einem einmaligen Token für die Einrichtung.
 
 21
 00:02:45,847 --> 00:02:51,170
@@ -120,8 +120,8 @@ Hier siehst du seine originale Paketquelle.
 
 25
 00:03:15,040 --> 00:03:26,430
-Wir sichern die Datei und ersetzen sie durch die Variante aus der Dokumentation.
-Statt deb.debian.org steht dort der Cache mit Port 8080 und dem Pfad apt/debian.
+Wir sichern die Datei und ersetzen sie durch die Variante aus der Dokumentation. Statt
+des offiziellen Debian-Servers steht dort der Cache mit Port 8080 und dem Pfad apt/debian.
 
 26
 00:03:26,530 --> 00:03:34,522
@@ -140,13 +140,13 @@ kommen schon über den Cache.
 
 29
 00:03:45,318 --> 00:03:54,176
-Dann installieren wir curl. Der Cache ist noch leer, also holt Cache & Carry
+Dann installieren wir curl. Der Cache ist noch leer. Also holt Cache & Carry
 jedes Paket einmal vom Debian-Server im Internet. Das sind die MISS-Einträge.
 
 30
 00:03:55,142 --> 00:04:04,537
-Für Arch Linux und CachyOS geht es genauso über die
-Mirrorlist. Die Zeilen dafür stehen in docs/CLIENTS.md.
+Für Arch Linux und CachyOS geht es genauso über die Liste der Paketserver.
+Die Zeilen dafür stehen in der Datei CLIENTS.md im Ordner docs.
 
 31
 00:04:06,887 --> 00:04:15,753
@@ -160,7 +160,7 @@ apt update und dieselbe Installation.
 33
 00:04:19,177 --> 00:04:28,671
 Diesmal kommt alles aus dem Cache. Beim ersten Client dauerte der
-Download drei Sekunden, jetzt null Sekunden, mit 252 MB pro Sekunde.
+Download drei Sekunden. Jetzt null Sekunden, mit 252 MB pro Sekunde.
 
 34
 00:04:29,773 --> 00:04:36,477
@@ -169,13 +169,13 @@ des zweiten Clients, darunter die MISS-Einträge des ersten.
 
 35
 00:04:37,127 --> 00:04:44,074
-Auf der Kommandozeile prüfst du es mit curl und dem Header
+Auf der Kommandozeile prüfst du es mit curl und der Kopfzeile
 X-Cache. Beim allerersten Abruf steht dort MISS, danach HIT.
 
 36
 00:04:44,724 --> 00:04:51,298
-Die Statistik zählt die Bytes, die wirklich übertragen wurden:
-was aus dem Internet kam und was der Cache eingespart hat.
+Die Statistik zählt die Bytes, die wirklich übertragen wurden.
+Was aus dem Internet kam. Und was der Cache eingespart hat.
 
 37
 00:04:53,648 --> 00:04:56,726
@@ -184,8 +184,8 @@ findest du alles Wichtige.
 
 38
 00:04:56,826 --> 00:05:05,103
-Die Konfiguration liegt in /etc/cachencarry/config.yaml, der
-Cache in /var/lib/cachencarry, und die Logs zeigt journalctl.
+Die Konfiguration liegt in der Datei config.yaml unter /etc.
+Der Cache liegt unter /var/lib. Und die Logs zeigt journalctl.
 
 39
 00:05:05,753 --> 00:05:13,367

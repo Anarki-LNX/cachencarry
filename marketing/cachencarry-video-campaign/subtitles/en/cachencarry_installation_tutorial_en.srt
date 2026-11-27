@@ -11,17 +11,17 @@ cache for your local network.
 3
 00:00:10,922 --> 00:00:18,476
 The first machine downloads a package from the Internet. Cache & Carry
-stores it, and every other machine gets it straight from the LAN.
+stores it. And every other machine gets it straight from the LAN.
 
 4
 00:00:18,576 --> 00:00:25,996
 Supported today: APT for Debian, Ubuntu and
-Proxmox, and Pacman for Arch Linux and CachyOS.
+Proxmox. And Pacman for Arch Linux and CachyOS.
 
 5
 00:00:26,096 --> 00:00:39,672
-The hardware can be small: one core and 256 MB of RAM are the minimum, two cores
-and one GB are comfortable. Plus disk space for everything you want to cache.
+The hardware can be small. One core and 256 MB of RAM are the minimum. With two cores
+and one GB it runs comfortably. Plus disk space for everything you want to cache.
 
 6
 00:00:39,772 --> 00:00:46,140
@@ -41,7 +41,7 @@ one GB of RAM, eight GB of storage and a fixed IP address.
 9
 00:01:06,851 --> 00:01:17,475
 Proxmox warns that systemd 257 may need nesting. Cache & Carry does
-not: the service was tested exactly like this, without nesting.
+not need it. The service was tested exactly like this, without nesting.
 
 10
 00:01:18,225 --> 00:01:26,870
@@ -51,12 +51,12 @@ architecture amd64. That decides which release archive we need.
 11
 00:01:26,970 --> 00:01:39,413
 We will need the address 192.168.1.41 for the clients later. Two
-cores, one GB of RAM, and enough space for the cache under /var/lib.
+cores, one GB of RAM. And enough space for the cache under /var/lib.
 
 12
 00:01:39,513 --> 00:01:46,143
-We work as root here. On a normal server,
-put sudo in front of the install commands.
+We work with administrator rights here. On a normal
+server, put sudo in front of the install commands.
 
 13
 00:01:48,493 --> 00:01:54,747
@@ -75,8 +75,8 @@ unit, an example configuration and the install script.
 
 16
 00:02:07,805 --> 00:02:16,644
-The script creates the system user cachencarry, installs the program to
-/usr/local/bin and creates /etc/cachencarry and /var/lib/cachencarry.
+The script creates the system user cachencarry, installs the program
+to /usr/local/bin and creates the folders for configuration and data.
 
 17
 00:02:16,744 --> 00:02:21,065
@@ -120,8 +120,8 @@ Here you see its original package source.
 
 25
 00:03:15,040 --> 00:03:26,430
-We back up the file and replace it with the version from the documentation. Instead
-of deb.debian.org it points to the cache on port 8080 with the path apt/debian.
+We back up the file and replace it with the version from the documentation. Instead of
+the official Debian server it points to the cache on port 8080 with the path apt/debian.
 
 26
 00:03:26,530 --> 00:03:34,522
@@ -140,13 +140,13 @@ already come through the cache.
 
 29
 00:03:45,318 --> 00:03:54,176
-Then we install curl. The cache is still empty, so Cache & Carry fetches
-every package once from the Debian mirror. Those are the MISS entries.
+Then we install curl. The cache is still empty. So Cache & Carry fetches every
+package once from the Debian server on the Internet. Those are the MISS entries.
 
 30
 00:03:55,142 --> 00:04:04,537
-Arch Linux and CachyOS work the same way through
-the mirrorlist. The lines are in docs/CLIENTS.md.
+Arch Linux and CachyOS work the same way through the list of package
+servers. The lines are in the file CLIENTS.md in the docs folder.
 
 31
 00:04:06,887 --> 00:04:15,753
@@ -160,7 +160,7 @@ apt update and the same installation.
 33
 00:04:19,177 --> 00:04:28,671
 This time everything comes from the cache. For the first client the
-download took three seconds, now zero seconds, at 252 MB per second.
+download took three seconds. Now zero seconds, at 252 MB per second.
 
 34
 00:04:29,773 --> 00:04:36,477
@@ -174,8 +174,8 @@ header. On the very first request it says MISS, afterwards HIT.
 
 36
 00:04:44,724 --> 00:04:51,298
-Statistics count the bytes that were really transferred:
-what came from upstream and what the cache saved.
+Statistics count the bytes that were really transferred.
+What came from the Internet. And what the cache saved.
 
 37
 00:04:53,648 --> 00:04:56,726
@@ -184,8 +184,8 @@ is where to find everything.
 
 38
 00:04:56,826 --> 00:05:05,103
-The configuration is in /etc/cachencarry/config.yaml, the
-cache in /var/lib/cachencarry, and journalctl shows the logs.
+The configuration is in the file config.yaml under /etc.
+The cache is under /var/lib. And journalctl shows the logs.
 
 39
 00:05:05,753 --> 00:05:13,367

@@ -18,6 +18,26 @@ keine
 - englische und fremde Begriffe gegen die Ausspracheliste
 - keine Lautschrift, IPA oder Pausenmarke in Untertiteln, Anzeigetext der Skripte, Bildtext (`project/src`) und Begleittexten (`social/`)
 - jede Audiodatei vorhanden, Länge passt zur Timeline, keine übersteuerten Samples
+- Untertitel (SRT, Deutsch und Englisch): ein Eintrag je Satz, Text gleich dem Skript, Beginn mit der Stimme, keine Überlappung, nichts nach dem Videoende
+
+## Untertitel
+
+| Datei | Einträge | letzter endet | Timeline | Video in final/de |
+|---|---|---|---|---|
+| cachencarry_presentation_de.srt | 18 | 85.62 s | 88.93 s | 89.00 s |
+| cachencarry_presentation_en.srt | 18 | 85.62 s | 88.93 s | 89.00 s |
+| cachencarry_installation_tutorial_de.srt | 42 | 329.52 s | 331.67 s | 331.70 s |
+| cachencarry_installation_tutorial_en.srt | 42 | 329.52 s | 331.67 s | 331.70 s |
+| cachencarry_short_01_problem_de.srt | 5 | 17.94 s | 20.07 s | 20.10 s |
+| cachencarry_short_01_problem_en.srt | 5 | 17.94 s | 20.07 s | 20.10 s |
+| cachencarry_short_02_hit_vs_miss_de.srt | 5 | 19.19 s | 20.67 s | 20.70 s |
+| cachencarry_short_02_hit_vs_miss_en.srt | 5 | 19.19 s | 20.67 s | 20.70 s |
+| cachencarry_short_03_speed_de.srt | 4 | 20.68 s | 22.77 s | 22.80 s |
+| cachencarry_short_03_speed_en.srt | 4 | 20.68 s | 22.77 s | 22.80 s |
+| cachencarry_short_04_shared_download_de.srt | 5 | 19.45 s | 21.20 s | 21.30 s |
+| cachencarry_short_04_shared_download_en.srt | 5 | 19.45 s | 21.20 s | 21.30 s |
+| cachencarry_short_05_open_source_de.srt | 6 | 19.11 s | 20.87 s | 20.90 s |
+| cachencarry_short_05_open_source_en.srt | 6 | 19.11 s | 20.87 s | 20.90 s |
 
 ## Audiodateien
 

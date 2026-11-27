@@ -5,12 +5,12 @@ Netzwerk schneller.
 
 2
 00:00:03,700 --> 00:00:07,364
-MISS bedeutet: Das Paket muss
+MISS. Das bedeutet: Das Paket muss
 noch aus dem Internet kommen.
 
 3
 00:00:09,700 --> 00:00:12,950
-HIT bedeutet: Es liegt
+HIT. Das bedeutet: Es liegt
 bereits in deinem Cache.
 
 4

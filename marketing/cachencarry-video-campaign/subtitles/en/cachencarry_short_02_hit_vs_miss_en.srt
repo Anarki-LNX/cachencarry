@@ -4,12 +4,13 @@ Two words. A whole network, faster.
 
 2
 00:00:03,700 --> 00:00:07,364
-MISS means the package still
-has to come from the mirror.
+MISS. That means the package still
+has to come from the Internet.
 
 3
 00:00:09,700 --> 00:00:12,950
-HIT means it is already in your cache.
+HIT. That means it is
+already in your cache.
 
 4
 00:00:13,050 --> 00:00:15,971

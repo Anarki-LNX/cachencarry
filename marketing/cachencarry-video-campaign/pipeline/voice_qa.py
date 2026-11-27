@@ -46,12 +46,61 @@ def foreign_tokens(text: str, covered: list[tuple[int, int]], as_is: set) -> lis
     return out
 
 
+def parse_srt(p: Path) -> list[tuple[float, float, str]]:
+    def sec(x):
+        h, m, r = x.split(":"); s_, ms = r.split(",")
+        return int(h) * 3600 + int(m) * 60 + int(s_) + int(ms) / 1000
+    out = []
+    for block in p.read_text().strip().split("\n\n"):
+        rows = block.split("\n")
+        a, b = rows[1].split(" --> ")
+        out.append((sec(a), sec(b), " ".join(rows[2:])))
+    return out
+
+
+def video_seconds(path: Path):
+    import subprocess
+    if not path.exists():
+        return None
+    r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)],
+                       capture_output=True, text=True)
+    return float(r.stdout.strip() or 0)
+
+
+def check_subtitles(vid: str, S: dict, tl: dict, errors: list, rows: list):
+    """SRT files must match the final video: one cue per spoken line, starting
+    with the voice, text equal to the display text, nothing after the end."""
+    lines = [ln for sc in S["scenes"] for ln in sc.get("lines", [])]
+    starts = [(s["start"] + l["start"]) / V.FPS for s in tl["scenes"] for l in s["lines"]]
+    total = tl["frames"] / V.FPS
+    mp4 = video_seconds(ROOT / "final/de" / f"{S['file']}_de.mp4")
+    for lang in ("de", "en"):
+        p = ROOT / "subtitles" / lang / f"{S['file']}_{lang}.srt"
+        if not p.exists():
+            errors.append(f"{p.relative_to(ROOT)} fehlt")
+            continue
+        cues = parse_srt(p)
+        if len(cues) != len(lines):
+            errors.append(f"{p.name}: {len(cues)} Untertitel, aber {len(lines)} Sätze")
+        for i, (a, b, text) in enumerate(cues[:len(lines)]):
+            if text != lines[i][lang]:
+                errors.append(f"{p.name} Nr. {i + 1}: Text weicht vom Skript ab")
+            if abs(a - starts[i]) > 1 / V.FPS:
+                errors.append(f"{p.name} Nr. {i + 1}: beginnt {a:.2f} s, Stimme bei {starts[i]:.2f} s")
+            if b <= a or (i + 1 < len(cues) and b > cues[i + 1][0]):
+                errors.append(f"{p.name} Nr. {i + 1}: Zeiten überlappen")
+        end = cues[-1][1] if cues else 0
+        if end > total or (mp4 and end > mp4):
+            errors.append(f"{p.name}: letzter Untertitel endet {end:.2f} s, Video {mp4 or total:.2f} s")
+        rows.append(f"| {p.name} | {len(cues)} | {end:.2f} s | {total:.2f} s | " + (f"{mp4:.2f} s" if mp4 else "nicht gerendert") + " |")
+
+
 def main(only):
     cfg = V.load_config()
     dic = V.load_dictionary(cfg)
     raw = yaml.safe_load((ROOT / cfg["dictionary"]).read_text())
     as_is = set(raw.get("as_is", []))
-    errors, warnings, rows = [], [], []
+    errors, warnings, rows, srt_rows = [], [], [], []
     disp_md = ["# Anzeigetext (Untertitel, Bildtext, Beschreibungen)", "",
                "Erzeugt von `pipeline/voice_qa.py` aus `scripts/*.json` (Feld `de`). Richtige Schreibweise, keine Lautschrift.", ""]
     tts_md = ["# Sprechtext (nur für die Sprachsynthese)", "",
@@ -65,6 +114,7 @@ def main(only):
             continue
         S = json.loads((ROOT / f"scripts/{vid}.json").read_text())
         disp_md += [f"## {vid}", ""]
+        check_subtitles(vid, S, json.loads((ROOT / f"project/src/timelines/{vid}.json").read_text()), errors, srt_rows)
         tts_md += [f"## {vid}", ""]
         tl = json.loads((ROOT / f"project/src/timelines/{vid}.json").read_text())
         tl_lines = [l for s in tl["scenes"] for l in s["lines"]]
@@ -128,7 +178,9 @@ def main(only):
     rep += ["## Geprüft", "",
             "- englische und fremde Begriffe gegen die Ausspracheliste",
             "- keine Lautschrift, IPA oder Pausenmarke in Untertiteln, Anzeigetext der Skripte, Bildtext (`project/src`) und Begleittexten (`social/`)",
-            "- jede Audiodatei vorhanden, Länge passt zur Timeline, keine übersteuerten Samples", "",
+            "- jede Audiodatei vorhanden, Länge passt zur Timeline, keine übersteuerten Samples",
+            "- Untertitel (SRT, Deutsch und Englisch): ein Eintrag je Satz, Text gleich dem Skript, Beginn mit der Stimme, keine Überlappung, nichts nach dem Videoende", "",
+            "## Untertitel", "", "| Datei | Einträge | letzter endet | Timeline | Video in final/de |", "|---|---|---|---|---|"] + srt_rows + ["",
             "## Audiodateien", "", "| Video | Zeile | Szene | Stil | Länge | Spitze |", "|---|---|---|---|---|---|"] + rows
     (ROOT / "voice/voiceover_quality_report.md").write_text("\n".join(rep) + "\n")
     (ROOT / "voice/voiceover_display_text.md").write_text("\n".join(disp_md) + "\n")

@@ -14,5 +14,5 @@ From the cache, it took just 9.
 
 4
 00:00:17,061 --> 00:00:20,684
-That is exactly what Cache & Carry is
-for. More in the GitHub repository.
+That is exactly what Cache &
+Carry is for. More on GitHub.

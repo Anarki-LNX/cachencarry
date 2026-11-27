@@ -15,4 +15,4 @@ Aus dem Cache waren es nur 9.
 4
 00:00:17,061 --> 00:00:20,684
 Genau dafür gibt es Cache &
-Carry. Mehr im GitHub-Repository.
+Carry. Mehr dazu auf GitHub.

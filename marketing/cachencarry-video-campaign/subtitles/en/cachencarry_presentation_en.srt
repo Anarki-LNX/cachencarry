@@ -33,8 +33,8 @@ cache for your network.
 
 8
 00:00:26,665 --> 00:00:32,514
-The dashboard shows every request, every stored
-package and how much bandwidth you save.
+In the dashboard you see every request. Every
+stored package. And how much bandwidth you save.
 
 9
 00:00:33,664 --> 00:00:36,549
@@ -52,8 +52,8 @@ straight from your network.
 
 12
 00:00:44,264 --> 00:00:51,360
-And when several machines need the same file at the same
-time, a single upstream download can serve them all.
+And when several machines need the same file at the same time? Then
+a single download from the Internet is enough. For all of them.
 
 13
 00:00:51,460 --> 00:01:00,764
@@ -77,10 +77,10 @@ example in a Proxmox container.
 
 17
 00:01:15,152 --> 00:01:19,556
-Cache & Carry is free on GitHub, open
-source and ready for your homelab.
+Cache & Carry is free on GitHub. Open
+source. And ready for your homelab.
 
 18
 00:01:19,656 --> 00:01:25,621
-If you try it, leave a star, share the project
+Try it out. Leave a star, share the project
 and tell me in the comments how you use it.

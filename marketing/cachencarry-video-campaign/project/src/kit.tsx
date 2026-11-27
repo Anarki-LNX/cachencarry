@@ -79,7 +79,7 @@ export const Win = ({ x, y, w, h, title, children, delay = 0, accent = C.cyan, t
 
 // ---------------------------------------------------------------- terminal
 type Span = { t: string; f?: string; b?: string; w?: number; h?: number };
-export type Cast = { cols: number; rows: number; duration: number; keys: number[]; frames: { t: number; lines: Span[][]; cx: number; cy: number }[] };
+export type Cast = { cols: number; rows: number; duration: number; keys: number[]; keyKinds?: string; enters?: number[]; frames: { t: number; lines: Span[][]; cx: number; cy: number }[] };
 
 /** Screen of a real recording at time `t` (seconds into the recording). */
 export const Terminal = ({ cast, t, fontSize, pad = 16, cursor = true, firstRow = 0, highlight = false }: { cast: Cast; t: number; fontSize: number; pad?: number; cursor?: boolean; firstRow?: number; highlight?: boolean }) => {
@@ -123,18 +123,32 @@ export const Terminal = ({ cast, t, fontSize, pad = 16, cursor = true, firstRow 
 };
 
 /** Keyboard clicks at the real keystroke times of a recording. */
-export const KeySounds = ({ cast, offset, rate = 1, until, volume = 0.35 }: { cast: Cast; offset: number; rate?: number; until?: number; volume?: number }) => (
-  <>
-    {cast.keys
-      .map((k) => Math.round(((k - offset) / rate) * FPS))
-      .filter((f) => f >= 0 && (until === undefined || f < until))
-      .map((f, i) => (
-        <Sequence key={i} from={f} durationInFrames={6} layout="none">
-          <Audio src={staticFile("audio/fx_key.wav")} volume={volume * (0.8 + ((i * 37) % 10) / 25)} />
-        </Sequence>
-      ))}
-  </>
-);
+/** Overall level of the keyboard sounds (user: typing was far too loud). */
+const KEY_GAIN = 0.2;
+
+/**
+ * Keyboard sounds on the real keystroke times of a recording. Dull key sounds
+ * (pipeline/music.py, keyboard_set): eight letter keys, three space bar and
+ * three Enter variants, chosen per key, with a small level variation.
+ */
+export const KeySounds = ({ cast, offset, rate = 1, until, volume = 0.35 }: { cast: Cast; offset: number; rate?: number; until?: number; volume?: number }) => {
+  const events = [
+    ...cast.keys.map((k, i) => ({ t: k, file: cast.keyKinds?.[i] === "s" ? `s${i % 3}` : `n${(i * 5 + (i >> 2)) % 8}` })),
+    ...(cast.enters ?? []).map((k, i) => ({ t: k, file: `e${i % 3}` })),
+  ];
+  return (
+    <>
+      {events
+        .map((e) => ({ ...e, f: Math.round(((e.t - offset) / rate) * FPS) }))
+        .filter((e) => e.f >= 0 && (until === undefined || e.f < until))
+        .map((e, i) => (
+          <Sequence key={i} from={e.f} durationInFrames={6} layout="none">
+            <Audio src={staticFile(`audio/fx_kbd_${e.file}.wav`)} volume={KEY_GAIN * volume * (0.85 + ((i * 37) % 10) / 33)} />
+          </Sequence>
+        ))}
+    </>
+  );
+};
 
 // ---------------------------------------------------------------- footage
 /** Index of the recorded image (6 per second) that belongs to `t` seconds. */

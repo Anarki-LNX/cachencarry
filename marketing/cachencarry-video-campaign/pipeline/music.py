@@ -23,12 +23,13 @@ rng = np.random.default_rng(7)
 
 
 # ---------------------------------------------------------------- helpers
-def save(name: str, x: np.ndarray) -> None:
+def save(name: str, x: np.ndarray, normalize: bool = True) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     if x.ndim == 1:
         x = np.stack([x, x], axis=1)
-    peak = np.max(np.abs(x)) or 1.0
-    x = x / peak * 0.89
+    if normalize:
+        peak = np.max(np.abs(x)) or 1.0
+        x = x / peak * 0.89
     with wave.open(str(OUT / name), "wb") as w:
         w.setnchannels(2)
         w.setsampwidth(2)
@@ -199,11 +200,40 @@ def data_pulse(level=0.3):
     return reverb(x * level, 0.6, 0.2)
 
 
-def key_click(level=0.22):
-    t = t_axis(0.05)
-    x = bp(rng.standard_normal(len(t)), 1800, 7000) * np.exp(-t * 260)
-    x += np.sin(2 * np.pi * 180 * t) * np.exp(-t * 120) * 0.3
-    return x * level * (0.75 + 0.5 * rng.random())
+def key_press(kind: str, r) -> np.ndarray:
+    """One key of a real-sounding keyboard, dull rather than clicky: a soft
+    low-passed touch, a short wooden "thock" (body resonance), the bottom-out
+    and, a little later, the quieter release. Space and Enter are larger keys
+    with a lower body and a stabilizer rattle. Everything below about 2.8 kHz.
+    Variation per call: body pitch about +-7 %, level about +-1.5 dB."""
+    body = {"n": 230.0, "s": 118.0, "e": 150.0}[kind] * (1 + r.uniform(-0.07, 0.07))
+    dec = {"n": 0.018, "s": 0.032, "e": 0.026}[kind]
+    t = t_axis(0.16)
+    soft = 1 - np.exp(-t / 0.0015)                      # soft attack, no hard click
+    touch = lp(r.standard_normal(len(t)), 2500, 2) * soft * np.exp(-t / 0.006) * 0.55
+    thock = (np.sin(2 * np.pi * body * t) * 0.6 + np.sin(2 * np.pi * body * 2.3 * t + 1.1) * 0.18 * np.exp(-t / 0.006)) \
+        * soft * np.exp(-t / dec)
+    bottom = lp(r.standard_normal(len(t)), 1200, 2) * soft * np.exp(-t / 0.012) * 0.5
+    x = touch + thock + bottom
+    if kind != "n":  # stabilizer rattle of the long keys
+        place(x, lp(r.standard_normal(int(0.02 * SR)), 1800, 2) * np.exp(-t_axis(0.02) / 0.004) * 0.35, 0.007)
+    rel_at = r.uniform(0.055, 0.08) if kind == "n" else r.uniform(0.08, 0.1)
+    rel = lp(r.standard_normal(int(0.03 * SR)), 2000, 2) * np.exp(-t_axis(0.03) / 0.005) * 0.22
+    place(x, rel, rel_at)
+    x = hp(lp(x, 2800, 4), 60)
+    return x * {"n": 1.0, "s": 1.15, "e": 1.1}[kind] * 10 ** (r.uniform(-1.5, 1.5) / 20)
+
+
+def keyboard_set():
+    """fx_kbd_n0..7 (letters), fx_kbd_s0..2 (space), fx_kbd_e0..2 (enter).
+    One common scale for all files, so their relative loudness stays real."""
+    r = np.random.default_rng(11)
+    sounds = {f"fx_kbd_n{i}.wav": key_press("n", r) for i in range(8)}
+    sounds |= {f"fx_kbd_s{i}.wav": key_press("s", r) for i in range(3)}
+    sounds |= {f"fx_kbd_e{i}.wav": key_press("e", r) for i in range(3)}
+    scale = 0.89 / max(np.abs(x).max() for x in sounds.values())
+    for name, x in sounds.items():
+        save(name, x * scale, normalize=False)
 
 
 def logo_sting(level=0.6):
@@ -354,18 +384,7 @@ def effects():
     save("fx_miss.wav", miss_tone())
     save("fx_pulse.wav", data_pulse())
     save("fx_logo.wav", logo_sting())
-    save("fx_key.wav", key_click())
-
-
-def keys_for(cast_json: Path, out_name: str):
-    """Typing sounds that follow the real keystroke timing of a recording."""
-    data = json.loads(cast_json.read_text())
-    times = data.get("keys", [])
-    n = int((data["duration"] + 1) * SR)
-    buf = np.zeros(n)
-    for t in times:
-        place(buf, key_click(0.22), t)
-    save(out_name, buf)
+    keyboard_set()
 
 
 if __name__ == "__main__":

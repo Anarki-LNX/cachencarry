@@ -33,8 +33,8 @@ Paketcache für dein Netzwerk.
 
 8
 00:00:26,665 --> 00:00:32,514
-Im Dashboard siehst du jede Anfrage, jedes
-gespeicherte Paket und wie viel Bandbreite du sparst.
+Im Dashboard siehst du jede Anfrage. Jedes
+gespeicherte Paket. Und wie viel Bandbreite du sparst.
 
 9
 00:00:33,664 --> 00:00:36,549
@@ -52,8 +52,8 @@ direkt aus deinem Netzwerk.
 
 12
 00:00:44,264 --> 00:00:51,360
-Und wenn mehrere Rechner gleichzeitig dieselbe Datei brauchen,
-reicht ein einziger Download aus dem Internet für alle.
+Und wenn mehrere Rechner gleichzeitig dieselbe Datei brauchen?
+Dann reicht ein einziger Download aus dem Internet. Für alle.
 
 13
 00:00:51,460 --> 00:01:00,764
@@ -77,10 +77,10 @@ Beispiel in einem Proxmox-Container.
 
 17
 00:01:15,152 --> 00:01:19,556
-Cache & Carry ist kostenlos auf GitHub verfügbar,
-Open Source und bereit für dein Homelab.
+Cache & Carry ist kostenlos auf GitHub.
+Open Source. Und bereit für dein Homelab.
 
 18
 00:01:19,656 --> 00:01:25,621
-Wenn du es ausprobierst, lass einen Stern da, teile das
-Projekt und sag mir in den Kommentaren, wie du es einsetzt.
+Probier es aus. Lass einen Stern da, teile das Projekt
+und sag mir in den Kommentaren, wie du es einsetzt.
