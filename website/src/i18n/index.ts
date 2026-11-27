@@ -61,6 +61,7 @@ const de = {
     lead: 'Cache & Carry speichert heruntergeladene Linux-Pakete in deinem lokalen Netzwerk. Einmal aus dem Internet laden, danach von allen Rechnern im LAN abholen.',
     ctaGithub: 'Auf GitHub ansehen',
     ctaInstall: 'Installation starten',
+    ways: 'Drei Wege zur Installation',
     license: 'Apache 2.0 · kostenlos für alle',
     release: 'Aktuelle Version',
     diagramLabel:
@@ -154,7 +155,7 @@ const de = {
     plannedTitle: 'Geplant, noch nicht gebaut',
     plannedText:
       'Diese Formate stehen auf der Roadmap. Sie funktionieren heute noch nicht und werden erst angekündigt, wenn sie mit echten Clients getestet sind.',
-    planned: ['Container-Images', 'npm', 'PyPI', 'RPM', 'Maven', 'Spiele-Downloads', 'Windows-Updates'],
+    planned: ['Container-Registries', 'npm', 'PyPI', 'RPM', 'Maven', 'Spiele-Downloads', 'Windows-Updates'],
     experimental: 'Einfache HTTP-Dateiserver: experimentell, bisher nur gegen Testserver geprüft.',
     roadmap: 'Zur Roadmap',
   },
@@ -481,6 +482,7 @@ const en: Copy = {
     lead: 'Cache & Carry keeps the Linux packages your machines download on your own network. Download once from the Internet, then serve every machine on your LAN.',
     ctaGithub: 'View on GitHub',
     ctaInstall: 'Start installing',
+    ways: 'Three ways to install',
     license: 'Apache 2.0 · free for everyone',
     release: 'Latest version',
     diagramLabel:
@@ -574,7 +576,7 @@ const en: Copy = {
     plannedTitle: 'Planned, not built yet',
     plannedText:
       'These formats are on the roadmap. They do not work today and will only be announced once they are tested with real clients.',
-    planned: ['Container images', 'npm', 'PyPI', 'RPM', 'Maven', 'Game downloads', 'Windows updates'],
+    planned: ['Container registries', 'npm', 'PyPI', 'RPM', 'Maven', 'Game downloads', 'Windows updates'],
     experimental: 'Plain HTTP file servers: experimental, so far checked against mock servers only.',
     roadmap: 'See the roadmap',
   },

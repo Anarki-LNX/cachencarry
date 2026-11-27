@@ -12,6 +12,11 @@ interface Props {
 const { locale } = Astro.props;
 const tr = t(locale);
 const h = tr.hero;
+const ways = [
+  { key: 'proxmox', icon: 'terminal' },
+  { key: 'docker', icon: 'package' },
+  { key: 'release', icon: 'server' },
+] as const;
 const ext = { target: '_blank', rel: 'noopener noreferrer' } as const;
 
 // Layout in a 640 × 500 viewBox: the Internet on the left, Cache & Carry in the middle
@@ -184,6 +189,19 @@ const hitWindow = windows(hitWin);
           <Icon name="arrow-right" size={16} />
         </a>
       </div>
+      <nav class="hero__ways" aria-label={h.ways}>
+        <span class="label">{h.ways}</span>
+        <ul role="list">
+          {ways.map((w) => (
+            <li>
+              <a href={`#${anchors.install}`} data-tab-target={`inst-tab-${w.key}`}>
+                <Icon name={w.icon} size={15} />
+                {tr.install.methods[w.key].tab}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
       <p class="hero__meta">
         <span class="hero__pill">
           <Icon name="shield" size={14} /> {h.license}
@@ -403,6 +421,39 @@ const hitWindow = windows(hitWin);
     flex-wrap: wrap;
     gap: var(--s-3);
     margin-top: var(--s-2);
+  }
+  .hero__ways {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
+  }
+  .hero__ways ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+  }
+  .hero__ways a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 36px;
+    padding: 0 0.9rem;
+    border: 1px solid var(--line-2);
+    border-radius: var(--r-pill);
+    color: var(--text);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition:
+      border-color 0.15s,
+      background-color 0.15s;
+  }
+  .hero__ways a:hover,
+  .hero__ways a:focus-visible {
+    border-color: var(--ok);
+    background: var(--ok-wash);
   }
   .hero__meta {
     display: flex;

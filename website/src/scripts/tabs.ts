@@ -47,6 +47,13 @@ for (const root of document.querySelectorAll<HTMLElement>('[data-tabs]')) {
   root.classList.add('has-tabs');
   select(start);
 
+  // Links elsewhere on the page (for example in the hero) can open a tab:
+  // <a href="#install" data-tab-target="<tab id>">. The link still scrolls.
+  for (const link of document.querySelectorAll<HTMLAnchorElement>('a[data-tab-target]')) {
+    const i = tabs.findIndex((t) => t.id === link.dataset.tabTarget);
+    if (i >= 0) link.addEventListener('click', () => select(i));
+  }
+
   tabs.forEach((tab, i) => {
     tab.addEventListener('click', () => select(i));
     tab.addEventListener('keydown', (e) => {
