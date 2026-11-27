@@ -1,0 +1,47 @@
+{
+  "name": "Cache & Carry",
+  "slug": "cachencarry",
+  "categories": [
+    4
+  ],
+  "date_created": "2026-11-27",
+  "type": "ct",
+  "platforms": ["pve"],
+  "architectures": ["amd64", "arm64"],
+  "updateable": true,
+  "privileged": false,
+  "interface_port": 8080,
+  "documentation": "https://github.com/Anarki-LNX/cachencarry/blob/main/DEPLOYMENT.md",
+  "website": "https://cachencarry.loopout.tech",
+  "repository": "https://github.com/Anarki-LNX/cachencarry",
+  "logo": "https://raw.githubusercontent.com/Anarki-LNX/cachencarry/main/assets/brand/icon.svg",
+  "description": "Cache & Carry is a package cache for your LAN. The first machine downloads an update from the internet, every other machine gets it from the local cache. It caches APT packages (Debian, Ubuntu, Proxmox VE) and Pacman packages (Arch Linux, CachyOS), keeps signatures untouched and has a web dashboard with statistics and copy and paste client setup.",
+  "install_methods": [
+    {
+      "type": "default",
+      "script": "ct/cachencarry.sh",
+      "config_path": "/etc/cachencarry/config.yaml",
+      "resources": {
+        "cpu": 2,
+        "ram": 1024,
+        "hdd": 20,
+        "os": "Debian",
+        "version": "13"
+      }
+    }
+  ],
+  "default_credentials": {
+    "username": null,
+    "password": null
+  },
+  "notes": [
+    {
+      "text": "First login: open the web interface and enter the setup token from `cachencarry setup-token` (run inside the container as user cachencarry).",
+      "type": "info"
+    },
+    {
+      "text": "The cache lives in /var/lib/cachencarry. Give the container a bigger disk or a separate mount point for larger caches.",
+      "type": "info"
+    }
+  ]
+}

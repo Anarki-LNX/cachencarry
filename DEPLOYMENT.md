@@ -189,6 +189,59 @@ not been tested.
 > survived a container reboot. The Docker-in-LXC and host bind mount variants
 > are written from documentation and were not tested.
 
+### One command on the Proxmox host
+
+`scripts/proxmox-lxc.sh` does everything below automatically. Run it on the
+Proxmox VE host as root:
+
+```sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Anarki-LNX/cachencarry/main/scripts/proxmox-lxc.sh)"
+```
+
+It downloads the newest official Debian 13 template with `pveam`, downloads
+the release for the host architecture (amd64 or arm64) and checks it against
+`SHA256SUMS`, creates an unprivileged container without nesting, installs the
+binary with the release's `scripts/install.sh` and prints the web address and
+the setup token. It asks once before creating anything. If a step fails after
+the container was created, it asks whether to delete the unfinished container
+and never deletes it without asking.
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `CC_CTID` | next free ID | container ID |
+| `CC_HOSTNAME` | `cachencarry` | host name |
+| `CC_STORAGE` | `local-lvm`, `local-zfs` or the first active container storage | storage for the disks |
+| `CC_TEMPLATE_STORAGE` | `local` | storage for the template |
+| `CC_DISK` | `4` | root disk in GB |
+| `CC_CACHE_GB` | `100` | separate cache volume in GB at `/var/lib/cachencarry`, `0` puts the cache on the root disk |
+| `CC_CACHE_BACKUP` | `0` | `1` includes the cache volume in vzdump backups |
+| `CC_CORES`, `CC_RAM`, `CC_SWAP` | `2`, `1024`, `512` | CPU cores, RAM and swap in MB |
+| `CC_BRIDGE` | `vmbr0` | network bridge |
+| `CC_IP`, `CC_GW` | `dhcp` | static address like `192.168.1.20/24` and its gateway |
+| `CC_VLAN` | none | VLAN tag |
+| `CC_VERSION` | latest release | release to install, for example `0.2.1` |
+| `CC_YES` | `0` | `1` skips the question before creating |
+
+Update a container to the newest release. The script saves the metadata
+database to `/var/lib/cachencarry/metadata-before-<version>-<time>.db` first
+and keeps configuration and cache:
+
+```sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Anarki-LNX/cachencarry/main/scripts/proxmox-lxc.sh)" -- update 130
+```
+
+With `CC_CACHE_BACKUP=0` (the default) vzdump backs up the system and the
+configuration but not the cache volume, which also holds the metadata
+database. The cache refills itself from the mirrors. To keep statistics and
+settings, save the database with `cachencarry backup -out FILE` or set
+`CC_CACHE_BACKUP=1`.
+
+The script was tested against the official Debian 13.6 template and release
+0.2.1 with the Proxmox commands simulated. The manual steps below were tested
+on a real Proxmox VE 9.2 host.
+
+### Manual installation
+
 **Recommended: native installation inside an unprivileged Debian 13
 container.** Cache & Carry needs no special kernel features, capabilities or
 devices, so the default unprivileged container is enough. Docker inside the

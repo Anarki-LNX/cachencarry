@@ -87,6 +87,22 @@ and verified and what has not. Nothing here is advertised that does not exist.
 
 ## Get started
 
+### On Proxmox VE with one command
+
+Run this on the Proxmox VE host as root. It creates an unprivileged Debian 13
+container without nesting, installs the latest release for amd64 or arm64
+after checking it against `SHA256SUMS`, and prints the address and the setup
+token:
+
+```sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Anarki-LNX/cachencarry/main/scripts/proxmox-lxc.sh)"
+```
+
+Container ID, storage, cache size and a static address can be set with
+variables such as `CC_CTID=130 CC_CACHE_GB=200 CC_IP=192.168.1.20/24 CC_GW=192.168.1.1`.
+Updating later is the same command followed by `-- update <container ID>`.
+Details: [DEPLOYMENT.md](DEPLOYMENT.md#proxmox-lxc).
+
 ### In a Proxmox container or on any Debian or Ubuntu machine
 
 Download the package for your machine from the
