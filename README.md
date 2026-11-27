@@ -116,14 +116,29 @@ An unprivileged Proxmox LXC container with 2 cores and 1 GB of memory is
 plenty. The full guide, including upgrades and backups, is in
 [DEPLOYMENT.md](DEPLOYMENT.md).
 
-### With Docker Compose
+### With Docker
+
+The image `ghcr.io/anarki-lnx/cachencarry` is published for amd64 and arm64
+with every release.
+
+```sh
+docker run -d --name cachencarry --restart unless-stopped -p 8080:8080 \
+  -v cachencarry-data:/var/lib/cachencarry \
+  -e CACHENCARRY_SECURITY_ADMIN_PASSWORD=choose-a-long-password \
+  ghcr.io/anarki-lnx/cachencarry:latest
+```
+
+With Docker Compose and the hardening options of the shipped compose file:
 
 ```sh
 git clone https://github.com/Anarki-LNX/cachencarry.git
 cd cachencarry
 cp .env.example .env      # set CACHENCARRY_ADMIN_PASSWORD, at least 10 characters
-docker compose up -d --build
+docker compose pull
+docker compose up -d
 ```
+
+`docker compose up -d --build` builds the image from source instead.
 
 ### Point a machine at it
 

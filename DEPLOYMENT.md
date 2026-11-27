@@ -49,13 +49,17 @@ For a bind mount the directory must be writable for the container user
 sudo mkdir -p /srv/cachencarry && sudo chown 65532:65532 /srv/cachencarry
 ```
 
-Start:
+Start with the published image (`ghcr.io/anarki-lnx/cachencarry`, amd64 and
+arm64. Pin a release with `CACHENCARRY_VERSION=0.2.1` in `.env`):
 
 ```sh
-docker compose up -d --build
+docker compose pull
+docker compose up -d
 docker compose ps          # STATUS should become "healthy"
 docker compose logs -f
 ```
+
+To build the image from source instead, use `docker compose up -d --build`.
 
 Open `http://<host>:8080` and log in as `admin`. If you left the password
 empty, the setup wizard asks for a one-time token:
@@ -81,8 +85,9 @@ a stricter `allowed_clients` matter, use the native installation.
 ### Upgrade
 
 ```sh
-git pull
-docker compose up -d --build
+git pull                  # newest compose file
+docker compose pull
+docker compose up -d
 ```
 
 The database schema is migrated automatically at start. Your `.env`,
