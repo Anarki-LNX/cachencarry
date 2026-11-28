@@ -72,23 +72,37 @@ const hrefOf = (key: string) => REPO[key as keyof typeof REPO];
   <section class="section donate" id={anchors.support} aria-labelledby="donate-title">
     <div class="container">
       <div class="donate__card" data-reveal>
-        <img class="donate__mark" src="/brand/mark-on-dark.svg" alt="" width="64" height="64" loading="lazy" />
+        <div class="donate__glow" aria-hidden="true"></div>
+        <svg class="donate__heart" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z" />
+        </svg>
         <div class="donate__text">
-          <p class="label">
-            <span class="num">♥</span> · {d.label}
+          <p class="label donate__label">
+            <span class="donate__dot">♥</span> · {d.label}
           </p>
-          <h2 id="donate-title">{d.title}</h2>
+          <h2 id="donate-title">
+            {d.titleStart} <em>{d.titleEnd}</em>
+          </h2>
           <p class="donate__lead">{d.text}</p>
-          <p class="donate__other">{d.other}</p>
+          <ul role="list" class="donate__points">
+            {d.points.map((p) => (
+              <li>{p}</li>
+            ))}
+          </ul>
         </div>
         <div class="donate__action">
-          <a class="btn donate__btn" href={donateUrl} {...ext}>
-            <Icon name="heart" size={18} />
+          <a class="donate__btn" href={donateUrl} {...ext}>
+            <Icon name="heart" size={19} />
             <span>{d.button}</span>
             <Icon name="arrow-up-right" size={16} />
             <span class="visually-hidden">{tr.a11y.newTab}</span>
           </a>
           <p class="donate__note">{d.note}</p>
+          <a class="donate__star" href={REPO.url} {...ext}>
+            <Icon name="star" size={15} />
+            <span>{d.star}</span>
+            <span class="visually-hidden">{tr.a11y.newTab}</span>
+          </a>
         </div>
       </div>
     </div>
@@ -189,68 +203,156 @@ const hrefOf = (key: string) => REPO[key as keyof typeof REPO];
     border-top: 0;
   }
   .donate__card {
+    --gold: #f5c451;
     position: relative;
+    isolation: isolate;
     display: grid;
     gap: var(--s-6);
     align-items: center;
     overflow: hidden;
-    padding: clamp(1.75rem, 1rem + 3vw, 3.5rem);
-    border: 1px solid rgb(52 211 153 / 0.22);
+    padding: clamp(1.75rem, 1rem + 3.5vw, 3.75rem);
+    border: 1px solid rgb(245 196 81 / 0.28);
     border-radius: var(--r-lg);
     background:
-      radial-gradient(70% 120% at 100% 0%, rgb(52 211 153 / 0.1), transparent 60%),
-      radial-gradient(60% 100% at 0% 100%, rgb(167 139 250 / 0.08), transparent 60%), var(--panel);
+      radial-gradient(55% 90% at 100% 0%, rgb(245 196 81 / 0.13), transparent 62%),
+      radial-gradient(60% 110% at 0% 100%, rgb(52 211 153 / 0.11), transparent 62%),
+      linear-gradient(135deg, #0f1d1a 0%, var(--panel) 55%, #12171c 100%);
+    box-shadow:
+      0 40px 120px -50px rgb(245 196 81 / 0.35),
+      inset 0 1px 0 rgb(255 255 255 / 0.06);
   }
-  .donate__mark {
+  .donate__glow {
     position: absolute;
-    right: -1.5rem;
-    bottom: -2rem;
-    width: 12rem;
-    height: 12rem;
-    opacity: 0.07;
+    z-index: -1;
+    top: -40%;
+    right: -10%;
+    width: 60%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgb(245 196 81 / 0.16), transparent);
+    filter: blur(10px);
+    pointer-events: none;
+  }
+  .donate__heart {
+    position: absolute;
+    z-index: -1;
+    right: -2.5rem;
+    bottom: -3.5rem;
+    width: 15rem;
+    height: 15rem;
+    fill: none;
+    stroke: rgb(245 196 81 / 0.1);
+    stroke-width: 1.4;
+    stroke-linejoin: round;
     pointer-events: none;
   }
   .donate__text {
-    position: relative;
     display: grid;
     gap: var(--s-3);
   }
+  .donate__label {
+    color: var(--muted);
+  }
+  .donate__dot {
+    color: var(--gold);
+  }
+  .donate h2 em {
+    color: var(--gold);
+  }
   .donate__lead {
-    max-width: 38rem;
+    max-width: 40rem;
     color: var(--soft);
   }
-  .donate__other {
-    max-width: 38rem;
+  .donate__points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-5);
+    margin: var(--s-1) 0 0;
+    padding: 0;
     color: var(--muted);
     font-size: var(--fs-small);
   }
+  .donate__points li {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.55rem;
+  }
+  .donate__points li::before {
+    content: '';
+    flex: none;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--ok);
+    transform: translateY(-2px);
+  }
   .donate__action {
-    position: relative;
     display: grid;
-    gap: var(--s-2);
+    gap: var(--s-3);
     justify-items: start;
   }
   .donate__btn {
-    border-color: rgb(255 255 255 / 0.2);
-    background: #f4f1ea;
-    color: #07090d;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 56px;
+    padding: 0 1.6rem;
+    border-radius: var(--r-pill);
+    background: linear-gradient(180deg, #f8d06a, var(--gold));
+    color: #1a1305;
+    font-size: 1.0625rem;
+    font-weight: 650;
+    text-decoration: none;
+    box-shadow:
+      0 14px 44px -10px rgb(245 196 81 / 0.65),
+      inset 0 1px 0 rgb(255 255 255 / 0.45);
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease,
+      background 0.18s ease;
   }
   .donate__btn:hover {
-    background: #ffffff;
-    color: #07090d;
+    transform: translateY(-2px);
+    background: linear-gradient(180deg, #fbdb84, #f7cc62);
+    box-shadow:
+      0 20px 56px -10px rgb(245 196 81 / 0.8),
+      inset 0 1px 0 rgb(255 255 255 / 0.5);
+  }
+  .donate__btn:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
   }
   .donate__note {
-    max-width: 18rem;
+    max-width: 21rem;
     color: var(--faint);
     font-size: 0.8125rem;
+  }
+  .donate__star {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--muted);
+    font-size: var(--fs-small);
+    text-decoration: none;
+  }
+  .donate__star:hover {
+    color: var(--text);
   }
   @media (min-width: 860px) {
     .donate__card {
       grid-template-columns: 1fr auto;
+      gap: var(--s-8);
     }
     .donate__action {
       justify-items: end;
       text-align: right;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .donate__btn,
+    .donate__btn:hover {
+      transition: none;
+      transform: none;
     }
   }
 </style>

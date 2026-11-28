@@ -403,11 +403,16 @@ const de = {
   },
   donate: {
     label: 'Unterstützen',
-    title: 'Open Source unterstützen',
-    text: 'Cache & Carry ist freie Open-Source-Software. Wenn dir das Projekt gefällt und du seine Weiterentwicklung unterstützen möchtest, freuen wir uns über deine freiwillige Unterstützung.',
-    button: 'Mit PayPal unterstützen',
-    note: 'Freiwillig. Öffnet PayPal in einem neuen Tab. Cache & Carry bleibt so oder so kostenlos.',
-    other: 'Auch ohne Geld hilfst du: mit einem Stern auf GitHub, einem Fehlerbericht oder indem du es weitererzählst.',
+    titleStart: 'Cache & Carry',
+    titleEnd: 'unterstützen',
+    text: 'Cache & Carry ist kostenlos und Open Source unter der Apache-2.0-Lizenz. Es gibt keine kostenpflichtigen Funktionen. Wenn es dir Zeit und Bandbreite spart, hilft eine Spende über PayPal, dass es weitergeht.',
+    points: [
+      'Keine Konten, keine Bezahlfunktionen, kein Tracking.',
+      'Ein Stern auf GitHub, Fehlerberichte und Pull Requests helfen genauso.',
+    ],
+    button: 'Über PayPal spenden',
+    note: 'Freiwillig. Öffnet PayPal in einem neuen Tab. Auf dieser Website findet keine Zahlung statt.',
+    star: 'Stern auf GitHub geben',
   },
   footer: {
     text: 'Selbst gehosteter Paketcache für APT und Pacman. Einmal laden, beliebig oft abholen.',
@@ -821,11 +826,16 @@ const en: Copy = {
   },
   donate: {
     label: 'Support',
-    title: 'Support open source',
-    text: 'Cache & Carry is free and open source software. If you like the project and want to support its development, we are glad about your voluntary support.',
-    button: 'Support via PayPal',
-    note: 'Voluntary. Opens PayPal in a new tab. Cache & Carry stays free either way.',
-    other: 'You can help without money too: with a star on GitHub, a bug report or by telling others about it.',
+    titleStart: 'Support',
+    titleEnd: 'Cache & Carry',
+    text: 'Cache & Carry is free and open source under the Apache 2.0 license. There are no paid features. If it saves you time and bandwidth, a donation via PayPal helps keep it going.',
+    points: [
+      'No accounts, no paid features, no tracking.',
+      'A star on GitHub, bug reports and pull requests help just as much.',
+    ],
+    button: 'Donate via PayPal',
+    note: 'Voluntary. Opens PayPal in a new tab. No payment happens on this website.',
+    star: 'Star on GitHub',
   },
   footer: {
     text: 'Self-hosted package cache for APT and Pacman. Download once, carry out as often as you like.',
